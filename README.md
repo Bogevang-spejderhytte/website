@@ -1,2 +1,2 @@
-# website
-Website for præsentation og booking
+# Bøgevang spejderhytte websitye
+Website for præsentation og booking af Bøgevang spejderhytte.
