@@ -12,13 +12,8 @@
         description = metaDataModel.MetaDescription;
         title = metaDataModel.PageTitle;
     }
-    else
-    {
-        description = "TODO: Add default description";
-    }
 
-    title = StringHelper.FirstNonEmpty(title, ViewBag.Title, "TODO: Add default title");
-    title += " | Cofoundry Template Site";
+    title = StringHelper.FirstNonEmpty(title, ViewBag.Title, "Bøgevang");
 }
 
 <!DOCTYPE html>
@@ -32,24 +27,49 @@
 
     <meta name="description" content="@description" />
 
+    <link rel="stylesheet" href="~/css/Bootstrap/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
 
 </head>
 <body>
 
-    <nav>
-        <span>Cofoundry Template Site</span>
-    </nav>
+    <div class="container">
+        <div class="header">
+            <div class="header-intro">
+                <h2 class="header-title">Bøgevang</h2>
+                <p class="header-title">Spejderhytte i Vassingerød</p>
+            </div>
+            <div class="header-nav"role="navigation">
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Active</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Link</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Link</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
 
-    <main>
-        @RenderBody()
-    </main>
+        <main>
+            @RenderBody()
+        </main>
 
-    <footer>
-        <span>Copyright © @DateTime.Now.Year Example Inc. All Rights Reserved</span>
-    </footer>
+        <footer>
+            <span>Kontakt: <a href="mailto:bogevanghytten@gmail.com">bogevanghytten@gmail.com</a> | Ejet af <a href="https://www.1lillerod.dk/">1. Lillerød spejdergruppe</a> og <a href="https://palna.dk">Palnatoke spejdergruppe</a></span>
+        </footer>
+
+    </div>
 
     @RenderSection("FooterScripts", required: false)
+
+    <script src="~/js/bootstrap/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
 
 </body>
 </html>

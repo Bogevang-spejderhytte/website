@@ -1,1 +1,31 @@
-﻿
+﻿.header
+{
+    height: 300px;
+    padding-top: 200px;
+    background-image: url(../media/banner-background.jpg);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    color: white;
+}
+
+.header-intro
+{
+    padding: 0px 0px 10px 10px;
+}
+
+.header-nav
+{
+    padding: 0px 0px 10px 10px;
+}
+
+.header-nav a.nav-link
+{
+    color: white;
+}
+
+footer
+{
+    width: 100%;
+    border-top: solid black 1px;
+}
