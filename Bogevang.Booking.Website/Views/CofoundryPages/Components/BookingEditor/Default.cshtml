@@ -2,7 +2,23 @@
 @using Bogevang.Booking.Domain.Bookings.CustomEntities
 @model BookingDataModel
 
-<form id="bookingApp" success="addComment" action="/api/booking" method="post" v-ajax-submit>
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+
+<form id="bookingApp" requestVerificationToken="@Xsrf.GetAndStoreTokens(Context).RequestToken">
+
+  <div class="btn-toolbar justify-content-between mt-2" role="group">
+    <div class="btn-group" role="group">
+      <button type="button" id="editButton" class="btn btn-outline-primary" v-on:click="edit">Ret</button>
+      <button type="button" id="saveButton" class="btn btn-outline-secondary" v-on:click="save" disabled>Gem</button>
+      <button type="button" id="cancelButton" class="btn btn-outline-secondary" v-on:click="cancel" disabled>Fortryd</button>
+    </div>
+    <div class="btn-group" role="group">
+      <button type="button" id="closeButton" class="btn btn-outline-primary" v-on:click="close">Afslut</button>
+    </div>
+  </div>
+
+  <partial name="_VueErrorSummary" />
+
   <div class="row mb-3">
     @await Html.VueEditorColFor(m => m.ArrivalDate)
     @await Html.VueEditorColFor(m => m.DepartureDate)
@@ -19,10 +35,7 @@
   @await Html.VueEditorRowFor(m => m.Comments)
   @await Html.VueEditorRowFor(m => m.RentalPrice)
   @await Html.VueEditorRowFor(m => m.BookingState)
-  @await Html.VueEditorRowFor(m => m.DepositReceived)
-  @await Html.VueEditorRowFor(m => m.PaymentReceived)
-  @await Html.VueEditorRowFor(m => m.DepositReturned)
 </form>
 
-<script defer src="/js/vue-ajax-submit.js"></script>
+<script defer src="/js/vue-ajax-save.js"></script>
 <script defer src="/booking/scripts/edit-booking.js"></script>

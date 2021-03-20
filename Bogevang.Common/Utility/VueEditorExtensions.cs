@@ -82,7 +82,7 @@ namespace Bogevang.Common.Utility
       if (isBool)
       {
         html += $@"
-<input type=""checkbox"" id=""{propName}"" v-model=""{propName}"" class=""form-check-input"">
+<input type=""checkbox"" id=""{propName}"" v-model=""{propName}"" class=""form-check-input editable"" readonly>
 <label for=""{propName}"" class=""form-label"">{WebUtility.HtmlEncode(displayName)}</label>";
       }
       else
@@ -97,7 +97,7 @@ namespace Bogevang.Common.Utility
           .ToArray();
 
           html += $@"
-<select id=""{propName}"" v-model=""{propName}""class=""form-select"">
+<select id=""{propName}"" v-model=""{propName}"" class=""form-select editable"" disabled>
 <option>- Vælg -</option>";
 
           foreach (var item in Enum.GetValues(expr.Metadata.ModelType).Cast<Enum>())
@@ -112,12 +112,12 @@ namespace Bogevang.Common.Utility
         else if (isDate)
         {
           html += $@"
-<input type=""date"" id=""{propName}"" v-model=""{propName}"" class=""form-control"">";
+<input type=""date"" id=""{propName}"" v-model=""{propName}"" class=""form-control editable"" readonly>";
         }
         else if (customEntities != null)
         {
           html += $@"
-<select id=""{propName}"" v-model=""{propName}"" class=""form-select"">
+<select id=""{propName}"" v-model=""{propName}"" class=""form-select editable"" disabled>
 <option>- Vælg -</option>";
 
           foreach (var item in customEntities)
@@ -133,7 +133,7 @@ namespace Bogevang.Common.Utility
         else
         {
           html += $@"
-<input type=""text"" id=""{propName}"" v-model=""{propName}"" class=""form-control"">";
+<input type=""text"" id=""{propName}"" v-model=""{propName}"" class=""form-control editable"" readonly>";
         }
       }
 

@@ -29,7 +29,7 @@ namespace Bogevang.Booking.Website.Api
     }
 
 
-    [HttpGet("")]
+    [HttpGet]
     //[AuthorizeUserArea(MemberUserArea.MemberUserAreaCode)]
     public async Task<JsonResult> Get([FromQuery] int id)
     {
@@ -65,5 +65,14 @@ namespace Bogevang.Booking.Website.Api
     //    DepositReturned = b.DepositReturned
     //  };
     //}
+
+    [HttpPost]
+    //[AuthorizeUserArea(MemberUserArea.MemberUserAreaCode)]
+    public async Task<JsonResult> Post([FromQuery] int id)
+    {
+      var x = 10;
+
+      return await Task.FromResult(new JsonResult(new { ok = true }));
+    }
   }
 }
