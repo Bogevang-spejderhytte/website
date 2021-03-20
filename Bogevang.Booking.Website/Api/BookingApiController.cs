@@ -2,6 +2,7 @@
 using Bogevang.Booking.Domain.Bookings.Models;
 using Bogevang.Booking.Domain.Bookings.Queries;
 using Cofoundry.Domain;
+using Cofoundry.Domain.Internal;
 using Cofoundry.Web;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -16,17 +17,19 @@ namespace Bogevang.Booking.Website.Api
   [ApiController]
   public class BookingApiController : ControllerBase
   {
-    private readonly IAdvancedContentRepository _domainRepository;
-    private readonly IApiResponseHelper _apiResponseHelper;
+    private readonly IAdvancedContentRepository DomainRepository;
+    private readonly IApiResponseHelper ApiResponseHelper;
+    private UpdateCustomEntityDraftVersionCommandHandler UpdateCustomEntityDraftVersionCommandHandler;
 
 
     public BookingApiController(
         IAdvancedContentRepository domainRepository,
-        IApiResponseHelper apiResponseHelper
-        )
+        IApiResponseHelper apiResponseHelper,
+        UpdateCustomEntityDraftVersionCommandHandler updateCustomEntityDraftVersionCommandHandler)
     {
-      _domainRepository = domainRepository;
-      _apiResponseHelper = apiResponseHelper;
+      DomainRepository = domainRepository;
+      ApiResponseHelper = apiResponseHelper;
+      UpdateCustomEntityDraftVersionCommandHandler = updateCustomEntityDraftVersionCommandHandler;
     }
 
 
@@ -34,13 +37,15 @@ namespace Bogevang.Booking.Website.Api
     //[AuthorizeUserArea(MemberUserArea.MemberUserAreaCode)]
     public async Task<JsonResult> Get([FromQuery] int id)
     {
-      var entity = await _domainRepository.CustomEntities().GetById(id).AsDetails().ExecuteAsync();
+      var entity = await DomainRepository.CustomEntities().GetById(id).AsDetails().ExecuteAsync();
 
       // FIXME: check for custom entity type being a "Booking"
 
       BookingDataModel booking = (BookingDataModel)entity.LatestVersion.Model;
+      booking.ArrivalDate = booking.ArrivalDate.Value.ToLocalTime();
+      booking.DepartureDate = booking.DepartureDate.Value.ToLocalTime();
 
-      return _apiResponseHelper.SimpleQueryResponse(booking);
+      return ApiResponseHelper.SimpleQueryResponse(booking);
     }
 
     //private BookingDetails MapToBookingDetails(CustomEntityDetails ent)
@@ -71,14 +76,41 @@ namespace Bogevang.Booking.Website.Api
     //[AuthorizeUserArea(MemberUserArea.MemberUserAreaCode)]
     public async Task<JsonResult> Post([FromQuery] int id, [FromBody]BookingDataModel input)
     {
-      var entity = await _domainRepository.CustomEntities().GetById(id).AsDetails().ExecuteAsync();
-      // FIXME: check for custom entity type being a "Booking"
-      BookingDataModel booking = (BookingDataModel)entity.LatestVersion.Model;
+      using (var scope = DomainRepository.Transactions().CreateScope())
+      {
+        var entity = await DomainRepository.CustomEntities().GetById(id).AsDetails().ExecuteAsync();
+        // FIXME: check for custom entity type being a "Booking"
+        BookingDataModel booking = (BookingDataModel)entity.LatestVersion.Model;
 
-      booking.ArrivalDate = input.ArrivalDate;
-      booking.DepartureDate = input.DepartureDate;
+        booking.ArrivalDate = input.ArrivalDate.Value.ToUniversalTime();
+        booking.DepartureDate = input.DepartureDate.Value.ToUniversalTime();
+        booking.TenantCategoryId = input.TenantCategoryId;
+        booking.TenantName = input.TenantName;
+        booking.Purpose = input.Purpose;
+        booking.ContactName = input.ContactName;
+        booking.ContactPhone = input.ContactPhone;
+        booking.ContactAddress = input.ContactAddress;
+        booking.ContactCity = input.ContactCity;
+        booking.ContactEMail = input.ContactEMail;
+        booking.Comments = input.Comments;
+        booking.RentalPrice = input.RentalPrice;
+        booking.BookingState = input.BookingState;
 
-      return await Task.FromResult(new JsonResult(new { ok = true }));
+        UpdateCustomEntityDraftVersionCommand updateCmd = new UpdateCustomEntityDraftVersionCommand
+        {
+          CustomEntityDefinitionCode = BookingCustomEntityDefinition.DefinitionCode,
+          CustomEntityId = id,
+          Title = entity.LatestVersion.Title,
+          Publish = true,
+          Model = booking
+        };
+
+        await DomainRepository.CustomEntities().Versions().UpdateDraftAsync(updateCmd);
+
+        await scope.CompleteAsync();
+
+        return new JsonResult(new { ok = true });
+      }
     }
   }
 }
