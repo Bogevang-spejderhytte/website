@@ -1,6 +1,3 @@
-﻿<p v-if="errors.length">
-  <b>Der blev fundet følgende problemer med de indtastede oplysninger:</b>
-  <ul>
-    <li v-for="error in errors">{{ error }}</li>
-  </ul>
-</p>
+﻿<div v-if="errors.length">
+  <div v-for="error in errors" class="alert alert-danger" role="alert">{{ error }}</div>
+</div>

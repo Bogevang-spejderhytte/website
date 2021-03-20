@@ -17,30 +17,51 @@
       contactEMail: null,
       comments: null,
       rentalPrice: null,
-      bookingState: null,
-      depositReceived: null,
-      paymentReceived: null,
-      depositReturned: null
+      bookingState: null
     },
     async mounted() {
       this.loadData();
     },
     methods: {
       edit: function(e) {
+        this.errors = [];
         this.startEditing();
       },
 
-      save: function (e) {
-        this.saveData();
-        this.stopEditing();
+      save: async function (e) {
+        this.errors = [];
+        var result = await this.saveData();
+        debugger
+        if (result) {
+          if (!result.errors) {
+            this.loadData();
+            this.stopEditing();
+          }
+          else {
+            console.log(result.title);
+            for (var key in result.errors)
+              if (result.errors.hasOwnProperty(key)) {
+                this.errors.push(result.errors[key][0]);
+                $('#' + key).addClass('is-invalid');
+                $('#' + key + '_feedback').text(result.errors[key][0]);
+              }
+          }
+        }
       },
 
       cancel: function (e) {
+        this.errors = [];
+        this.loadData();
         this.stopEditing();
       },
 
       close: function (e) {
         
+      },
+
+
+      clearValidation: function (e) {
+        $(e.srcElement).removeClass('is-invalid');
       },
 
 
@@ -66,24 +87,32 @@
             this.comments = j.data.comments;
             this.rentalPrice = j.data.rentalPrice;
             this.bookingState = j.data.bookingState;
-            this.depositReceived = j.data.depositReceived;
-            this.paymentReceived = j.data.paymentReceived;
-            this.depositReturned = j.data.depositReturned;
           });
 
         this.loading = false;
       },
 
 
-      saveData: function () {
-        var saveArgs = {
-          arrivalDate: this.arrivalDate
-        };
+      saveData: async function () {
+        var saveArgs = JSON.stringify({
+          arrivalDate: this.arrivalDate,
+          departureDate: this.departureDate,
+          tenantCategoryId: this.tenantCategoryId,
+          tenantName: this.tenantName,
+          purpose: this.purpose,
+          contactName: this.contactName,
+          contactPhone: this.contactPhone,
+          contactAddress: this.contactAddress,
+          contactCity: this.contactCity,
+          contactEMail: this.contactEMail,
+          comments: this.comments,
+          rentalPrice: this.rentalPrice,
+          bookingState: this.bookingState
+        });
 
         const requestVerificationToken = this.$el.getAttribute('requestVerificationToken');
 
-        debugger
-        fetch("/api/booking?id=" + this.bookingId, {
+        return fetch("/api/booking?id=" + this.bookingId, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -91,17 +120,29 @@
           },
           body: saveArgs
         })
-          .then(res => res.json())
+          .then(res => {
+            const contentType = res.headers.get('Content-Type').toLowerCase();
+            console.log(contentType);
+            console.log(res.status);
+            if (contentType.includes('application/json') || contentType.includes('application/problem+json'))
+              return res.json();
+            else
+              throw res;
+          })
           .then(data => {
+            console.log(data);
+            return data;
           })
           .catch(err => {
-            window.alert("FEJL!");
+            window.alert(err);
+            return null;
           });
       },
 
       startEditing: function (e) {
         $('.editable').prop('readonly', false);
         $('select.editable').prop('disabled', false);
+        $('.editable').removeClass('is-invalid');
 
         $('#editButton').prop('disabled', true);
         $('#saveButton').prop('disabled', false);
@@ -112,6 +153,7 @@
       stopEditing: function (e) {
         $('.editable').prop('readonly', true);
         $('select.editable').prop('disabled', true);
+        $('.editable').removeClass('is-invalid');
 
         $('#editButton').prop('disabled', false);
         $('#saveButton').prop('disabled', true);

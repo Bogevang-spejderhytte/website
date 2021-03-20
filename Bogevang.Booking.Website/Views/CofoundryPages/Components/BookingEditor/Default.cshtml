@@ -6,9 +6,9 @@
 
 <form id="bookingApp" requestVerificationToken="@Xsrf.GetAndStoreTokens(Context).RequestToken">
 
-  <div class="btn-toolbar justify-content-between mt-2" role="group">
+  <div class="btn-toolbar justify-content-between mt-2 mb-2" role="group">
     <div class="btn-group" role="group">
-      <button type="button" id="editButton" class="btn btn-outline-primary" v-on:click="edit">Ret</button>
+      <button type="button" id="editButton" class="btn btn-outline-secondary" v-on:click="edit">Ret</button>
       <button type="button" id="saveButton" class="btn btn-outline-secondary" v-on:click="save" disabled>Gem</button>
       <button type="button" id="cancelButton" class="btn btn-outline-secondary" v-on:click="cancel" disabled>Fortryd</button>
     </div>
@@ -37,5 +37,4 @@
   @await Html.VueEditorRowFor(m => m.BookingState)
 </form>
 
-<script defer src="/js/vue-ajax-save.js"></script>
 <script defer src="/booking/scripts/edit-booking.js"></script>

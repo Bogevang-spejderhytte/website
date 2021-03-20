@@ -13,6 +13,7 @@ namespace Bogevang.Booking.Website.Api
 {
   [Route("api/booking")]
   [AutoValidateAntiforgeryToken]
+  [ApiController]
   public class BookingApiController : ControllerBase
   {
     private readonly IAdvancedContentRepository _domainRepository;
@@ -68,9 +69,14 @@ namespace Bogevang.Booking.Website.Api
 
     [HttpPost]
     //[AuthorizeUserArea(MemberUserArea.MemberUserAreaCode)]
-    public async Task<JsonResult> Post([FromQuery] int id)
+    public async Task<JsonResult> Post([FromQuery] int id, [FromBody]BookingDataModel input)
     {
-      var x = 10;
+      var entity = await _domainRepository.CustomEntities().GetById(id).AsDetails().ExecuteAsync();
+      // FIXME: check for custom entity type being a "Booking"
+      BookingDataModel booking = (BookingDataModel)entity.LatestVersion.Model;
+
+      booking.ArrivalDate = input.ArrivalDate;
+      booking.DepartureDate = input.DepartureDate;
 
       return await Task.FromResult(new JsonResult(new { ok = true }));
     }

@@ -133,11 +133,12 @@ namespace Bogevang.Common.Utility
         else
         {
           html += $@"
-<input type=""text"" id=""{propName}"" v-model=""{propName}"" class=""form-control editable"" readonly>";
+<input type=""text"" id=""{propName}"" v-model=""{propName}"" class=""form-control editable"" v-on:change=""clearValidation"" readonly>";
         }
       }
 
-      html += @"
+      html += $@"
+  <div id=""{propName}_feedback"" class=""invalid-feedback""></div>
 </div>";
 
       return html;
