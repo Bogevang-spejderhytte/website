@@ -17,7 +17,31 @@ namespace Bogevang.Common.Utility
 {
   public static class VueEditorExtensions
   {
-    public static async Task<IHtmlContent> VueEditorColFor<TModel,TResult>(
+    public static async Task<IHtmlContent> VueEditorRowFor<TModel, TResult>(
+      this IHtmlHelper<TModel> helper,
+      Expression<Func<TModel, TResult>> expression)
+    {
+      string html = $@"<div class=""row mb-3"">";
+
+      string innerHtml = await helper.VueEditorColFor_string(expression);
+
+      html += innerHtml + @"
+</div>";
+
+      return new HtmlString(html);
+    }
+
+
+    public static async Task<IHtmlContent> VueEditorColFor<TModel, TResult>(
+      this IHtmlHelper<TModel> helper,
+      Expression<Func<TModel, TResult>> expression)
+    {
+      string html = await helper.VueEditorColFor_string(expression);
+      return new HtmlString(html);
+    }
+
+
+    public static async Task<string> VueEditorColFor_string<TModel,TResult>(
       this IHtmlHelper<TModel> helper,
       Expression<Func<TModel, TResult>> expression)
     {
@@ -116,7 +140,7 @@ namespace Bogevang.Common.Utility
       html += @"
 </div>";
 
-      return new HtmlString(html);
+      return html;
     }
   }
 }

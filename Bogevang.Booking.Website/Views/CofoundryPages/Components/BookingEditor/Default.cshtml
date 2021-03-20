@@ -8,61 +8,20 @@
     @await Html.VueEditorColFor(m => m.DepartureDate)
   </div>
 
-  <div class="row mb-3">
-    @await Html.VueEditorColFor(m => m.TenantCategoryId)
-  </div>
-
-  <div class="row mb-3">
-    @await Html.VueEditorColFor(m => m.TenantName)
-  </div>
-
-  <div class="row mb-3">
-    @await Html.VueEditorColFor(m => m.Purpose)
-  </div>
-
-  <div class="row mb-3">
-    @await Html.VueEditorColFor(m => m.ContactName)
-  </div>
-
-  <div class="row mb-3">
-    @await Html.VueEditorColFor(m => m.ContactPhone)
-  </div>
-
-  <div class="row mb-3">
-    @await Html.VueEditorColFor(m => m.ContactAddress)
-  </div>
-
-  <div class="row mb-3">
-    @await Html.VueEditorColFor(m => m.ContactCity)
-  </div>
-
-  <div class="row mb-3">
-    @await Html.VueEditorColFor(m => m.ContactEMail)
-  </div>
-
-  <div class="row mb-3">
-    @await Html.VueEditorColFor(m => m.Comments)
-  </div>
-
-  <div class="row mb-3">
-    @await Html.VueEditorColFor(m => m.RentalPrice)
-  </div>
-
-  <div class="row mb-3">
-    @await Html.VueEditorColFor(m => m.BookingState)
-  </div>
-
-  <div class="row mb-3">
-    @await Html.VueEditorColFor(m => m.DepositReceived)
-  </div>
-
-  <div class="row mb-3">
-    @await Html.VueEditorColFor(m => m.PaymentReceived)
-  </div>
-
-  <div class="row mb-3">
-    @await Html.VueEditorColFor(m => m.DepositReturned)
-  </div>
+  @await Html.VueEditorRowFor(m => m.TenantCategoryId)
+  @await Html.VueEditorRowFor(m => m.TenantName)
+  @await Html.VueEditorRowFor(m => m.Purpose)
+  @await Html.VueEditorRowFor(m => m.ContactName)
+  @await Html.VueEditorRowFor(m => m.ContactPhone)
+  @await Html.VueEditorRowFor(m => m.ContactAddress)
+  @await Html.VueEditorRowFor(m => m.ContactCity)
+  @await Html.VueEditorRowFor(m => m.ContactEMail)
+  @await Html.VueEditorRowFor(m => m.Comments)
+  @await Html.VueEditorRowFor(m => m.RentalPrice)
+  @await Html.VueEditorRowFor(m => m.BookingState)
+  @await Html.VueEditorRowFor(m => m.DepositReceived)
+  @await Html.VueEditorRowFor(m => m.PaymentReceived)
+  @await Html.VueEditorRowFor(m => m.DepositReturned)
 </form>
 
 <script defer src="/js/vue-ajax-submit.js"></script>
