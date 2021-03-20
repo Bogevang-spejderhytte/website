@@ -1,4 +1,7 @@
-﻿@inject ICofoundryHelper Cofoundry
+﻿@using Bogevang.Website.Configuration
+
+@inject ICofoundryHelper Cofoundry
+@inject ThemeSettings themeSettings
 
 @{
     Layout = null;
@@ -19,57 +22,60 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>@title</title>
+  <title>@title</title>
 
-    <meta name="description" content="@description" />
+  <meta name="description" content="@description" />
 
-    <link rel="stylesheet" href="~/css/Bootstrap/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+  <link rel="stylesheet" href="~/css/Bootstrap/bootstrap.min.css" />
+  <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+  <link rel="stylesheet" href="~/font-awesome/css/all.css" />
 
 </head>
 <body>
 
-    <div class="container">
-        <div class="header">
-            <div class="header-intro">
-                <h2 class="header-title">Bøgevang</h2>
-                <p class="header-title">Spejderhytte i Vassingerød</p>
-            </div>
-            <div class="header-nav"role="navigation">
-                <ul class="nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Active</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <main>
-            @RenderBody()
-        </main>
-
-        <footer>
-            <span>Kontakt: <a href="mailto:bogevanghytten@gmail.com">bogevanghytten@gmail.com</a> | Ejet af <a href="https://www.1lillerod.dk/">1. Lillerød spejdergruppe</a> og <a href="https://palna.dk">Palnatoke spejdergruppe</a></span>
-        </footer>
-
+  <div class="container">
+    <div class="header">
+      <div class="header-intro">
+        <h2 class="header-title">@themeSettings.SiteTitle</h2>
+        <p class="header-title">@themeSettings.SiteSubTitle</p>
+      </div>
+      <div class="header-nav" role="navigation">
+        <ul class="nav">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Active</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Link</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Link</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+          </li>
+        </ul>
+      </div>
     </div>
 
-    @RenderSection("FooterScripts", required: false)
+    <main>
+      @RenderBody()
+    </main>
 
-    <script src="~/js/bootstrap/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+    <footer class="mt-5">
+      <span>Kontakt: <a href="mailto:bogevanghytten@gmail.com">bogevanghytten@gmail.com</a> | Ejet af <a href="https://www.1lillerod.dk/">1. Lillerød spejdergruppe</a> og <a href="https://palna.dk">Palnatoke spejdergruppe</a></span>
+    </footer>
+
+  </div>
+
+  <script src="~/js/jquery/jquery-3.6.0.min.js"></script>
+  <script src="~/js/bootstrap/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+  <script src="~/js/vue/vue.js"></script>
+
+  @RenderSection("Scripts", required: false)
 
 </body>
 </html>

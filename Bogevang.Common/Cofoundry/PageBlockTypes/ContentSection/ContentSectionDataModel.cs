@@ -1,17 +1,14 @@
 ﻿using Cofoundry.Domain;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 
-namespace Bogevang.Website
+namespace Bogevang.Common.PageBlockTypes.ContentSection
 {
-    /// <summary>
-    /// An example page block type. 
-    /// See https://github.com/cofoundry-cms/cofoundry/wiki/Page-Block-Types
-    /// for more information
-    /// </summary>
-    public class ContentSectionDataModel : IPageBlockTypeDataModel, IPageBlockTypeDisplayModel
+  /// <summary>
+  /// An example page block type. 
+  /// See https://github.com/cofoundry-cms/cofoundry/wiki/Page-Block-Types
+  /// for more information
+  /// </summary>
+  public class ContentSectionDataModel : IPageBlockTypeDataModel, IPageBlockTypeDisplayModel
     {
         [Display(Description = "Optional title to display at the top of the section")]
         public string Title { get; set; }

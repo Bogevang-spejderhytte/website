@@ -1,0 +1,141 @@
+﻿@model Bogevang.Website.Booking.ViewComponents.BookingRequestViewModel
+
+<form method="post">
+
+  @Html.AntiForgeryToken()
+
+  @if (ViewData.ModelState.Any(x => x.Value.Errors.Any()))
+  {
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Luk"></button>
+      @Html.ValidationSummary()
+    </div>
+  }
+
+  <div class="row mb-3">
+    <div class="col">
+      @Html.LabelFor(m => m.ArrivalDate, new { @class = "form-label" })
+      @Html.EditorFor(m => m.ArrivalDate, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    <div class="col">
+      @Html.LabelFor(m => m.DepartureDate, new { @class = "form-label" })
+      @Html.EditorFor(m => m.DepartureDate, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col">
+      @Html.LabelFor(m => m.TenantCategory, new { @class = "form-label" })
+      @Html.DropDownListFor(m => m.TenantCategory, Model.TenantCategories, new { @class = "form-control", aria_describedby = "TenantTypeDescription" })
+      <div id="TenantTypeDateDescription" class="form-text" >
+        Angiv hvor lejer kommer fra. Oplysningen bruges til statistik, prisberegning og ved Bøgevangs ansøgning om kommunalt tilskud.
+      </div>
+    </div>
+  </div>
+
+
+  @*<div class="row mb-3">
+    <div class="col">
+      <label for="TenantType" class="form-label">Lejers oprindelse</label>
+      <select id="TenantType" name="TenantType" class="form-control" aria-describedby="TenantTypeDescription">
+        <option>- Vælg -</option>
+        <option value="SpejderAllerod">Spejdergruppe i Allerød kommune</option>
+        <option value="SpejderAndet">Spejdergruppe udenfor Allerød kommune</option>
+        <option value="InstitutionAllerod">Institution i Allerød kommune</option>
+        <option value="Foreldre">Forældre til spejder i 1. Lillerød eller Palnatoke Gruppe</option>
+        <option value="Leder">Leder i 1. Lillerød eller Palnatoke gruppe</option>
+        <option value="Vejforening">Medlemmer af Bøgevang vejforening</option>
+        <option value="Andet">Andre</option>
+      </select>
+      <div id="TenantTypeDateDescription" class="form-text">
+        Angiv hvor lejer kommer fra. Oplysningen bruges til statistik, prisberegning og ved Bøgevangs ansøgning om kommunalt tilskud.
+      </div>
+    </div>
+  </div>*@
+
+  <div class="row mb-3">
+    <div class="col">
+      <label for="TenantName" class="form-label">Lejers navn</label>
+      <input type="text" id="TenantName" name="TenantName" class="form-control" aria-describedby="TenantNameDescription">
+      <div id="TenantNameDescription" class="form-text">
+        Angiv navn på den organisation som ønsker at leje Bøgevang (behøver ikke at være en formel organisation).
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col">
+      <label for="Purpose" class="form-label">Formål</label>
+      <input type="text" id="Purpose" name="Purpose" class="form-control" aria-describedby="PurposeDescription">
+      <div id="PurposeDescription" class="form-text">
+        Angiv kort hvad formålet med lejemålet er (fx spejdertur, klassearrangement, privat arrangement og lignende).
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col">
+      @Html.LabelFor(m => m.ContactName, new { @class = "form-label" })
+      @Html.EditorFor(m => m.ContactName, new { htmlAttributes = new { @class = "form-control" } })
+      <div id="ContactNameDescription" class="form-text">
+        Angiv navn på kontaktperson.
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col">
+      <label for="ContactPhone" class="form-label">Kontaktpersons telefonnummer</label>
+      <input type="text" id="ContactPhone" name="ContactPhone" class="form-control" aria-describedby="ContactPhoneDescription">
+      <div id="ContactPhoneDescription" class="form-text">
+        Angiv kontaktpersons telefonnummer.
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col">
+      <label for="ContactAddress" class="form-label">Kontaktpersons adresse</label>
+      <input type="text" id="ContactAddress" name="ContactAddress" class="form-control" aria-describedby="ContactAddressDescription">
+      <div id="ContactAddressDescription" class="form-text">
+        Angiv kontaktpersons addresse (vejnavn og husnummer mm.).
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col">
+      <label for="ContactCity" class="form-label">Kontaktpersons postnummer og by</label>
+      <input type="text" id="ContactCity" name="ContactCity" class="form-control" aria-describedby="ContactCityDescription">
+      <div id="ContactCityDescription" class="form-text">
+        Angiv kontaktpersons postnummer og bynavn.
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col">
+      <label for="ContactEMail" class="form-label">Kontaktpersons e-mailadresse</label>
+      <input type="text" id="ContactEMail" name="ContactEMail" class="form-control" aria-describedby="ContactEMailDescription">
+      <div id="ContactEMailDescription" class="form-text">
+        Angiv kontaktpersons e-mailadresse.
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col">
+      <label for="Comments" class="form-label">Bemærkninger</label>
+      <textarea id="Comments" name="Comments" class="form-control" aria-describedby="CommentsDescription"></textarea>
+      <div id="Description" class="form-text">
+        Angiv eventuelle bemærkninger til lejemålet her.
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col">
+      <button type="submit" class="btn btn-primary">Indsend ansøgning</button>
+    </div>
+  </div>
+</form>

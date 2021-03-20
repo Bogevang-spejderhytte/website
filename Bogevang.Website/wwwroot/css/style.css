@@ -1,6 +1,6 @@
 ﻿.header
 {
-    height: 300px;
+    height: 200px;
     padding-top: 200px;
     background-image: url(../media/banner-background.jpg);
     display: flex;
@@ -26,6 +26,12 @@
 
 footer
 {
-    width: 100%;
-    border-top: solid black 1px;
+  width: 100%;
+  border-top: solid black 1px;
+}
+
+
+.validation-summary-errors
+{
+
 }

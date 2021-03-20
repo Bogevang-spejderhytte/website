@@ -1,0 +1,6 @@
+﻿@using Bogevang.Common.Utility
+@model CustomEntityList 
+ 
+@inject ModelExpressionProvider ExpressionProvider
+
+@Html.CustomEntityDropDownListFor(Model, x => x)

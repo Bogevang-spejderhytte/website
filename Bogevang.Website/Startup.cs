@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Cofoundry.Web;
+﻿using Cofoundry.Web;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -11,31 +7,39 @@ using Microsoft.Extensions.Hosting;
 
 namespace Bogevang.Website
 {
-    public class Startup
+  public class Startup
+  {
+    public IConfiguration Configuration { get; }
+
+    
+    public Startup(IConfiguration configuration)
     {
-        public IConfiguration Configuration { get; }
-
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services
-                .AddControllersWithViews()
-                .AddCofoundry(Configuration);
-        }
-
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (!env.IsDevelopment())
-            {
-                app.UseHsts();
-            }
-
-            app.UseHttpsRedirection();
-            app.UseCofoundry();
-        }
+      Configuration = configuration;
     }
+
+    
+    public void ConfigureServices(IServiceCollection services)
+    {
+      services.AddSpaStaticFiles(configuration =>
+      {
+        configuration.RootPath = "ClientApp/dist";
+      });
+
+      services
+          .AddControllersWithViews()
+          .AddCofoundry(Configuration);
+    }
+
+    
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+      if (!env.IsDevelopment())
+      {
+        app.UseHsts();
+      }
+
+      app.UseHttpsRedirection();
+      app.UseCofoundry();
+    }
+  }
 }

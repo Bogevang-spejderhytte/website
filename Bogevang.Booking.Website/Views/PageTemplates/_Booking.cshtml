@@ -1,0 +1,12 @@
+﻿@using Cofoundry.Domain
+@using Cofoundry.Web
+
+@model IPageViewModel
+@inject ICofoundryTemplateHelper<IPageViewModel> Cofoundry
+
+@Cofoundry.Template.UseDescription("Skabelon til redigering af en enkelt reservation")
+
+
+<h1>@Model.PageTitle</h1>
+
+@await Component.InvokeAsync("BookingEditor")

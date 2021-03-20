@@ -1,0 +1,69 @@
+﻿@using Bogevang.Common.Utility
+@using Bogevang.Booking.Domain.CustomEntities
+@model BookingDataModel
+
+<form id="bookingApp" success="addComment" action="/api/booking" method="post" v-ajax-submit>
+  <div class="row mb-3">
+    @await Html.VueEditorColFor(m => m.ArrivalDate)
+    @await Html.VueEditorColFor(m => m.DepartureDate)
+  </div>
+
+  <div class="row mb-3">
+    @await Html.VueEditorColFor(m => m.TenantCategoryId)
+  </div>
+
+  <div class="row mb-3">
+    @await Html.VueEditorColFor(m => m.TenantName)
+  </div>
+
+  <div class="row mb-3">
+    @await Html.VueEditorColFor(m => m.Purpose)
+  </div>
+
+  <div class="row mb-3">
+    @await Html.VueEditorColFor(m => m.ContactName)
+  </div>
+
+  <div class="row mb-3">
+    @await Html.VueEditorColFor(m => m.ContactPhone)
+  </div>
+
+  <div class="row mb-3">
+    @await Html.VueEditorColFor(m => m.ContactAddress)
+  </div>
+
+  <div class="row mb-3">
+    @await Html.VueEditorColFor(m => m.ContactCity)
+  </div>
+
+  <div class="row mb-3">
+    @await Html.VueEditorColFor(m => m.ContactEMail)
+  </div>
+
+  <div class="row mb-3">
+    @await Html.VueEditorColFor(m => m.Comments)
+  </div>
+
+  <div class="row mb-3">
+    @await Html.VueEditorColFor(m => m.RentalPrice)
+  </div>
+
+  <div class="row mb-3">
+    @await Html.VueEditorColFor(m => m.BookingState)
+  </div>
+
+  <div class="row mb-3">
+    @await Html.VueEditorColFor(m => m.DepositReceived)
+  </div>
+
+  <div class="row mb-3">
+    @await Html.VueEditorColFor(m => m.PaymentReceived)
+  </div>
+
+  <div class="row mb-3">
+    @await Html.VueEditorColFor(m => m.DepositReturned)
+  </div>
+</form>
+
+<script defer src="/js/vue-ajax-submit.js"></script>
+<script defer src="/js/edit-booking.js"></script>
