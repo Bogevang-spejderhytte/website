@@ -6,39 +6,7 @@
 
 @Cofoundry.Template.UseDescription("Skabelon til visning af reservationer")
 
+
 <h1>@Model.PageTitle</h1>
 
-<div class="container" id="bookingsApp">
-  @*<data-load v-bind:loading="loading">*@
-  <table id="bookings" class="table" v-cloak>
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Ankomst</th>
-        <th scope="col">Afrejse</th>
-        <th scope="col">Formål</th>
-        <th scope="col">Fra</th>
-        <th scope="col">Kontaktperson</th>
-        <th scope="col">E-mail</th>
-        <th scope="col">Status</th>
-        <th scope="col"></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr class="grid-row" v-for="booking in bookings" v-bind:model="booking" v-bind:key="booking.Id">
-        <td>{{booking.id}}</td>
-        <td>{{booking.arrivalDate}}</td>
-        <td>{{booking.departureDate}}</td>
-        <td>{{booking.purpose}}</td>
-        <td>{{booking.tenantName}}</td>
-        <td>{{booking.contactName}}</td>
-        <td><a :href="`mailto:${booking.contactEMail}`">{{booking.contactEMail}}</a></td>
-        <td>{{booking.bookingState}}</td>
-        <td><a :href="booking.editUrl"><i class="fas fa-pen"></i></a></td>
-      </tr>
-    </tbody>
-  </table>
-  @*</data-load>*@
-</div>
-
-<script defer src="/js/bookings.js"></script>
+@await Component.InvokeAsync("BookingList")

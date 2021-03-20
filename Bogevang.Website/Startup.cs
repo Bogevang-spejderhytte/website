@@ -20,11 +20,6 @@ namespace Bogevang.Website
     
     public void ConfigureServices(IServiceCollection services)
     {
-      services.AddSpaStaticFiles(configuration =>
-      {
-        configuration.RootPath = "ClientApp/dist";
-      });
-
       services
           .AddControllersWithViews()
           .AddCofoundry(Configuration);

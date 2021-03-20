@@ -5,7 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="client-app\bookings.js" />
+    <None Remove="test.html" />
     <None Remove="Views\CofoundryPages\Components\BookingEditor\Default.cshtml" />
+    <None Remove="Views\CofoundryPages\Components\BookingList\Default.cshtml" />
     <None Remove="Views\CofoundryPages\Components\BookingRequest\BookingRequestSuccess.cshtml" />
     <None Remove="Views\CofoundryPages\Components\BookingRequest\Default.cshtml" />
     <None Remove="Views\PageTemplates\_Booking.cshtml" />
@@ -15,7 +18,22 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="client-app\bookings.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="client-app\edit-booking.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
     <EmbeddedResource Include="Views\CofoundryPages\Components\BookingEditor\Default.cshtml" />
+    <EmbeddedResource Include="Views\CofoundryPages\Components\BookingList\Default.cshtml" />
     <EmbeddedResource Include="Views\CofoundryPages\Components\BookingRequest\BookingRequestSuccess.cshtml">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>

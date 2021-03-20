@@ -21,7 +21,6 @@
       depositReturned: null
     },
     async mounted() {
-      debugger
       const id = location.hash.substr(1);
       fetch("/api/booking?id=" + id, {
         "method": "GET"

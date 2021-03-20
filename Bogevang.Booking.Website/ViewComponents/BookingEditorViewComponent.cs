@@ -1,5 +1,4 @@
-﻿
-using Bogevang.Booking.Domain.CustomEntities;
+﻿using Bogevang.Booking.Domain.CustomEntities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bogevang.Booking.Website.ViewComponents
