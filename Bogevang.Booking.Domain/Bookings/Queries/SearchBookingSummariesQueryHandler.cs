@@ -1,5 +1,5 @@
-﻿using Bogevang.Booking.Domain.CustomEntities;
-using Bogevang.Booking.Domain.Models;
+﻿using Bogevang.Booking.Domain.Bookings.CustomEntities;
+using Bogevang.Booking.Domain.Bookings.Models;
 using Bogevang.Common.Utility;
 using Cofoundry.Domain;
 using Cofoundry.Domain.CQS;
@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bogevang.Booking.Domain.Queries
+namespace Bogevang.Booking.Domain.Bookings.Queries
 {
   public class SearchBookingSummariesQueryHandler
     : IQueryHandler<SearchBookingSummariesQuery, PagedQueryResult<BookingSummary>>

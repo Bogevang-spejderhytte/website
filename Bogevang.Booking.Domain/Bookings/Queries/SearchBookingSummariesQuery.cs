@@ -1,8 +1,8 @@
-﻿using Bogevang.Booking.Domain.Models;
+﻿using Bogevang.Booking.Domain.Bookings.Models;
 using Cofoundry.Domain;
 using Cofoundry.Domain.CQS;
 
-namespace Bogevang.Booking.Domain.Queries
+namespace Bogevang.Booking.Domain.Bookings.Queries
 {
   public class SearchBookingSummariesQuery
       : SimplePageableQuery

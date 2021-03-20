@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Bogevang.Booking.Domain.Models
+namespace Bogevang.Booking.Domain.Bookings.Models
 {
   public class BookingSummary
   {

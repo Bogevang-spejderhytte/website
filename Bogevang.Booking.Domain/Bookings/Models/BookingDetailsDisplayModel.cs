@@ -1,8 +1,8 @@
-﻿using Bogevang.Booking.Domain.CustomEntities;
+﻿using Bogevang.Booking.Domain.Bookings.CustomEntities;
 using Cofoundry.Domain;
 using System;
 
-namespace Bogevang.Booking.Domain.Models
+namespace Bogevang.Booking.Domain.Bookings.Models
 {
   public class BookingDetailsDisplayModel : ICustomEntityPageDisplayModel<BookingDataModel>
   {

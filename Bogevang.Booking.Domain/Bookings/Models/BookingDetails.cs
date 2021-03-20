@@ -1,7 +1,7 @@
 ﻿using System;
-using static Bogevang.Booking.Domain.CustomEntities.BookingDataModel;
+using static Bogevang.Booking.Domain.Bookings.CustomEntities.BookingDataModel;
 
-namespace Bogevang.Booking.Domain.Models
+namespace Bogevang.Booking.Domain.Bookings.Models
 {
   public class BookingDetails
   {

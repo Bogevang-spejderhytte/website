@@ -1,9 +1,10 @@
-﻿using Cofoundry.Domain;
+﻿using Bogevang.Booking.Domain.TenantCategories.CustomEntities;
+using Cofoundry.Domain;
 using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Bogevang.Booking.Domain.CustomEntities
+namespace Bogevang.Booking.Domain.Bookings.CustomEntities
 {
   public class BookingDataModel : ICustomEntityDataModel
   {

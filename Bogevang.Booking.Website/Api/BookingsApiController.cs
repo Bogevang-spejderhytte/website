@@ -1,5 +1,5 @@
-﻿using Bogevang.Booking.Domain.Models;
-using Bogevang.Booking.Domain.Queries;
+﻿using Bogevang.Booking.Domain.Bookings.Models;
+using Bogevang.Booking.Domain.Bookings.Queries;
 using Cofoundry.Domain;
 using Cofoundry.Web;
 using Microsoft.AspNetCore.Mvc;

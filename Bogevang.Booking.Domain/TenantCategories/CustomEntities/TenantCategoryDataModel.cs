@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace Bogevang.Booking.Domain.CustomEntities
+namespace Bogevang.Booking.Domain.TenantCategories.CustomEntities
 {
   public class TenantCategoryDataModel : ICustomEntityDataModel
   {

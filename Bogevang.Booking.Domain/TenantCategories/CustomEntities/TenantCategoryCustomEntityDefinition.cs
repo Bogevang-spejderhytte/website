@@ -3,15 +3,15 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Bogevang.Booking.Domain.CustomEntities
+namespace Bogevang.Booking.Domain.TenantCategories.CustomEntities
 {
-  public class BookingCustomEntityDefinition : ICustomEntityDefinition<BookingDataModel>, ISortedCustomEntityDefinition
+  public class TenantCategoryCustomEntityDefinition : ICustomEntityDefinition<TenantCategoryDataModel>, IOrderableCustomEntityDefinition
   {
     /// <summary>
     /// This constant is a convention that allows us to reference this definition code 
     /// in other parts of the application (e.g. querying)
     /// </summary>
-    public const string DefinitionCode = "BOOKNG";
+    public const string DefinitionCode = "TENCAT";
 
     /// <summary>
     /// Unique 6 letter code representing the module (the convention is to use uppercase)
@@ -21,18 +21,18 @@ namespace Bogevang.Booking.Domain.CustomEntities
     /// <summary>
     /// Singlar name of the entity
     /// </summary>
-    public string Name => "Reservation";
+    public string Name => "Lejerkategori";
 
     /// <summary>
     /// Plural name of the entity
     /// </summary>
-    public string NamePlural => "Reservationer";
+    public string NamePlural => "Lejerkategorier";
 
     /// <summary>
     /// A short description that shows up as a tooltip for the admin 
     /// panel.
     /// </summary>
-    public string Description => "Reservationer.";
+    public string Description => "Lejerkategorier bruges til beregning af rabat og hvor lang tid ud i fremtiden en booking må foretages.";
 
     /// <summary>
     /// Indicates whether the UrlSlug property should be treated
@@ -59,9 +59,10 @@ namespace Bogevang.Booking.Domain.CustomEntities
     /// </summary>
     public bool HasLocale => false;
 
+    public CustomEntityOrdering Ordering => CustomEntityOrdering.Full;
 
-    public CustomEntityQuerySortType DefaultSortType => CustomEntityQuerySortType.PublishDate;
+    //public CustomEntityQuerySortType DefaultSortType => CustomEntityQuerySortType.Natural;
 
-    public SortDirection DefaultSortDirection => SortDirection.Reversed;
+    //public SortDirection DefaultSortDirection => SortDirection.Default;
   }
 }
