@@ -55,8 +55,8 @@
         this.stopEditing();
       },
 
-      close: function (e) {
-        
+      close: function (url) {
+        window.location = url;
       },
 
 
