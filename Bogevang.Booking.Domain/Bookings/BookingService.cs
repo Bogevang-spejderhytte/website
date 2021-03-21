@@ -1,17 +1,18 @@
 ﻿using Bogevang.Booking.Domain.Bookings.CustomEntities;
-using Bogevang.Booking.Domain.Bookings.Models;
-using Bogevang.Booking.Domain.Bookings.Queries;
+using Cofoundry.Core.MessageAggregator;
 using Cofoundry.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Bogevang.Booking.Domain.Bookings
 {
-  public class BookingService : IBookingService
+  public class BookingService : IBookingService,
+    IMessageHandler<CustomEntityAddedMessage>,
+    IMessageHandler<ICustomEntityContentUpdatedMessage>,
+    IMessageHandler<CustomEntityDeletedMessage>
   {
     private readonly IContentRepository ContentRepository;
 
@@ -51,6 +52,21 @@ namespace Bogevang.Booking.Domain.Bookings
     }
 
 
+    private async Task ResetBookings()
+    {
+      await BookingsSemaphore.WaitAsync();
+
+      try
+      {
+        BookingCache = null;
+      }
+      finally
+      {
+        BookingsSemaphore.Release();
+      }
+    }
+
+
     public async Task<List<BookingDataModel>> FindBookingsInInterval(DateTime start, DateTime end)
     {
       await EnsureBookingsLoaded();
@@ -61,6 +77,27 @@ namespace Bogevang.Booking.Domain.Bookings
         .ToList();
 
       return filtered;
+    }
+
+    
+    public async Task HandleAsync(CustomEntityAddedMessage message)
+    {
+      if (message.CustomEntityDefinitionCode == BookingCustomEntityDefinition.DefinitionCode)
+        await ResetBookings();
+    }
+
+
+    public async Task HandleAsync(ICustomEntityContentUpdatedMessage message)
+    {
+      if (message.CustomEntityDefinitionCode == BookingCustomEntityDefinition.DefinitionCode)
+        await ResetBookings();
+    }
+
+
+    public async Task HandleAsync(CustomEntityDeletedMessage message)
+    {
+      if (message.CustomEntityDefinitionCode == BookingCustomEntityDefinition.DefinitionCode)
+        await ResetBookings();
     }
   }
 }
