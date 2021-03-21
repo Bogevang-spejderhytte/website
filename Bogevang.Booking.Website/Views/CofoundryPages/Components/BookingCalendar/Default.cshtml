@@ -1,0 +1,19 @@
+﻿
+<div id='calendar'>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',
+      aspectRatio: 2,
+      locale: 'da',
+      firstDay: 1,
+      events: '/api/calendar'
+    });
+    calendar.render();
+  });
+</script>
+</div>
+
+<link href="/calendar/main.css" rel="stylesheet" />
+<script defer src="/calendar/main.js"></script>

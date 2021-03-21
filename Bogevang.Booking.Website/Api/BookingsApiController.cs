@@ -11,8 +11,8 @@ namespace Bogevang.Booking.Website.Api
   [AutoValidateAntiforgeryToken]
   public class BookingsApiController : ControllerBase
   {
-    private readonly IDomainRepository _domainRepository;
-    private readonly IApiResponseHelper _apiResponseHelper;
+    private readonly IDomainRepository DomainRepository;
+    private readonly IApiResponseHelper ApiResponseHelper;
 
 
     public BookingsApiController(
@@ -20,8 +20,8 @@ namespace Bogevang.Booking.Website.Api
         IApiResponseHelper apiResponseHelper
         )
     {
-      _domainRepository = domainRepository;
-      _apiResponseHelper = apiResponseHelper;
+      DomainRepository = domainRepository;
+      ApiResponseHelper = apiResponseHelper;
     }
 
 
@@ -32,9 +32,9 @@ namespace Bogevang.Booking.Website.Api
       if (query == null) 
         query = new SearchBookingSummariesQuery();
 
-      PagedQueryResult<BookingSummary> results = await _domainRepository.ExecuteQueryAsync(query);
+      PagedQueryResult<BookingSummary> results = await DomainRepository.ExecuteQueryAsync(query);
 
-      return _apiResponseHelper.SimpleQueryResponse(results);
+      return ApiResponseHelper.SimpleQueryResponse(results);
     }
   }
 }

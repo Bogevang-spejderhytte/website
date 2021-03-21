@@ -4,10 +4,16 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Remove="client-app\booking-request.js" />
     <None Remove="client-app\bookings.js" />
+    <None Remove="PageBlockTypes\BookingCalendar\BookingCalendar.cshtml" />
     <None Remove="test.html" />
+    <None Remove="Views\CofoundryPages\Components\BookingCalendar\Default.cshtml" />
     <None Remove="Views\CofoundryPages\Components\BookingEditor\Default.cshtml" />
     <None Remove="Views\CofoundryPages\Components\BookingList\Default.cshtml" />
     <None Remove="Views\CofoundryPages\Components\BookingRequest\Default.cshtml" />
@@ -30,6 +36,8 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="PageBlockTypes\BookingCalendar\BookingCalendar.cshtml" />
+    <EmbeddedResource Include="Views\CofoundryPages\Components\BookingCalendar\Default.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
