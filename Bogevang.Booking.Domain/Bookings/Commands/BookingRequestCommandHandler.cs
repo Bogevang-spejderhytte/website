@@ -1,15 +1,14 @@
 ﻿using Bogevang.Booking.Domain.Bookings.CustomEntities;
 using Cofoundry.Domain;
 using Cofoundry.Domain.CQS;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace Bogevang.Booking.Domain.Bookings.Commands
 {
   public class BookingRequestCommandHandler
-    : ICommandHandler<BookingRequestCommand>, IIgnorePermissionCheckHandler
+    : ICommandHandler<BookingRequestCommand>, 
+      IIgnorePermissionCheckHandler
   {
     private readonly IAdvancedContentRepository DomainRepository;
 

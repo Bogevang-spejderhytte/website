@@ -34,11 +34,15 @@
             console.log(result.title);
             for (var key in result.errors) {
               if (result.errors.hasOwnProperty(key)) {
-                this.errors.push(result.errors[key][0]);
-                $('#' + key).addClass('is-invalid');
-                $('#' + key + '_feedback').text(result.errors[key][0]);
+                for (var i in result.errors[key])
+                  this.errors.push(result.errors[key][i]);
+                if (key) {
+                  $('#' + key).addClass('is-invalid');
+                  $('#' + key + '_feedback').text(result.errors[key][0]);
+                }
               }
             }
+            window.scrollTo(0,0);
           }
         }
       },

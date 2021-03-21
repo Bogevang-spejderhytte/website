@@ -2,11 +2,12 @@
 using Cofoundry.Domain;
 using Cofoundry.Domain.CQS;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Bogevang.Booking.Domain.Bookings.Commands
 {
-  public class BookingRequestCommand : ICommand
+  public class BookingRequestCommand : ICommand, IValidatableObject
   {
     [Display(Name = "Ankomstdato")]
     [Required]
@@ -23,7 +24,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
     public int? TenantCategoryId { get; set; }
 
 
-    [Display(Name = "Lejers navn", Description = "Angiv navn på den organisation som ønsker at leje Bøgevang (behøver ikke at være en formel organisation).")]
+    [Display(Name = "Lejers navn", Description = "Angiv navn på den organisation som ønsker at leje Bøgevang (behøver ikke at være en formel organisation). Kan også bare være \"Privat\".")]
     public string TenantName { get; set; }
 
 
@@ -60,5 +61,15 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
     [Display(Name = "Bemærkninger")]
     [MultiLineText]
     public string Comments { get; set; }
+
+
+    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+    {
+      if (ArrivalDate > DepartureDate)
+        yield return new ValidationResult("Ankomstdatoen skal være før afrejsedatoen.");
+
+      if (ArrivalDate < DateTime.Today)
+        yield return new ValidationResult("Det er ikke muligt at reservere hytten før i dag.");
+    }
   }
 }
