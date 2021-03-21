@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
@@ -52,6 +53,7 @@ namespace Bogevang.Common.Utility
       propName = Char.ToLowerInvariant(propName[0]) + propName.Substring(1);
 
       string displayName = expr.Metadata.DisplayName;
+      string description = expr.Metadata.Description;
 
       Type modelType = expr.Metadata.ModelType;
       modelType = Nullable.GetUnderlyingType(modelType) ?? modelType;
@@ -77,12 +79,23 @@ namespace Bogevang.Common.Utility
         }
       }
 
+      string describedBy = "";
+      string descriptionHtml = "";
+      if (!string.IsNullOrEmpty(description))
+      {
+        describedBy = $@" aria-describedby=""{propName}_descr""";
+        descriptionHtml = $@"
+<div id=""{propName}_descr"" class=""form-text"">
+{WebUtility.HtmlEncode(description)}
+</div>";
+      }
+
       string html = $@"<div class=""col"">";
 
       if (isBool)
       {
         html += $@"
-<input type=""checkbox"" id=""{propName}"" v-model=""{propName}"" class=""form-check-input editable"" readonly>
+<input type=""checkbox"" id=""{propName}"" v-model=""{propName}"" class=""form-check-input editable"" v-on:change=""clearValidation"" readonly>
 <label for=""{propName}"" class=""form-label"">{WebUtility.HtmlEncode(displayName)}</label>";
       }
       else
@@ -97,7 +110,7 @@ namespace Bogevang.Common.Utility
           .ToArray();
 
           html += $@"
-<select id=""{propName}"" v-model=""{propName}"" class=""form-select editable"" disabled>
+<select id=""{propName}"" v-model=""{propName}"" class=""form-select editable"" v-on:change=""clearValidation"" disabled>
 <option>- Vælg -</option>";
 
           foreach (var item in Enum.GetValues(expr.Metadata.ModelType).Cast<Enum>())
@@ -112,12 +125,12 @@ namespace Bogevang.Common.Utility
         else if (isDate)
         {
           html += $@"
-<input type=""date"" id=""{propName}"" v-model=""{propName}"" class=""form-control editable"" readonly>";
+<input type=""date"" id=""{propName}"" v-model=""{propName}"" class=""form-control editable"" v-on:change=""clearValidation"" readonly>";
         }
         else if (customEntities != null)
         {
           html += $@"
-<select id=""{propName}"" v-model=""{propName}"" class=""form-select editable"" disabled>
+<select id=""{propName}"" v-model=""{propName}"" class=""form-select editable"" v-on:change=""clearValidation"" disabled>
 <option>- Vælg -</option>";
 
           foreach (var item in customEntities)
@@ -136,6 +149,8 @@ namespace Bogevang.Common.Utility
 <input type=""text"" id=""{propName}"" v-model=""{propName}"" class=""form-control editable"" v-on:change=""clearValidation"" readonly>";
         }
       }
+
+      html += descriptionHtml;
 
       html += $@"
   <div id=""{propName}_feedback"" class=""invalid-feedback""></div>

@@ -1,13 +1,8 @@
 ﻿using Bogevang.Booking.Domain.Bookings.CustomEntities;
-using Bogevang.Booking.Domain.Bookings.Models;
-using Bogevang.Booking.Domain.Bookings.Queries;
 using Cofoundry.Domain;
 using Cofoundry.Domain.Internal;
 using Cofoundry.Web;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Bogevang.Booking.Website.Api
@@ -19,22 +14,18 @@ namespace Bogevang.Booking.Website.Api
   {
     private readonly IAdvancedContentRepository DomainRepository;
     private readonly IApiResponseHelper ApiResponseHelper;
-    private UpdateCustomEntityDraftVersionCommandHandler UpdateCustomEntityDraftVersionCommandHandler;
 
 
     public BookingApiController(
         IAdvancedContentRepository domainRepository,
-        IApiResponseHelper apiResponseHelper,
-        UpdateCustomEntityDraftVersionCommandHandler updateCustomEntityDraftVersionCommandHandler)
+        IApiResponseHelper apiResponseHelper)
     {
       DomainRepository = domainRepository;
       ApiResponseHelper = apiResponseHelper;
-      UpdateCustomEntityDraftVersionCommandHandler = updateCustomEntityDraftVersionCommandHandler;
     }
 
 
     [HttpGet]
-    //[AuthorizeUserArea(MemberUserArea.MemberUserAreaCode)]
     public async Task<JsonResult> Get([FromQuery] int id)
     {
       var entity = await DomainRepository.CustomEntities().GetById(id).AsDetails().ExecuteAsync();
@@ -44,32 +35,8 @@ namespace Bogevang.Booking.Website.Api
       return ApiResponseHelper.SimpleQueryResponse(booking);
     }
 
-    //private BookingDetails MapToBookingDetails(CustomEntityDetails ent)
-    //{
-    //  var b = (BookingDataModel)ent.LatestVersion.Model;
-
-    //  return new BookingDetails
-    //  {
-    //    ArrivalDate = b.ArrivalDate?.ToString("yyyy-MM-dd"),
-    //    DepartureDate = b.DepartureDate?.ToString("yyyy-MM-dd"),
-    //    TenantCategoryId = b.TenantCategoryId,
-    //    TenantName = b.TenantName,
-    //    Purpose = b.Purpose,
-    //    ContactName = b.ContactName,
-    //    ContactEMail = b.ContactEMail,
-    //    ContactPhone = b.ContactPhone,
-    //    ContactAddress = b.ContactAddress,
-    //    ContactCity = b.ContactCity,
-    //    Comments = b.Comments,
-    //    RentalPrice = b.RentalPrice,
-    //    DepositReceived = b.DepositReceived,
-    //    PaymentReceived = b.PaymentReceived,
-    //    DepositReturned = b.DepositReturned
-    //  };
-    //}
 
     [HttpPost]
-    //[AuthorizeUserArea(MemberUserArea.MemberUserAreaCode)]
     public async Task<JsonResult> Post([FromQuery] int id, [FromBody]BookingDataModel input)
     {
       using (var scope = DomainRepository.Transactions().CreateScope())
