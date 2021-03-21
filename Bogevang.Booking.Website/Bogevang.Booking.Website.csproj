@@ -9,7 +9,6 @@
     <None Remove="test.html" />
     <None Remove="Views\CofoundryPages\Components\BookingEditor\Default.cshtml" />
     <None Remove="Views\CofoundryPages\Components\BookingList\Default.cshtml" />
-    <None Remove="Views\CofoundryPages\Components\BookingRequest\BookingRequestSuccess.cshtml" />
     <None Remove="Views\CofoundryPages\Components\BookingRequest\Default.cshtml" />
     <None Remove="Views\PageTemplates\_Booking.cshtml" />
     <None Remove="Views\PageTemplates\_BookingList.cshtml" />
@@ -34,10 +33,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Views\CofoundryPages\Components\BookingEditor\Default.cshtml" />
     <EmbeddedResource Include="Views\CofoundryPages\Components\BookingList\Default.cshtml" />
-    <EmbeddedResource Include="Views\CofoundryPages\Components\BookingRequest\BookingRequestSuccess.cshtml">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </EmbeddedResource>
     <EmbeddedResource Include="Views\CofoundryPages\Components\BookingRequest\Default.cshtml">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>

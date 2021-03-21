@@ -19,21 +19,13 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
       Cancelled
     }
 
-    public enum TenantTypeType { SpejderAllerod , SpejderAndet , InstitutionAllerod , Foreldre , Leder , Vejforening , Andet }
-
-    public BookingDataModel()
-    {
-    }
-
 
     [Display(Name = "Ankomstdato")]
     [Required]
-    [DateLocal]
     public DateTime? ArrivalDate { get; set; }
 
     [Display(Name = "Afrejsedato")]
     [Required]
-    [DateLocal]
     public DateTime? DepartureDate { get; set; }
 
 

@@ -38,12 +38,8 @@ namespace Bogevang.Booking.Website.Api
     public async Task<JsonResult> Get([FromQuery] int id)
     {
       var entity = await DomainRepository.CustomEntities().GetById(id).AsDetails().ExecuteAsync();
-
       // FIXME: check for custom entity type being a "Booking"
-
       BookingDataModel booking = (BookingDataModel)entity.LatestVersion.Model;
-      booking.ArrivalDate = booking.ArrivalDate.Value.ToLocalTime();
-      booking.DepartureDate = booking.DepartureDate.Value.ToLocalTime();
 
       return ApiResponseHelper.SimpleQueryResponse(booking);
     }
@@ -82,8 +78,10 @@ namespace Bogevang.Booking.Website.Api
         // FIXME: check for custom entity type being a "Booking"
         BookingDataModel booking = (BookingDataModel)entity.LatestVersion.Model;
 
-        booking.ArrivalDate = input.ArrivalDate.Value.ToUniversalTime();
-        booking.DepartureDate = input.DepartureDate.Value.ToUniversalTime();
+        // For safety reasons, only pick what is needed from the posted data model. Do not assume anything else is ok.
+        // (it is kind of cheating when using the data model as a command)
+        booking.ArrivalDate = input.ArrivalDate;
+        booking.DepartureDate = input.DepartureDate;
         booking.TenantCategoryId = input.TenantCategoryId;
         booking.TenantName = input.TenantName;
         booking.Purpose = input.Purpose;
