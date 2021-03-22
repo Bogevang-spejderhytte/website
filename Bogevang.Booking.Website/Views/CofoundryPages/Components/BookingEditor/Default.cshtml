@@ -11,6 +11,15 @@
       <button type="button" id="editButton" class="btn btn-outline-secondary" v-on:click="edit">Ret</button>
       <button type="button" id="saveButton" class="btn btn-outline-secondary" v-on:click="save" disabled>Gem</button>
       <button type="button" id="cancelButton" class="btn btn-outline-secondary" v-on:click="cancel" disabled>Fortryd</button>
+      <div class="btn-group" role="group">
+        <button id="actionGroupButton" type="button" class="btn btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+          Handlinger
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="actionGroupButton">
+          <li><a id="deleteButton" class="dropdown-item" href="#" v-on:click="deleteBooking('/reservationer')">Slet</a></li>
+          <li><a class="dropdown-item" href="#">... mere senere ...</a></li>
+        </ul>
+      </div>
     </div>
     <div class="btn-group" role="group">
       <button type="button" id="closeButton" class="btn btn-outline-primary" v-on:click="close('/reservationer')">Afslut</button>

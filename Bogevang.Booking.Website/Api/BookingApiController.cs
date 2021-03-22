@@ -77,5 +77,13 @@ namespace Bogevang.Booking.Website.Api
         return new JsonResult(new { ok = true });
       }
     }
-  }
+
+
+    [HttpDelete]
+    public async Task<JsonResult> Delete([FromQuery] int id)
+    {
+      var deleteCmd = new DeleteCustomEntityCommand { CustomEntityId = id };
+      return await ApiResponseHelper.RunCommandAsync(deleteCmd);
+    }
+ }
 }

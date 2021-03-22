@@ -49,10 +49,44 @@
         }
       },
 
+      deleteBooking: function (url) {
+        if (!confirm('Slet denne reservation?'))
+          return;
+
+        this.errors = [];
+
+        const requestVerificationToken = this.$el.getAttribute('requestVerificationToken');
+
+        return fetch("/api/booking?id=" + this.bookingId, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'RequestVerificationToken': requestVerificationToken
+          }
+        })
+          .then(res => {
+            const contentType = res.headers.get('Content-Type').toLowerCase();
+            console.log(contentType);
+            console.log(res.status);
+            if (contentType.includes('application/json') || contentType.includes('application/problem+json'))
+              return res.json();
+            else
+              throw res;
+          })
+          .then(data => {
+            console.log(data);
+            window.location = url;
+          })
+          .catch(err => {
+            window.alert(err);
+            return null;
+          });
+      },
+
       cancel: function (e) {
         this.errors = [];
-        this.loadData();
         this.stopEditing();
+        this.loadData();
       },
 
       close: function (url) {
@@ -87,9 +121,9 @@
             this.comments = j.data.comments;
             this.rentalPrice = j.data.rentalPrice;
             this.bookingState = j.data.bookingState;
-          });
 
-        this.loading = false;
+            this.loading = false;
+          });
       },
 
 
@@ -147,6 +181,7 @@
         $('#editButton').prop('disabled', true);
         $('#saveButton').prop('disabled', false);
         $('#cancelButton').prop('disabled', false);
+        $('#deleteButton').prop('disabled', true);
         $('#closeButton').prop('disabled', true);
       },
 
@@ -158,6 +193,7 @@
         $('#editButton').prop('disabled', false);
         $('#saveButton').prop('disabled', true);
         $('#cancelButton').prop('disabled', true);
+        $('#deleteButton').prop('disabled', false);
         $('#closeButton').prop('disabled', false);
       }
     }
