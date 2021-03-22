@@ -31,7 +31,8 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
 
     [Display(Name = "Lejerkategori")]
     [CustomEntity(TenantCategoryCustomEntityDefinition.DefinitionCode)]
-    public int TenantCategoryId { get; set; }
+    [Required]
+    public int? TenantCategoryId { get; set; }
 
 
     [Display(Name = "Lejers navn")]

@@ -1,13 +1,10 @@
-﻿using Bogevang.Common.Utility;
-using Cofoundry.Domain;
+﻿using Cofoundry.Domain;
 using Microsoft.AspNetCore.Html;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
@@ -111,7 +108,7 @@ namespace Bogevang.Common.Utility
 
           html += $@"
 <select id=""{propName}"" v-model=""{propName}"" class=""form-select editable"" v-on:change=""clearValidation"" disabled>
-<option>- Vælg -</option>";
+<option value="""">- Vælg -</option>";
 
           foreach (var item in Enum.GetValues(expr.Metadata.ModelType).Cast<Enum>())
           {
@@ -131,7 +128,7 @@ namespace Bogevang.Common.Utility
         {
           html += $@"
 <select id=""{propName}"" v-model=""{propName}"" class=""form-select editable"" v-on:change=""clearValidation"" disabled>
-<option>- Vælg -</option>";
+<option value="""">- Vælg -</option>";
 
           foreach (var item in customEntities)
           {

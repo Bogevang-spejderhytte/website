@@ -1,4 +1,6 @@
 ﻿$(async function () {
+  Vue.use(FormsEditor);
+
   var bookingApp = new Vue({
     el: '#bookingApp',
     data: {
@@ -19,9 +21,11 @@
       rentalPrice: null,
       bookingState: null
     },
+
     async mounted() {
       this.loadData();
     },
+
     methods: {
       edit: function(e) {
         this.errors = [];
@@ -31,63 +35,30 @@
       save: async function (e) {
         this.errors = [];
         var result = await this.saveData();
-        debugger
         if (result) {
-          if (!result.errors) {
-            this.loadData();
-            this.stopEditing();
-          }
-          else {
-            console.log(result.title);
-            for (var key in result.errors)
-              if (result.errors.hasOwnProperty(key)) {
-                this.errors.push(result.errors[key][0]);
-                $('#' + key).addClass('is-invalid');
-                $('#' + key + '_feedback').text(result.errors[key][0]);
-              }
-          }
+          this.loadData();
+          this.stopEditing();
         }
       },
 
-      deleteBooking: function (url) {
+      deleteBooking: async function (url) {
         if (!confirm('Slet denne reservation (uden at informere lejer)?'))
           return;
 
         this.errors = [];
-
-        const requestVerificationToken = this.$el.getAttribute('requestVerificationToken');
-
-        return fetch("/api/booking?id=" + this.bookingId, {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-            'RequestVerificationToken': requestVerificationToken
-          }
-        })
-          .then(res => {
-            const contentType = res.headers.get('Content-Type').toLowerCase();
-            console.log(contentType);
-            console.log(res.status);
-            if (contentType.includes('application/json') || contentType.includes('application/problem+json'))
-              return res.json();
-            else
-              throw res;
-          })
-          .then(data => {
-            console.log(data);
-            window.location = url;
-          })
-          .catch(err => {
-            window.alert(err);
-            return null;
-          });
+        result = await this.deleteData();
+        if (result) {
+          window.location = url;
+        }
       },
+
 
       cancel: function (e) {
         this.errors = [];
         this.stopEditing();
         this.loadData();
       },
+
 
       close: function (url) {
         window.location = url;
@@ -99,36 +70,30 @@
       },
 
 
-      loadData: function () {
-        this.loading = true;
-        fetch("/api/booking?id=" + this.bookingId, {
-          "method": "GET"
-        })
-          .then(response => {
-            return response.json();
-          })
-          .then(j => {
-            this.arrivalDate = j.data.arrivalDate.substr(0, 10);
-            this.departureDate = j.data.departureDate.substr(0, 10);
-            this.tenantCategoryId = j.data.tenantCategoryId;
-            this.tenantName = j.data.tenantName;
-            this.purpose = j.data.purpose;
-            this.contactName = j.data.contactName;
-            this.contactPhone = j.data.contactPhone;
-            this.contactAddress = j.data.contactAddress;
-            this.contactCity = j.data.contactCity;
-            this.contactEMail = j.data.contactEMail;
-            this.comments = j.data.comments;
-            this.rentalPrice = j.data.rentalPrice;
-            this.bookingState = j.data.bookingState;
+      loadData: async function () {
+        result = await this.getWithErrorHandling("/api/booking?id=" + this.bookingId);
 
-            this.loading = false;
-          });
+        if (result) {
+          const data = result.data;
+          this.arrivalDate = data.arrivalDate.substr(0, 10);
+          this.departureDate = data.departureDate.substr(0, 10);
+          this.tenantCategoryId = data.tenantCategoryId;
+          this.tenantName = data.tenantName;
+          this.purpose = data.purpose;
+          this.contactName = data.contactName;
+          this.contactPhone = data.contactPhone;
+          this.contactAddress = data.contactAddress;
+          this.contactCity = data.contactCity;
+          this.contactEMail = data.contactEMail;
+          this.comments = data.comments;
+          this.rentalPrice = data.rentalPrice;
+          this.bookingState = data.bookingState;
+        }
       },
 
 
       saveData: async function () {
-        var saveArgs = JSON.stringify({
+        var saveArgs = {
           arrivalDate: this.arrivalDate,
           departureDate: this.departureDate,
           tenantCategoryId: this.tenantCategoryId,
@@ -142,36 +107,26 @@
           comments: this.comments,
           rentalPrice: this.rentalPrice,
           bookingState: this.bookingState
-        });
+        };
 
         const requestVerificationToken = this.$el.getAttribute('requestVerificationToken');
 
-        return fetch("/api/booking?id=" + this.bookingId, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'RequestVerificationToken': requestVerificationToken
-          },
-          body: saveArgs
-        })
-          .then(res => {
-            const contentType = res.headers.get('Content-Type').toLowerCase();
-            console.log(contentType);
-            console.log(res.status);
-            if (contentType.includes('application/json') || contentType.includes('application/problem+json'))
-              return res.json();
-            else
-              throw res;
-          })
-          .then(data => {
-            console.log(data);
-            return data;
-          })
-          .catch(err => {
-            window.alert(err);
-            return null;
-          });
+        return await this.postWithErrorHandling(
+          "/api/booking?id=" + this.bookingId,
+          saveArgs,
+          requestVerificationToken
+        );
       },
+
+
+      deleteData: async function () {
+        const requestVerificationToken = this.$el.getAttribute('requestVerificationToken');
+
+        return await this.deletetWithErrorHandling(
+          "/api/booking?id=" + this.bookingId,
+          requestVerificationToken);
+      },
+
 
       startEditing: function (e) {
         $('.editable').prop('readonly', false);
@@ -184,6 +139,7 @@
         $('#deleteButton').prop('disabled', true);
         $('#closeButton').prop('disabled', true);
       },
+
 
       stopEditing: function (e) {
         $('.editable').prop('readonly', true);
