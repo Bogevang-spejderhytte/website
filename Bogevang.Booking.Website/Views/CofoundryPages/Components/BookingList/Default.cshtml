@@ -17,15 +17,15 @@
       </thead>
       <tbody>
         <tr class="grid-row" v-for="booking in bookings" v-bind:model="booking" v-bind:key="booking.Id">
-          <td>{{booking.id}}</td>
-          <td>{{booking.arrivalDate}}</td>
-          <td>{{booking.departureDate}}</td>
+          <td><a :href="booking.editUrl" title="Vis reservation">{{booking.id}}</a></td>
+          <td class="date">{{booking.arrivalDate}}</td>
+          <td class="date">{{booking.departureDate}}</td>
           <td>{{booking.purpose}}</td>
           <td>{{booking.tenantName}}</td>
           <td>{{booking.contactName}}</td>
           <td><a :href="`mailto:${booking.contactEMail}`">{{booking.contactEMail}}</a></td>
           <td>{{booking.bookingState}}</td>
-          <td><a :href="booking.editUrl"><i class="fas fa-pen"></i></a></td>
+          <td><a :href="booking.editUrl" title="Vis reservation"><i class="fas fa-pen"></i></a></td>
         </tr>
       </tbody>
     </table>

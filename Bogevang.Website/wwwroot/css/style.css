@@ -35,3 +35,8 @@ footer
 {
 
 }
+
+
+td.date {
+  white-space: nowrap;
+}

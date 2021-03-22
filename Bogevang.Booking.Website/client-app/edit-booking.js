@@ -50,7 +50,7 @@
       },
 
       deleteBooking: function (url) {
-        if (!confirm('Slet denne reservation?'))
+        if (!confirm('Slet denne reservation (uden at informere lejer)?'))
           return;
 
         this.errors = [];
