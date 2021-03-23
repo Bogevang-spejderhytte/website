@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Bogevang.Booking.Domain.Bookings
 {
-  public class BookingService : IBookingService,
+  public class BookingProvider : IBookingProvider,
     IMessageHandler<CustomEntityAddedMessage>,
     IMessageHandler<ICustomEntityContentUpdatedMessage>,
     IMessageHandler<CustomEntityDeletedMessage>
@@ -21,7 +21,7 @@ namespace Bogevang.Booking.Domain.Bookings
     private static List<BookingDataModel> BookingCache { get; set; }
 
 
-    public BookingService(
+    public BookingProvider(
       IContentRepository contentRepository)
     {
       ContentRepository = contentRepository;

@@ -9,9 +9,9 @@ namespace Bogevang.Booking.Website.Api
   [Route("api/calendar")]
   public class CalendarApiController : ControllerBase
   {
-    private IBookingService BookingService;
+    private IBookingProvider BookingService;
 
-    public CalendarApiController(IBookingService bookingService)
+    public CalendarApiController(IBookingProvider bookingService)
     {
       BookingService = bookingService;
     }

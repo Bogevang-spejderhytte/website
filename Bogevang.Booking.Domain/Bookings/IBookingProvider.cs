@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Bogevang.Booking.Domain.Bookings
 {
-  public interface IBookingService
+  public interface IBookingProvider
   {
     Task<List<BookingDataModel>> FindBookingsInInterval(DateTime start, DateTime end);
   }

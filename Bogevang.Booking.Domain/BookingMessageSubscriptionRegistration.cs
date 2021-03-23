@@ -8,9 +8,9 @@ namespace Bogevang.Booking.Domain
   {
     public void Register(IMessageSubscriptionConfig config)
     {
-      config.Subscribe<CustomEntityAddedMessage, BookingService>();
-      config.Subscribe<ICustomEntityContentUpdatedMessage, BookingService>();
-      config.Subscribe<CustomEntityDeletedMessage, BookingService>();
+      config.Subscribe<CustomEntityAddedMessage, BookingProvider>();
+      config.Subscribe<ICustomEntityContentUpdatedMessage, BookingProvider>();
+      config.Subscribe<CustomEntityDeletedMessage, BookingProvider>();
     }
   }
 }
