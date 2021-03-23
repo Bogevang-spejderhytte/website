@@ -1,8 +1,10 @@
-﻿using Bogevang.Booking.Domain.Bookings.Models;
+﻿using Bogevang.Booking.Domain.Bookings;
+using Bogevang.Booking.Domain.Bookings.Models;
 using Bogevang.Booking.Domain.Bookings.Queries;
 using Cofoundry.Domain;
 using Cofoundry.Web;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Bogevang.Booking.Website.Api
@@ -11,16 +13,16 @@ namespace Bogevang.Booking.Website.Api
   [AutoValidateAntiforgeryToken]
   public class BookingsApiController : ControllerBase
   {
-    private readonly IDomainRepository DomainRepository;
+    private readonly IBookingProvider BookingProvider;
     private readonly IApiResponseHelper ApiResponseHelper;
 
 
     public BookingsApiController(
-        IDomainRepository domainRepository,
+        IBookingProvider bookingProvider,
         IApiResponseHelper apiResponseHelper
         )
     {
-      DomainRepository = domainRepository;
+      BookingProvider = bookingProvider;
       ApiResponseHelper = apiResponseHelper;
     }
 
@@ -32,9 +34,9 @@ namespace Bogevang.Booking.Website.Api
       if (query == null) 
         query = new SearchBookingSummariesQuery();
 
-      PagedQueryResult<BookingSummary> results = await DomainRepository.ExecuteQueryAsync(query);
+      List<BookingSummary> bookings = await BookingProvider.FindBookingsInInterval(query.Start, query.End);
 
-      return ApiResponseHelper.SimpleQueryResponse(results);
+      return ApiResponseHelper.SimpleQueryResponse(bookings);
     }
   }
 }

@@ -1,4 +1,6 @@
 ﻿$(async function () {
+  Vue.use(FormsEditor);
+
   var bookingsApp = new Vue({
     el: '#bookingsApp',
     data: {
@@ -6,19 +8,11 @@
       bookings: []
     },
     async mounted() {
-
-      fetch("/api/bookings", {
-        "method": "GET"
-      })
-        .then(response => {
-          return response.json();
-        })
-        .then(j => {
-          this.bookings = j.data.items
-        });
-
-      // Show entries now that everything is loaded
-      this.loading = false;
+      debugger
+      result = await this.getWithErrorHandling("/api/bookings");
+      if (result) {
+        this.bookings = result.data;
+      }
     }
   });
 });

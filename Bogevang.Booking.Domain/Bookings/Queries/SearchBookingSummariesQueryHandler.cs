@@ -1,4 +1,5 @@
-﻿using Bogevang.Booking.Domain.Bookings.CustomEntities;
+﻿#if false
+using Bogevang.Booking.Domain.Bookings.CustomEntities;
 using Bogevang.Booking.Domain.Bookings.Models;
 using Bogevang.Common.Utility;
 using Cofoundry.Domain;
@@ -82,3 +83,4 @@ namespace Bogevang.Booking.Domain.Bookings.Queries
     }
   }
 }
+#endif

@@ -1,12 +1,10 @@
-﻿using Bogevang.Booking.Domain.Bookings.Models;
-using Cofoundry.Domain;
-using Cofoundry.Domain.CQS;
+﻿using System;
 
 namespace Bogevang.Booking.Domain.Bookings.Queries
 {
   public class SearchBookingSummariesQuery
-      : SimplePageableQuery
-      , IQuery<PagedQueryResult<BookingSummary>>
   {
+    public DateTime? Start { get; set; }
+    public DateTime? End { get; set; }
   }
 }

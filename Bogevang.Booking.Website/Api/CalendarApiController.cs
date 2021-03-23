@@ -31,8 +31,8 @@ namespace Bogevang.Booking.Website.Api
       var bookings = await BookingService.FindBookingsInInterval(start, end);
       var events = bookings.Select(b => new CalendarEvent
       {
-        start = b.ArrivalDate.Value.ToString("yyyy-MM-dd"),
-        end = b.DepartureDate.Value.AddDays(1).ToString("yyyy-MM-dd"),
+        start = b.ArrivalDate.ToString("yyyy-MM-dd"),
+        end = b.DepartureDate.AddDays(1).ToString("yyyy-MM-dd"),
         title = "Optaget"
       });
 
