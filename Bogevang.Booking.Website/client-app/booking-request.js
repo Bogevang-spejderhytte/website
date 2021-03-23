@@ -18,12 +18,11 @@
     },
 
     mounted() {
-      this.startEditing();
+      this.openEditableInputs();
     },
 
     methods: {
       send: async function (e) {
-        this.errors = [];
         var result = await this.sendData();
         if (result) {
           window.location = "/booking-success";
@@ -33,18 +32,6 @@
 
       cancel: function (e) {
         window.location = "/";
-      },
-
-
-      clearValidation: function (e) {
-        $(e.srcElement).removeClass('is-invalid');
-      },
-
-
-      startEditing: function (e) {
-        $('.editable').prop('readonly', false);
-        $('select.editable').prop('disabled', false);
-        $('.editable').removeClass('is-invalid');
       },
 
 
@@ -70,7 +57,7 @@
           sendArgs,
           requestVerificationToken
         );
-      },
+      }
     }
   });
 });

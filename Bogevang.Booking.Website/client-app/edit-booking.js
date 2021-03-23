@@ -26,24 +26,23 @@
 
     methods: {
       edit: function(e) {
-        this.errors = [];
         this.startEditing();
       },
 
+
       save: async function (e) {
-        this.errors = [];
         var result = await this.saveData();
         if (result) {
-          this.loadData();
           this.stopEditing();
+          this.loadData();
         }
       },
+
 
       deleteBooking: async function (url) {
         if (!confirm('Slet denne reservation (uden at informere lejer)?'))
           return;
 
-        this.errors = [];
         result = await this.deleteData();
         if (result) {
           window.location = url;
@@ -52,7 +51,6 @@
 
 
       cancel: function (e) {
-        this.errors = [];
         this.stopEditing();
         this.loadData();
       },
@@ -60,11 +58,6 @@
 
       close: function (url) {
         window.location = url;
-      },
-
-
-      clearValidation: function (e) {
-        $(e.srcElement).removeClass('is-invalid');
       },
 
 
@@ -127,9 +120,7 @@
 
 
       startEditing: function (e) {
-        $('.editable').prop('readonly', false);
-        $('select.editable').prop('disabled', false);
-        $('.editable').removeClass('is-invalid');
+        this.openEditableInputs();
 
         $('#editButton').prop('disabled', true);
         $('#saveButton').prop('disabled', false);
@@ -140,9 +131,7 @@
 
 
       stopEditing: function (e) {
-        $('.editable').prop('readonly', true);
-        $('select.editable').prop('disabled', true);
-        $('.editable').removeClass('is-invalid');
+        this.closeEditableInputs();
 
         $('#editButton').prop('disabled', false);
         $('#saveButton').prop('disabled', true);

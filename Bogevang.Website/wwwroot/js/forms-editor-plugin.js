@@ -1,7 +1,6 @@
 ﻿FormsEditorMixin =
 {
   data: function () {
-    debugger
     return {
       isLoading: true,
       errors: []
@@ -9,6 +8,31 @@
   },
 
   methods: {
+    clearErrors: function () {
+      this.errors = [];
+      $('.editable').removeClass('is-invalid');
+    },
+
+
+    openEditableInputs: function() {
+      this.clearErrors();
+      $('.editable').prop('readonly', false);
+      $('select.editable').prop('disabled', false);
+    },
+
+
+    closeEditableInputs: function () {
+      this.clearErrors();
+      $('.editable').prop('readonly', true);
+      $('select.editable').prop('disabled', true);
+    },
+
+
+    clearValidation: function (e) {
+      $(e.srcElement).removeClass('is-invalid');
+    },
+
+
     getWithErrorHandling: async function (url, errorHandler) {
       const options = {
         method: 'GET'
@@ -48,6 +72,7 @@
 
     executeFetchWithErrorHandling: async function (url, options, errorHandler) {
       try {
+        this.clearErrors();
         this.isLoading = true;
 
         const response = await fetch(url, options);
@@ -58,8 +83,9 @@
         if (contentType.includes('application/json') || contentType.includes('application/problem+json')) {
           const result = await response.json();
 
-          if (response.ok)
+          if (response.ok) {
             return result;
+          }
           else if (!response.ok && errorHandler)
             errorHandler(result);
           else if (!response.ok && !errorHandler)
