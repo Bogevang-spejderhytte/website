@@ -100,22 +100,16 @@
           bookingState: this.bookingState
         };
 
-        const requestVerificationToken = this.$el.getAttribute('requestVerificationToken');
-
         return await this.postWithErrorHandling(
           "/api/booking?id=" + this.bookingId,
-          saveArgs,
-          requestVerificationToken
+          saveArgs
         );
       },
 
 
       deleteData: async function () {
-        const requestVerificationToken = this.$el.getAttribute('requestVerificationToken');
-
         return await this.deletetWithErrorHandling(
-          "/api/booking?id=" + this.bookingId,
-          requestVerificationToken);
+          "/api/booking?id=" + this.bookingId);
       },
 
 

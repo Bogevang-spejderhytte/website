@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Bogevang.Booking.Domain.Bookings.Commands
 {
-  public class BookingRequestCommand : ICommand, IValidatableObject
+  public class BookingRequestCommand : ICommand, IValidatableObject, IIgnorePermissionCheckHandler
   {
     [Display(Name = "Ankomstdato")]
     [Required]

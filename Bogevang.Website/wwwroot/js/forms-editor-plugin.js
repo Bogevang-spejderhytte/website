@@ -1,9 +1,15 @@
 ﻿FormsEditorMixin =
 {
   data: function () {
+    var overlay = new bootstrap.Modal(document.getElementById('loaderOverlay'), {
+      backdrop: "static", //remove ability to close modal with click
+      keyboard: false, //remove option to close with keyboard
+    });
+
     return {
-      isLoading: true,
-      errors: []
+      isWorking: true,
+      errors: [],
+      loaderModalOverlay: overlay
     }
   },
 
@@ -33,6 +39,16 @@
     },
 
 
+    showModalSpinner: function () {
+      this.loaderModalOverlay.show();
+    },
+
+
+    hideModalSpinner: function () {
+      this.loaderModalOverlay.hide();
+    },
+
+
     getWithErrorHandling: async function (url, errorHandler) {
       const options = {
         method: 'GET'
@@ -42,8 +58,10 @@
     },
 
 
-    postWithErrorHandling: async function (url, body, requestVerificationToken, errorHandler) {
+    postWithErrorHandling: async function (url, body, errorHandler) {
       const jsonBody = JSON.stringify(body);
+
+      const requestVerificationToken = this.$el.elements['__RequestVerificationToken'].value;
 
       const options = {
         method: 'POST',
@@ -58,7 +76,9 @@
     },
 
 
-    deletetWithErrorHandling: async function (url, requestVerificationToken, errorHandler) {
+    deletetWithErrorHandling: async function (url, errorHandler) {
+      const requestVerificationToken = this.$el.elements['__RequestVerificationToken'].value;
+
       const options = {
         method: 'DELETE',
         headers: {
@@ -72,8 +92,9 @@
 
     executeFetchWithErrorHandling: async function (url, options, errorHandler) {
       try {
+        this.showModalSpinner();
         this.clearErrors();
-        this.isLoading = true;
+        this.isWorking = true;
 
         const response = await fetch(url, options);
 
@@ -87,9 +108,13 @@
             return result;
           }
           else if (!response.ok && errorHandler)
-            errorHandler(result);
-          else if (!response.ok && !errorHandler)
-            this.standardFormsErrorHandler(result);
+            errorHandler(result, contentType);
+          else if (!response.ok && !errorHandler) {
+            if (contentType.includes('application/problem+json'))
+              this.problemJsonErrorHandler(result);
+            else
+              this.cofoundryErrorHandler(result);
+          }
         }
         else
           window.alert("Unexpected response type: " + contentType);
@@ -98,14 +123,16 @@
         window.alert(ex);
       }
       finally {
-        this.isLoading = false;
+        this.hideModalSpinner();
+        this.isWorking = false;
       }
 
       return null;
     },
 
 
-    standardFormsErrorHandler: function (result) {
+    // Returned by ASP.NET API validation
+    problemJsonErrorHandler: function (result) {
       console.log(result.title);
       for (var key in result.errors) {
         if (result.errors.hasOwnProperty(key)) {
@@ -117,6 +144,22 @@
           }
         }
       }
+      window.scrollTo(0, 0);
+    },
+
+
+    cofoundryErrorHandler: function (result) {
+      debugger
+      result.errors.forEach(error => {
+        this.errors.push(error.message);
+        error.properties.forEach(property => {
+          if (property) {
+            $('#' + property).addClass('is-invalid');
+            $('#' + property + '_feedback').text(error.message);
+          }
+        });
+      });
+
       window.scrollTo(0, 0);
     }
   }

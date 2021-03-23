@@ -50,7 +50,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
 
       };
 
-      await DomainRepository.CustomEntities().AddAsync(addCommand);
+      await DomainRepository.WithElevatedPermissions().CustomEntities().AddAsync(addCommand);
     }
   }
 }

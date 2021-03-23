@@ -50,12 +50,9 @@
           comments: this.comments
         };
 
-        const requestVerificationToken = this.$el.getAttribute('requestVerificationToken');
-
         return this.postWithErrorHandling(
           "/api/booking-request",
-          sendArgs,
-          requestVerificationToken
+          sendArgs
         );
       }
     }

@@ -2,9 +2,8 @@
 @using Bogevang.Booking.Domain.Bookings.CustomEntities
 @model BookingDataModel
 
-@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
-
-<form id="bookingApp" requestVerificationToken="@Xsrf.GetAndStoreTokens(Context).RequestToken">
+<form id="bookingApp">
+  @Html.AntiForgeryToken()
 
   <div class="btn-toolbar justify-content-between mt-2 mb-2" role="group">
     <div class="btn-group" role="group">
@@ -46,5 +45,8 @@
   @await Html.VueEditorRowFor(m => m.BookingState)
 </form>
 
-<script src="/js/forms-editor-plugin.js"></script>
+<partial name="_VueLoaderOverlay" />
+
+
+<script defer src="/js/forms-editor-plugin.js"></script>
 <script defer src="/booking/scripts/edit-booking.js"></script>

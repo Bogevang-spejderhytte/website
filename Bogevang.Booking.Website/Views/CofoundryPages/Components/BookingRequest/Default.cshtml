@@ -2,9 +2,8 @@
 @using Bogevang.Booking.Domain.Bookings.Commands
 @model BookingRequestCommand
 
-@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
-
-<form id="requestApp" requestVerificationToken="@Xsrf.GetAndStoreTokens(Context).RequestToken">
+<form id="requestApp">
+  @Html.AntiForgeryToken()
 
   <partial name="_VueErrorSummary" />
 
@@ -27,6 +26,8 @@
   <button type="button" id="cancelButton" class="btn btn-secondary" v-on:click="cancel">Fortryd</button>
 
 </form>
+
+<partial name="_VueLoaderOverlay" />
 
 <script defer src="/js/forms-editor-plugin.js"></script>
 <script defer src="/booking/scripts/booking-request.js"></script>
