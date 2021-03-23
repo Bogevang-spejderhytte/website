@@ -1,4 +1,5 @@
 ﻿using Bogevang.Booking.Domain.Bookings;
+using Bogevang.Booking.Domain.Bookings.Queries;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
@@ -28,7 +29,7 @@ namespace Bogevang.Booking.Website.Api
     [HttpGet]
     public async Task<JsonResult> Get([FromQuery] DateTime start, [FromQuery] DateTime end)
     {
-      var bookings = await BookingService.FindBookingsInInterval(start, end);
+      var bookings = await BookingService.FindBookingsInInterval(new SearchBookingSummariesQuery { Start = start, End = end });
       var events = bookings.Select(b => new CalendarEvent
       {
         start = b.ArrivalDate.ToString("yyyy-MM-dd"),

@@ -39,9 +39,55 @@ namespace Bogevang.Common.Utility
     }
 
 
-    public static async Task<string> VueEditorColFor_string<TModel,TResult>(
+    public static async Task<string> VueEditorColFor_string<TModel, TResult>(
       this IHtmlHelper<TModel> helper,
       Expression<Func<TModel, TResult>> expression)
+    {
+      IModelExpressionProvider expressionProvider = helper.ViewContext.HttpContext.RequestServices.GetRequiredService<IModelExpressionProvider>();
+      ModelExpression expr = expressionProvider.CreateModelExpression(helper.ViewData, expression);
+
+      string propName = expr.Metadata.PropertyName;
+
+      string description = expr.Metadata.Description;
+      string describedBy = "";
+      string descriptionHtml = "";
+      if (!string.IsNullOrEmpty(description))
+      {
+        describedBy = $@" aria-describedby=""{propName}_descr""";
+        descriptionHtml = $@"
+<div id=""{propName}_descr"" class=""form-text"">
+{WebUtility.HtmlEncode(description)}
+</div>";
+      }
+
+      string html = $@"<div class=""col"">";
+
+      string editor = await helper.VueEditorFor_string(expression, addLabel: true);
+
+      html += editor;
+      html += descriptionHtml;
+
+      html += $@"
+  <div id=""{propName}_feedback"" class=""invalid-feedback""></div>
+</div>";
+
+      return html;
+    }
+
+
+    public static async Task<IHtmlContent> VueEditorFor<TModel, TResult>(
+      this IHtmlHelper<TModel> helper,
+      Expression<Func<TModel, TResult>> expression)
+    {
+      string html = await helper.VueEditorFor_string(expression, addLabel: false);
+      return new HtmlString(html);
+    }
+
+
+    public static async Task<string> VueEditorFor_string<TModel,TResult>(
+      this IHtmlHelper<TModel> helper,
+      Expression<Func<TModel, TResult>> expression,
+      bool addLabel)
     {
       IModelExpressionProvider expressionProvider = helper.ViewContext.HttpContext.RequestServices.GetRequiredService<IModelExpressionProvider>();
       ModelExpression expr = expressionProvider.CreateModelExpression(helper.ViewData, expression);
@@ -50,7 +96,6 @@ namespace Bogevang.Common.Utility
       propName = Char.ToLowerInvariant(propName[0]) + propName.Substring(1);
 
       string displayName = expr.Metadata.DisplayName;
-      string description = expr.Metadata.Description;
 
       Type modelType = expr.Metadata.ModelType;
       modelType = Nullable.GetUnderlyingType(modelType) ?? modelType;
@@ -76,40 +121,34 @@ namespace Bogevang.Common.Utility
         }
       }
 
-      string describedBy = "";
-      string descriptionHtml = "";
-      if (!string.IsNullOrEmpty(description))
-      {
-        describedBy = $@" aria-describedby=""{propName}_descr""";
-        descriptionHtml = $@"
-<div id=""{propName}_descr"" class=""form-text"">
-{WebUtility.HtmlEncode(description)}
-</div>";
-      }
-
-      string html = $@"<div class=""col"">";
+      string html = "";
 
       if (isBool)
       {
         html += $@"
-<input type=""checkbox"" id=""{propName}"" v-model=""{propName}"" class=""form-check-input editable"" v-on:change=""clearValidation"" readonly>
-<label for=""{propName}"" class=""form-label"">{WebUtility.HtmlEncode(displayName)}</label>";
+<input type=""checkbox"" id=""{propName}"" v-model=""{propName}"" class=""form-check-input editable"" v-on:change=""clearValidation"" readonly>";
+
+        if (addLabel)
+          html += $@"<label for=""{propName}"" class=""form-label"">{WebUtility.HtmlEncode(displayName)}</label>";
       }
       else
       {
-        html += $@"
+        if (addLabel)
+          html += $@"
 <label for=""{propName}"" class=""form-label"">{WebUtility.HtmlEncode(displayName)}</label>";
 
         if (isEnum)
         {
-          Type enumType = Nullable.GetUnderlyingType(expr.Metadata.ModelType);
+          Type enumType = Nullable.GetUnderlyingType(expr.Metadata.ModelType) ?? expr.Metadata.ModelType;
           SelectListItem[] items = Enum.GetValues(enumType).Cast<Enum>()
             .Select(e => new SelectListItem(e.GetDescription(), e.ToString()))
           .ToArray();
 
           html += $@"
-<select id=""{propName}"" v-model=""{propName}"" class=""form-select editable"" v-on:change=""clearValidation"" disabled>
-<option value="""">- Vælg -</option>";
+<select id=""{propName}"" v-model=""{propName}"" class=""form-select editable"" v-on:change=""clearValidation"" disabled>";
+
+          if (expr.Metadata.IsNullableValueType)
+            html += $@"<option value="""">- Vælg -</option>";
 
           foreach (var item in Enum.GetValues(enumType).Cast<Enum>())
           {
@@ -128,8 +167,9 @@ namespace Bogevang.Common.Utility
         else if (customEntities != null)
         {
           html += $@"
-<select id=""{propName}"" v-model=""{propName}"" class=""form-select editable"" v-on:change=""clearValidation"" disabled>
-<option value="""">- Vælg -</option>";
+<select id=""{propName}"" v-model=""{propName}"" class=""form-select editable"" v-on:change=""clearValidation"" disabled>";
+          if (expr.Metadata.IsNullableValueType)
+            html += $@"<option value="""">- Vælg -</option>";
 
           foreach (var item in customEntities)
           {
@@ -147,12 +187,6 @@ namespace Bogevang.Common.Utility
 <input type=""text"" id=""{propName}"" v-model=""{propName}"" class=""form-control editable"" v-on:change=""clearValidation"" readonly>";
         }
       }
-
-      html += descriptionHtml;
-
-      html += $@"
-  <div id=""{propName}_feedback"" class=""invalid-feedback""></div>
-</div>";
 
       return html;
     }

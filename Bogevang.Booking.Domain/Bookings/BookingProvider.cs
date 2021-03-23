@@ -1,5 +1,6 @@
 ﻿using Bogevang.Booking.Domain.Bookings.CustomEntities;
 using Bogevang.Booking.Domain.Bookings.Models;
+using Bogevang.Booking.Domain.Bookings.Queries;
 using Bogevang.Common.Utility;
 using Cofoundry.Core.MessageAggregator;
 using Cofoundry.Domain;
@@ -71,6 +72,7 @@ namespace Bogevang.Booking.Domain.Bookings
       var booking = new BookingSummary
       {
         Id = entity.CustomEntityId,
+        CreatedDate = entity.CreateDate,
         ArrivalDate = model.ArrivalDate.Value,
         DepartureDate = model.DepartureDate.Value,
         Purpose = model.Purpose,
@@ -104,20 +106,36 @@ namespace Bogevang.Booking.Domain.Bookings
     }
 
 
-    public async Task<List<BookingSummary>> FindBookingsInInterval(DateTime? start, DateTime? end)
+    public async Task<IEnumerable<BookingSummary>> FindBookingsInInterval(SearchBookingSummariesQuery query)
     {
       await EnsureBookingsLoaded();
 
-      DateTime startValue = start ?? new DateTime(2000, 1, 1);
-      DateTime endValue = end ?? new DateTime(3000, 1, 1);
+      DateTime startValue = query?.Start ?? new DateTime(2000, 1, 1);
+      DateTime endValue = query?.End ?? new DateTime(3000, 1, 1);
 
-      var filtered =
-        BookingCache
-        .Where(b => b.DataModel.ArrivalDate >= startValue && b.DataModel.ArrivalDate < endValue)
-        .Select(b => b.Summary)
-        .ToList();
+      var filtered = BookingCache
+        .Where(b => b.DataModel.ArrivalDate >= startValue && b.DataModel.ArrivalDate < endValue);
 
-      return filtered;
+      if (query?.BookingState != null)
+        filtered = filtered
+          .Where(b => b.DataModel.BookingState == query.BookingState);
+
+      if (query?.OrderBy == SearchBookingSummariesQuery.OrderByType.ArrivalDate)
+      {
+        if (query?.SortDirection == SearchBookingSummariesQuery.SortDirectionType.Asc)
+          filtered = filtered.OrderBy(b => b.DataModel.ArrivalDate);
+        else
+          filtered = filtered.OrderByDescending(b => b.DataModel.ArrivalDate);
+      }
+      else
+      {
+        if (query?.SortDirection == SearchBookingSummariesQuery.SortDirectionType.Asc)
+          filtered = filtered.OrderBy(b => b.Entity.CreateDate);
+        else
+          filtered = filtered.OrderByDescending(b => b.Entity.CreateDate);
+      }
+
+      return filtered.Select(b => b.Summary);
     }
 
 

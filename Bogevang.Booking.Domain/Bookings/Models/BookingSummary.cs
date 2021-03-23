@@ -5,6 +5,7 @@ namespace Bogevang.Booking.Domain.Bookings.Models
   public class BookingSummary
   {
     public int Id { get; set; }
+    public DateTime CreatedDate { get; set; }
     public DateTime ArrivalDate { get; set; }
     public DateTime DepartureDate { get; set; }
     public string Purpose { get; set; }

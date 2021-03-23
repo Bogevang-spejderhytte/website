@@ -1,6 +1,19 @@
-﻿<div class="container" id="bookingsApp">
-  @*<data-load v-bind:loading="loading">
-  *@
+﻿@using Bogevang.Common.Utility
+@model Bogevang.Booking.Domain.Bookings.Queries.SearchBookingSummariesQuery
+ 
+<div class="container" id="bookingsApp">
+  <form>
+    @Html.AntiForgeryToken()
+    <div class="btn-toolbar">
+      <div class="btn-group" role="group">
+        @await Html.VueEditorFor(q => q.OrderBy)
+        @await Html.VueEditorFor(q => q.SortDirection)
+        @await Html.VueEditorFor(q => q.BookingState)
+        <button type="button" class="btn btn-outline-secondary" v-on:click="search">Søg</button>
+      </div>
+    </div>
+  </form>
+
   <table id="bookings" class="table" v-cloak>
     <thead>
       <tr>
@@ -8,29 +21,25 @@
         <th scope="col">Ankomst</th>
         <th scope="col">Afrejse</th>
         <th scope="col">Formål</th>
-        <th scope="col">Fra</th>
         <th scope="col">Kontaktperson</th>
-        <th scope="col">E-mail</th>
         <th scope="col">Status</th>
+        <th scope="col">Oprettet</th>
         <th scope="col"></th>
       </tr>
     </thead>
     <tbody>
       <tr class="grid-row" v-for="booking in bookings" v-bind:model="booking" v-bind:key="booking.id">
         <td><a :href="'/reservationer/edit#' + booking.id" title="Vis reservation">{{booking.id}}</a></td>
-        <td class="date">{{booking.arrivalDate}}</td>
-        <td class="date">{{booking.departureDate}}</td>
+        <td class="date">{{datePart(booking.arrivalDate)}}</td>
+        <td class="date">{{datePart(booking.departureDate)}}</td>
         <td>{{booking.purpose}}</td>
-        <td>{{booking.tenantName}}</td>
         <td>{{booking.contactName}}</td>
-        <td><a :href="`mailto:${booking.contactEMail}`">{{booking.contactEMail}}</a></td>
         <td>{{booking.bookingState}}</td>
-        <td><a :href="booking.editUrl" title="Vis reservation"><i class="fas fa-pen"></i></a></td>
+        <td class="date">{{datePart(booking.createdDate)}}</td>
+        <td><a :href="'/reservationer/edit#' + booking.id" title="Vis reservation"><i class="fas fa-pen"></i></a></td>
       </tr>
     </tbody>
   </table>
-  @*
-    </data-load>*@
 </div>
 
 <partial name="_VueLoaderOverlay" />

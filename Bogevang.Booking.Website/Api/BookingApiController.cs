@@ -3,6 +3,7 @@ using Cofoundry.Domain;
 using Cofoundry.Domain.Internal;
 using Cofoundry.Web;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace Bogevang.Booking.Website.Api
@@ -47,8 +48,9 @@ namespace Bogevang.Booking.Website.Api
 
         // For safety reasons, only pick what is needed from the posted data model. Do not assume anything else is ok.
         // (it is kind of cheating when using the data model as a command)
-        booking.ArrivalDate = input.ArrivalDate;
-        booking.DepartureDate = input.DepartureDate;
+
+        booking.ArrivalDate = DateTime.SpecifyKind(input.ArrivalDate.Value, DateTimeKind.Utc);
+        booking.DepartureDate = DateTime.SpecifyKind(input.DepartureDate.Value, DateTimeKind.Utc);
         booking.TenantCategoryId = input.TenantCategoryId;
         booking.TenantName = input.TenantName;
         booking.Purpose = input.Purpose;

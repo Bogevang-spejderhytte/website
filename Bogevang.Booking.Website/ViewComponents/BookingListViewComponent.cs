@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Bogevang.Booking.Domain.Bookings.Queries;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Bogevang.Booking.Website.ViewComponents
 {
@@ -6,7 +7,7 @@ namespace Bogevang.Booking.Website.ViewComponents
   {
     public IViewComponentResult Invoke()
     {
-      return View();
+      return View(new SearchBookingSummariesQuery());
     }
   }
 }

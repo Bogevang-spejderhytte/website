@@ -34,7 +34,7 @@ namespace Bogevang.Booking.Website.Api
       if (query == null) 
         query = new SearchBookingSummariesQuery();
 
-      List<BookingSummary> bookings = await BookingProvider.FindBookingsInInterval(query.Start, query.End);
+      IEnumerable<BookingSummary> bookings = await BookingProvider.FindBookingsInInterval(query);
 
       return ApiResponseHelper.SimpleQueryResponse(bookings);
     }

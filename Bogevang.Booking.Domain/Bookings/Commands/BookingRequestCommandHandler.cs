@@ -1,6 +1,7 @@
 ﻿using Bogevang.Booking.Domain.Bookings.CustomEntities;
 using Cofoundry.Domain;
 using Cofoundry.Domain.CQS;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
@@ -26,8 +27,8 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
 
       var booking = new BookingDataModel
       {
-        ArrivalDate = command.ArrivalDate,
-        DepartureDate = command.DepartureDate,
+        ArrivalDate = DateTime.SpecifyKind(command.ArrivalDate.Value, DateTimeKind.Utc),
+        DepartureDate = DateTime.SpecifyKind(command.DepartureDate.Value, DateTimeKind.Utc),
         TenantCategoryId = command.TenantCategoryId.Value,
         TenantName = command.TenantName,
         Purpose = command.Purpose,
