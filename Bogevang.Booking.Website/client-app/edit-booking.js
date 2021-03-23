@@ -4,8 +4,6 @@
   var bookingApp = new Vue({
     el: '#bookingApp',
     data: {
-      loading: true,
-      errors: [],
       bookingId: location.hash.substr(1),
       arrivalDate: null,
       departureDate: null,

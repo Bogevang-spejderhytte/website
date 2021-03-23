@@ -102,7 +102,8 @@ namespace Bogevang.Common.Utility
 
         if (isEnum)
         {
-          SelectListItem[] items = Enum.GetValues(expr.Metadata.ModelType).Cast<Enum>()
+          Type enumType = Nullable.GetUnderlyingType(expr.Metadata.ModelType);
+          SelectListItem[] items = Enum.GetValues(enumType).Cast<Enum>()
             .Select(e => new SelectListItem(e.GetDescription(), e.ToString()))
           .ToArray();
 
@@ -110,7 +111,7 @@ namespace Bogevang.Common.Utility
 <select id=""{propName}"" v-model=""{propName}"" class=""form-select editable"" v-on:change=""clearValidation"" disabled>
 <option value="""">- Vælg -</option>";
 
-          foreach (var item in Enum.GetValues(expr.Metadata.ModelType).Cast<Enum>())
+          foreach (var item in Enum.GetValues(enumType).Cast<Enum>())
           {
             html += $@"
 <option value=""{item}"">{WebUtility.HtmlEncode(item.GetDescription())}</option>";

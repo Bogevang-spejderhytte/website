@@ -1,5 +1,13 @@
 ﻿FormsEditorMixin =
 {
+  data: function () {
+    debugger
+    return {
+      isLoading: true,
+      errors: []
+    }
+  },
+
   methods: {
     getWithErrorHandling: async function (url, errorHandler) {
       const options = {
@@ -40,7 +48,7 @@
 
     executeFetchWithErrorHandling: async function (url, options, errorHandler) {
       try {
-        this.loading = true; // FIXME: make sure it exists
+        this.isLoading = true;
 
         const response = await fetch(url, options);
 
@@ -64,7 +72,7 @@
         window.alert(ex);
       }
       finally {
-        this.loading = false;
+        this.isLoading = false;
       }
 
       return null;
@@ -76,7 +84,7 @@
       for (var key in result.errors) {
         if (result.errors.hasOwnProperty(key)) {
           for (var i in result.errors[key])
-            this.errors.push(result.errors[key][i]); // FIXME: which errors??
+            this.errors.push(result.errors[key][i]);
           if (key) {
             $('#' + key).addClass('is-invalid');
             $('#' + key + '_feedback').text(result.errors[key][0]);
@@ -93,24 +101,4 @@ FormsEditor = {
   install: function (Vue) {
     Vue.mixin(FormsEditorMixin);
   }
-}
-
-
-
-function standardFormsErrorHandler(result) {
-  if (result.title)
-    console.log(result.title);
-
-  for (var key in result.errors) {
-    if (result.errors.hasOwnProperty(key)) {
-      for (var i in result.errors[key])
-        this.errors.push(result.errors[key][i]);
-
-      if (key) {
-        $('#' + key).addClass('is-invalid');
-        $('#' + key + '_feedback').text(result.errors[key][0]);
-      }
-    }
-  }
-  window.scrollTo(0, 0);
 }

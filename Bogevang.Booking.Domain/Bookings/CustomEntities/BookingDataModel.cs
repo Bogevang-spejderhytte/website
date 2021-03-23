@@ -76,7 +76,8 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
 
     [Display(Name = "Bookingstatus")]
     [SelectList(typeof(BookingStateType))]
-    public BookingStateType BookingState { get; set; }
+    [Required]
+    public BookingStateType? BookingState { get; set; }
 
 
     [Display(Name = "Depositum modtaget")]

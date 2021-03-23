@@ -4,8 +4,6 @@
   var bookingApp = new Vue({
     el: '#requestApp',
     data: {
-      loading: true,
-      errors: [],
       arrivalDate: null,
       departureDate: null,
       tenantCategoryId: null,
