@@ -39,6 +39,17 @@
       },
 
 
+      accept: async function () {
+        if (!confirm('Bekræft denne reservation?'))
+          return;
+
+        var result = await this.acceptBooking();
+        if (result) {
+          this.loadData();
+        }
+      },
+
+
       deleteBooking: async function (url) {
         if (!confirm('Slet denne reservation (uden at informere lejer)?'))
           return;
@@ -107,6 +118,16 @@
       },
 
 
+      acceptBooking: async function () {
+        var acceptArgs = {}
+
+        return await this.postWithErrorHandling(
+          "/api/accept-booking?id=" + this.bookingId,
+          acceptArgs
+        );
+      },
+
+
       deleteData: async function () {
         return await this.deletetWithErrorHandling(
           "/api/booking?id=" + this.bookingId);
@@ -120,6 +141,7 @@
         $('#saveButton').prop('disabled', false);
         $('#cancelButton').prop('disabled', false);
         $('#deleteButton').prop('disabled', true);
+        $('#acceptButton').prop('disabled', true);
         $('#closeButton').prop('disabled', true);
       },
 
@@ -131,6 +153,7 @@
         $('#saveButton').prop('disabled', true);
         $('#cancelButton').prop('disabled', true);
         $('#deleteButton').prop('disabled', false);
+        $('#acceptButton').prop('disabled', false);
         $('#closeButton').prop('disabled', false);
       }
     }

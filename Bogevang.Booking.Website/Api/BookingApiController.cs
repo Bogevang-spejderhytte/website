@@ -1,6 +1,5 @@
 ﻿using Bogevang.Booking.Domain.Bookings.CustomEntities;
 using Cofoundry.Domain;
-using Cofoundry.Domain.Internal;
 using Cofoundry.Web;
 using Microsoft.AspNetCore.Mvc;
 using System;

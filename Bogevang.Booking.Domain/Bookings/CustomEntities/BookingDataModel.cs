@@ -1,6 +1,7 @@
 ﻿using Bogevang.Booking.Domain.TenantCategories.CustomEntities;
 using Cofoundry.Domain;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -92,5 +93,17 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
 
     [Display(Name = "Depositum tilbagebetalt")]
     public bool DepositReturned { get; set; }
+
+
+    public List<BookingLogEntry> LogEntries { get; set; }
+
+
+    public void AddLogEntry(BookingLogEntry entry)
+    {
+      if (LogEntries == null)
+        LogEntries = new List<BookingLogEntry>();
+
+      LogEntries.Add(entry);
+    }
   }
 }
