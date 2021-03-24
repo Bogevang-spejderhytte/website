@@ -69,7 +69,7 @@ namespace Bogevang.Booking.Domain.Bookings
     private BookingCacheEntry MapBooking(CustomEntityRenderSummary entity)
     {
       var model = (BookingDataModel)entity.Model;
-      var booking = new BookingSummary
+      var summary = new BookingSummary
       {
         Id = entity.CustomEntityId,
         CreatedDate = entity.CreateDate,
@@ -79,14 +79,15 @@ namespace Bogevang.Booking.Domain.Bookings
         TenantName = model.TenantName,
         ContactName = model.ContactName,
         ContactEMail = model.ContactEMail,
-        BookingState = model.BookingState.GetDescription()
+        BookingState = model.BookingState.Value,
+        BookingStateText = model.BookingState.GetDescription()
       };
 
       return new BookingCacheEntry
       {
         Entity = entity,
         DataModel = model,
-        Summary = booking
+        Summary = summary
       };
     }
 

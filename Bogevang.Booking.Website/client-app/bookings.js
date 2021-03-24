@@ -5,7 +5,7 @@
     el: '#bookingsApp',
     data: {
       orderBy: 'ArrivalDate',
-      sortDirection: 'Desc',
+      sortDirection: 'Asc',
       bookingState: null,
       bookings: []
     },
@@ -33,6 +33,17 @@
 
       datePart: function (s) {
         return s.substr(0, 10);
+      },
+
+      alertClass: function (a) {
+        if (a == 'New')
+          return 'fas fa-star color-new';
+        else if (a == 'Key')
+          return 'fas fa-key color-warning';
+        else if (a == 'Finalize')
+          return 'fas fa-money-bill-alt color-warning';
+        else
+          return null;
       }
     }
   });

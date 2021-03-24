@@ -41,10 +41,17 @@ td.date {
   white-space: nowrap;
 }
 
+.color-new
+{
+  color: yellow;
+}
+
+.color-warning {
+  color: darkorange;
+}
 
 
 /* SPINNER */
-
 .loader {
   position: relative;
   text-align: center;

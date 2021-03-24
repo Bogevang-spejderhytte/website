@@ -17,6 +17,7 @@
   <table id="bookings" class="table" v-cloak>
     <thead>
       <tr>
+        <th scope="col"></th>
         <th scope="col">#</th>
         <th scope="col">Ankomst</th>
         <th scope="col">Afrejse</th>
@@ -29,12 +30,13 @@
     </thead>
     <tbody>
       <tr class="grid-row" v-for="booking in bookings" v-bind:model="booking" v-bind:key="booking.id">
+        <td><i :class="alertClass(booking.alert)"></i></td>
         <td><a :href="'/reservationer/edit#' + booking.id" title="Vis reservation">{{booking.id}}</a></td>
         <td class="date">{{datePart(booking.arrivalDate)}}</td>
         <td class="date">{{datePart(booking.departureDate)}}</td>
         <td>{{booking.purpose}}</td>
         <td>{{booking.contactName}}</td>
-        <td>{{booking.bookingState}}</td>
+        <td>{{booking.bookingStateText}}</td>
         <td class="date">{{datePart(booking.createdDate)}}</td>
         <td><a :href="'/reservationer/edit#' + booking.id" title="Vis reservation"><i class="fas fa-pen"></i></a></td>
       </tr>
