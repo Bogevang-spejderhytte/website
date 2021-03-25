@@ -6,8 +6,6 @@
     @Html.AntiForgeryToken()
     <div class="btn-toolbar">
       <div class="btn-group" role="group">
-        @await Html.VueEditorFor(q => q.OrderBy)
-        @await Html.VueEditorFor(q => q.SortDirection)
         @await Html.VueEditorFor(q => q.BookingState)
         <button type="button" class="btn btn-outline-secondary" v-on:click="search">Søg</button>
       </div>
@@ -19,12 +17,12 @@
       <tr>
         <th scope="col"></th>
         <th scope="col">#</th>
-        <th scope="col">Ankomst</th>
+        <th scope="col" class="clickable" v-on:click="orderByArrival()">Ankomst <two-state-icon one="fas fa-sort-down" two="fas fa-sort-up" v-bind:state="arrivalIconState()"></two-state-icon></th>
         <th scope="col">Afrejse</th>
         <th scope="col">Formål</th>
         <th scope="col">Kontaktperson</th>
         <th scope="col">Status</th>
-        <th scope="col">Oprettet</th>
+        <th scope="col" class="clickable" v-on:click="orderByCreated()">Oprettet <two-state-icon one="fas fa-sort-down" two="fas fa-sort-up" v-bind:state="createdIconState()"></two-state-icon></th>
         <th scope="col"></th>
       </tr>
     </thead>

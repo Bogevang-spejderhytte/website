@@ -54,6 +54,11 @@ td.date {
   color: darkorange;
 }
 
+.clickable {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 .menu-status-icon
 {
   margin-left: 2em;

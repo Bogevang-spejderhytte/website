@@ -36,6 +36,49 @@
         }
       },
 
+      orderByArrival: async function () {
+        if (this.orderBy == 'ArrivalDate') {
+          this.sortDirection = this.invertSortDirection(this.sortDirection);
+        }
+        else {
+          this.sortDirection = 'Asc';
+          this.orderBy = 'ArrivalDate';
+        }
+        await this.search();
+      },
+
+      arrivalIconState: function () {
+        return this.sortState('ArrivalDate');
+      },
+
+      createdIconState: function () {
+        return this.sortState('CreatedDate');
+      },
+
+      sortState: function (name) {
+        if (this.orderBy != name)
+          return null;
+        else if (this.sortDirection == 'Desc')
+          return 1;
+        else
+          return 2;
+      },
+
+      orderByCreated: async function () {
+        if (this.orderBy == 'CreatedDate') {
+          this.sortDirection = this.invertSortDirection(this.sortDirection);
+        }
+        else {
+          this.sortDirection = 'Asc';
+          this.orderBy = 'CreatedDate';
+        }
+        await this.search();
+      },
+
+      invertSortDirection: function (dir) {
+        return dir == 'Asc' ? 'Desc' : 'Asc';
+      },
+
       datePart: function (s) {
         return s.substr(0, 10);
       },

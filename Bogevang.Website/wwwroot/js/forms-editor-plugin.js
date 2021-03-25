@@ -171,3 +171,24 @@ FormsEditor = {
     Vue.mixin(FormsEditorMixin);
   }
 }
+
+
+Vue.component('two-state-icon', {
+  props: ['one', 'two', 'state'],
+  //data: function () {
+  //  return {
+  //    state: 1
+  //  }
+  //},
+  methods:
+  {
+    iconStateClass: function () {
+      if (this.state == 1)
+        return this.one;
+      else if (this.state == 2)
+        return this.two;
+    }
+  },
+  template: '<i v-if="state != null" :class="iconStateClass()"></i>'
+  //<button v-on:click="count++">You clicked me {{ count }} times.</button>'
+})
