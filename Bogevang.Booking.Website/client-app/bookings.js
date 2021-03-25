@@ -28,6 +28,11 @@
         result = await this.getWithErrorHandling("/api/bookings?" + query.toString());
         if (result) {
           this.bookings = result.data;
+          this.bookings.forEach(b => {
+            b.arrivalDate = new Date(b.arrivalDate).toLocaleDateString();
+            b.departureDate = new Date(b.departureDate).toLocaleDateString();
+            b.createdDate = new Date(b.createdDate).toLocaleDateString();
+          });
         }
       },
 

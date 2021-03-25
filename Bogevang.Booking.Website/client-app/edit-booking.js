@@ -91,7 +91,6 @@
           this.comments = data.comments;
           this.rentalPrice = data.rentalPrice;
           this.bookingState = data.bookingState;
-
           this.isConfirmed = data.isConfirmed;
         }
       },
