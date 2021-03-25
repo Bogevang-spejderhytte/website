@@ -46,10 +46,19 @@ td.date {
   color: yellow;
 }
 
+.color-ok {
+  color: limegreen;
+}
+
 .color-warning {
   color: darkorange;
 }
 
+.menu-status-icon
+{
+  margin-left: 2em;
+  float: right;
+}
 
 /* SPINNER */
 .loader {

@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Bogevang.Booking.Domain.Bookings.Commands
 {
-  public class AcceptBookingCommandHandler
-      : ICommandHandler<AcceptBookingCommand>,
+  public class ConfirmBookingCommandHandler
+      : ICommandHandler<ConfirmBookingCommand>,
         IIgnorePermissionCheckHandler  // Depends on custom entity permission checking
 
   {
@@ -16,7 +16,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
     private readonly ICurrentUserProvider CurrentUserProvider;
 
 
-    public AcceptBookingCommandHandler(
+    public ConfirmBookingCommandHandler(
         IAdvancedContentRepository domainRepository,
         ICurrentUserProvider currentUserProvider)
     {
@@ -25,13 +25,14 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
     }
 
 
-    public async Task ExecuteAsync(AcceptBookingCommand command, IExecutionContext executionContext)
+    public async Task ExecuteAsync(ConfirmBookingCommand command, IExecutionContext executionContext)
     {
       var entity = await DomainRepository.CustomEntities().GetById(command.Id).AsDetails().ExecuteAsync();
       // FIXME Check for being a booking
       BookingDataModel booking = (BookingDataModel)entity.LatestVersion.Model;
 
       booking.BookingState = BookingDataModel.BookingStateType.Confirmed;
+      booking.IsConfirmed = true;
 
       var user = await CurrentUserProvider.GetAsync();
       booking.AddLogEntry(new BookingLogEntry

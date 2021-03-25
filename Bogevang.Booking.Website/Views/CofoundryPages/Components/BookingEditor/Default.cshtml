@@ -15,8 +15,8 @@
           Handlinger
         </button>
         <ul class="dropdown-menu" aria-labelledby="actionGroupButton">
-          <li><a id="deleteButton" class="dropdown-item" href="#" v-on:click="deleteBooking('/reservationer')">Slet</a></li>
-          <li><a class="dropdown-item" href="#">... mere senere ...</a></li>
+          <li><button id="confirmButton" type="button" class="dropdown-item" v-on:click="confirm()">Bekræft <i v-if="isConfirmed" class="menu-status-icon fas fa-check color-ok" title="Reservationen er allerede bekræftet"></i></button></li>
+          <li><button id="deleteButton" type="button" class="dropdown-item" v-on:click="deleteBooking('/reservationer')">Slet</button></li>
         </ul>
       </div>
     </div>

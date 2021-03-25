@@ -83,6 +83,10 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
     public BookingStateType? BookingState { get; set; }
 
 
+    [Display(Name = "Reservation bekræftet")]
+    public bool IsConfirmed { get; set; }
+
+
     [Display(Name = "Depositum modtaget")]
     public bool DepositReceived { get; set; }
 

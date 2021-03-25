@@ -22,7 +22,7 @@ namespace Bogevang.Booking.Domain.Bookings.Models
     public string ContactEMail { get; set; }
     public BookingDataModel.BookingStateType BookingState { get; set; }
     public string BookingStateText { get; set; }
-    public string EditUrl { get; set; }
+    public bool IsConfirmed { get; set; }
 
     public AlertType? Alert =>
       BookingState == BookingDataModel.BookingStateType.Requested

@@ -17,7 +17,8 @@
       contactEMail: null,
       comments: null,
       rentalPrice: null,
-      bookingState: null
+      bookingState: null,
+      isConfirmed: false
     },
 
     async mounted() {
@@ -39,11 +40,11 @@
       },
 
 
-      accept: async function () {
+      confirm: async function () {
         if (!confirm('Bekræft denne reservation?'))
           return;
 
-        var result = await this.acceptBooking();
+        var result = await this.confirmBooking();
         if (result) {
           this.loadData();
         }
@@ -90,6 +91,8 @@
           this.comments = data.comments;
           this.rentalPrice = data.rentalPrice;
           this.bookingState = data.bookingState;
+
+          this.isConfirmed = data.isConfirmed;
         }
       },
 
@@ -118,12 +121,12 @@
       },
 
 
-      acceptBooking: async function () {
-        var acceptArgs = {}
+      confirmBooking: async function () {
+        var confirmArgs = {}
 
         return await this.postWithErrorHandling(
-          "/api/accept-booking?id=" + this.bookingId,
-          acceptArgs
+          "/api/confirm-booking?id=" + this.bookingId,
+          confirmArgs
         );
       },
 
@@ -141,7 +144,7 @@
         $('#saveButton').prop('disabled', false);
         $('#cancelButton').prop('disabled', false);
         $('#deleteButton').prop('disabled', true);
-        $('#acceptButton').prop('disabled', true);
+        $('#confirmButton').prop('disabled', true);
         $('#closeButton').prop('disabled', true);
       },
 
@@ -153,7 +156,7 @@
         $('#saveButton').prop('disabled', true);
         $('#cancelButton').prop('disabled', true);
         $('#deleteButton').prop('disabled', false);
-        $('#acceptButton').prop('disabled', false);
+        $('#confirmButton').prop('disabled', false);
         $('#closeButton').prop('disabled', false);
       }
     }

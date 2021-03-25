@@ -80,7 +80,8 @@ namespace Bogevang.Booking.Domain.Bookings
         ContactName = model.ContactName,
         ContactEMail = model.ContactEMail,
         BookingState = model.BookingState.Value,
-        BookingStateText = model.BookingState.GetDescription()
+        BookingStateText = model.BookingState.GetDescription(),
+        IsConfirmed = model.IsConfirmed
       };
 
       return new BookingCacheEntry
