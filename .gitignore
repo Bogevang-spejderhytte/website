@@ -5,6 +5,10 @@
 
 TMP-SimpleHouseTheme/
 Bogevang.Website.Booking/
+Bogevang.Website/App_Data/Emails/
+Bogevang.Website/App_Data/Images/
+
+appsettings.Development.json
 
 # User-specific files
 *.rsuser

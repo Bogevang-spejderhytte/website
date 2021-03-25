@@ -10,10 +10,12 @@
 
   <ItemGroup>
     <PackageReference Include="Cofoundry.Domain" Version="0.9.1" />
+    <PackageReference Include="Cofoundry.Plugins.Mail.MailKit" Version="0.9.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Bogevang.Common\Bogevang.Common.csproj" />
+    <ProjectReference Include="..\Bogevang.Templates.Domain\Bogevang.Templates.Domain.csproj" />
   </ItemGroup>
 
 </Project>

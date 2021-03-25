@@ -20,6 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Bogevang.Booking.Website\Bogevang.Booking.Website.csproj" />
     <ProjectReference Include="..\Bogevang.Common\Bogevang.Common.csproj" />
+    <ProjectReference Include="..\Bogevang.Templates.Domain\Bogevang.Templates.Domain.csproj" />
   </ItemGroup>
 
 </Project>
