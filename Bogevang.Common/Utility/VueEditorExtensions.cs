@@ -103,12 +103,13 @@ namespace Bogevang.Common.Utility
       bool isBool = modelType == typeof(bool);
       bool isEnum = modelType.IsEnum;
       bool isDate = modelType.IsAssignableFrom(typeof(DateTime));
+      bool isHtml = false;
 
       List<KeyValuePair<string, string>> customEntities = null;
+      MemberInfo[] memberInfo = expr.Metadata.ContainerType.GetMember(expr.Metadata.PropertyName);
 
       if (modelType == typeof(int))
       {
-        MemberInfo[] memberInfo = expr.Metadata.ContainerType.GetMember(expr.Metadata.PropertyName);
         CustomEntityAttribute att = (CustomEntityAttribute)memberInfo[0].GetCustomAttributes(typeof(CustomEntityAttribute), false).FirstOrDefault();
         if (att != null)
         {
@@ -119,6 +120,13 @@ namespace Bogevang.Common.Utility
             .MapItem(e => new KeyValuePair<string,string>(e.Title, e.CustomEntityId.ToString()))
             .ExecuteAsync()).ToList();
         }
+      }
+
+      if (modelType == typeof(string))
+      {
+        HtmlAttribute att = (HtmlAttribute)memberInfo[0].GetCustomAttributes(typeof(HtmlAttribute), false).FirstOrDefault();
+        if (att != null)
+          isHtml = true;
       }
 
       string html = "";
@@ -180,6 +188,11 @@ namespace Bogevang.Common.Utility
           html += @"
 </select>";
 
+        }
+        else if (isHtml)
+        {
+          html += $@"
+<html-editor id=""{propName}"" height=""500""></html-editor>";
         }
         else
         {

@@ -1,0 +1,10 @@
+﻿@using Cofoundry.Domain
+@using Cofoundry.Web
+
+@model IPageViewModel
+@inject ICofoundryTemplateHelper<IPageViewModel> Cofoundry
+
+@Cofoundry.Template.UseDescription("Skabelon til redigering og afsendelse af breve")
+
+
+@await Component.InvokeAsync("SendBookingMail")

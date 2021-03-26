@@ -46,6 +46,7 @@
 
         var result = await this.confirmBooking();
         if (result) {
+          window.location = '/reservationer/send-mail?id=' + this.bookingId + '&template=reservationskvittering';
           this.loadData();
         }
       },

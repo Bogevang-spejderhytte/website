@@ -2,6 +2,7 @@
 using Bogevang.Booking.Domain.Bookings.Models;
 using Bogevang.Booking.Domain.Bookings.Queries;
 using Bogevang.Common.Utility;
+using Cofoundry.Core;
 using Cofoundry.Core.MessageAggregator;
 using Cofoundry.Domain;
 using System;
@@ -17,7 +18,7 @@ namespace Bogevang.Booking.Domain.Bookings
     IMessageHandler<ICustomEntityContentUpdatedMessage>,
     IMessageHandler<CustomEntityDeletedMessage>
   {
-    private readonly IContentRepository ContentRepository;
+    private readonly IAdvancedContentRepository ContentRepository;
 
     static SemaphoreSlim BookingsSemaphore = new SemaphoreSlim(1, 1);
 
@@ -33,7 +34,7 @@ namespace Bogevang.Booking.Domain.Bookings
 
 
     public BookingProvider(
-      IContentRepository contentRepository)
+      IAdvancedContentRepository contentRepository)
     {
       ContentRepository = contentRepository;
     }
@@ -105,6 +106,17 @@ namespace Bogevang.Booking.Domain.Bookings
       {
         BookingsSemaphore.Release();
       }
+    }
+
+
+    public async Task<BookingDataModel> GetBookingById(int bookingId)
+    {
+      await EnsureBookingsLoaded();
+
+      var result = BookingCache.FirstOrDefault(b => b.Entity.CustomEntityId == bookingId);
+      if (result == null)
+        throw new EntityNotFoundException($"No booking with ID {bookingId}.");
+      return result.DataModel;
     }
 
 

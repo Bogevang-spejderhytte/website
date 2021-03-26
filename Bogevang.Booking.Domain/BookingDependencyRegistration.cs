@@ -8,6 +8,7 @@ namespace Bogevang.Booking.Domain
     public void Register(IContainerRegister container)
     {
       container.Register<IBookingProvider, BookingProvider>();
+      container.Register<IBookingMailService, BookingMailService>();
     }
   }
 }

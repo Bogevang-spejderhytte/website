@@ -175,11 +175,6 @@ FormsEditor = {
 
 Vue.component('two-state-icon', {
   props: ['one', 'two', 'state'],
-  //data: function () {
-  //  return {
-  //    state: 1
-  //  }
-  //},
   methods:
   {
     iconStateClass: function () {
@@ -190,5 +185,31 @@ Vue.component('two-state-icon', {
     }
   },
   template: '<i v-if="state != null" :class="iconStateClass()"></i>'
-  //<button v-on:click="count++">You clicked me {{ count }} times.</button>'
-})
+});
+
+
+Vue.component('html-editor', {
+  props: ['id', 'height'],
+  data() {
+    return {
+      text: ""
+    };
+  },
+  mounted() {
+    this.text = this.getSlotValue();
+    tinymce.init({
+      selector: '#' + this.id,
+      height: this.height
+    });
+  },
+  methods: {
+    // <slot></slot> does not work with <textarea>, so use them a bit different.
+    getSlotValue() {
+      if (this.$slots.default && this.$slots.default.length) {
+        return this.$slots.default[0].text;
+      }
+      return '';
+    }
+  },
+  template: '<textarea :id="id" v-model="text"></textarea>'
+});

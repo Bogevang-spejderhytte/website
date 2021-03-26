@@ -1,0 +1,42 @@
+﻿@using Bogevang.Common.Utility
+@using Bogevang.Booking.Domain.Bookings.Commands
+@using Bogevang.Booking.Domain.Bookings.Models
+@model BookingMail
+
+<form id="bookingApp">
+  @Html.AntiForgeryToken()
+
+  <div class="row align-items-start justify-content-between mt-3">
+    <div class="col-8">
+      <div class="row mb-1">
+        <label for="to" class="col-sm-2 col-form-label col-form-label-sm">Til:</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control form-control-sm" id="to" readonly value='@(Model.To.DisplayName + " (" +  Model.To.Address + ")")'>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <label for="subject" class="col-sm-2 col-form-label col-form-label-sm">Emne:</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control form-control-sm" id="subject" readonly value="@Model.Subject">
+        </div>
+      </div>
+    </div>
+
+    <div class="col text-end">
+      <button type="button" id="sendButton" class="btn btn-outline-primary" v-on:click="send">Send</button>
+      <button type="button" id="cancelButton" class="btn btn-outline-secondary" v-on:click="cancel">Spring over</button>
+    </div>
+  </div>
+
+  <partial name="_VueErrorSummary" />
+
+  <div class="col">
+    <html-editor id="message" height="500">@Model.Message</html-editor>
+  </div>
+</form>
+
+<partial name="_VueLoaderOverlay" />
+
+<script src="/js/tinymce/tinymce.min.js"></script>
+<script defer src="/js/forms-editor-plugin.js"></script>
+<script defer src="/booking/scripts/send-booking-mail.js"></script>
