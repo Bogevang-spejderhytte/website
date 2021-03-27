@@ -13,11 +13,15 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
       [Description("Forespørgsel")]
       Requested,
 
-      [Description("Bekræftet")]
-      Confirmed,
+      [Description("Godkendt")]
+      Approved,
 
       [Description("Aflyst")]
-      Cancelled
+      Cancelled,
+
+
+
+      Confirmed // Deprecated, do not use
     }
 
 
@@ -83,8 +87,8 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
     public BookingStateType? BookingState { get; set; }
 
 
-    [Display(Name = "Reservation bekræftet")]
-    public bool IsConfirmed { get; set; }
+    [Display(Name = "Reservation godkendt")]
+    public bool IsApproved { get; set; }
 
 
     [Display(Name = "Depositum modtaget")]

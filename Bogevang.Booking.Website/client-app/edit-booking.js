@@ -22,7 +22,7 @@
       comments: null,
       rentalPrice: null,
       bookingState: null,
-      isConfirmed: false
+      isApproved: false
     },
 
     async mounted() {
@@ -44,11 +44,11 @@
       },
 
 
-      confirm: async function () {
-        if (!confirm('Bekræft denne reservation?'))
+      approve: async function () {
+        if (!confirm('Godkend denne reservation?'))
           return;
 
-        var result = await this.confirmBooking();
+        var result = await this.approveBooking();
         if (result) {
           window.location = '/reservationer/send-mail?id=' + this.bookingId + '&template=reservationskvittering';
         }
@@ -99,7 +99,7 @@
           this.comments = data.comments;
           this.rentalPrice = data.rentalPrice;
           this.bookingState = data.bookingState;
-          this.isConfirmed = data.isConfirmed;
+          this.isApproved = data.isApproved;
           this.warnings = data.warnings;
         }
       },
@@ -128,12 +128,12 @@
       },
 
 
-      confirmBooking: async function () {
-        var confirmArgs = {}
+      approveBooking: async function () {
+        var approveArgs = {}
 
         return await this.postWithErrorHandling(
-          "/api/confirm-booking?id=" + this.bookingId,
-          confirmArgs
+          "/api/approve-booking?id=" + this.bookingId,
+          approveArgs
         );
       },
 
@@ -151,7 +151,7 @@
         $('#saveButton').prop('disabled', false);
         $('#cancelButton').prop('disabled', false);
         $('#deleteButton').prop('disabled', true);
-        $('#confirmButton').prop('disabled', true);
+        $('#approveButton').prop('disabled', true);
         $('#closeButton').prop('disabled', true);
       },
 
@@ -163,7 +163,7 @@
         $('#saveButton').prop('disabled', true);
         $('#cancelButton').prop('disabled', true);
         $('#deleteButton').prop('disabled', false);
-        $('#confirmButton').prop('disabled', false);
+        $('#approveButton').prop('disabled', false);
         $('#closeButton').prop('disabled', false);
       }
     }

@@ -26,7 +26,7 @@ namespace Bogevang.Booking.Domain.Bookings.Models
     public string ContactEMail { get; set; }
     public BookingDataModel.BookingStateType BookingState { get; set; }
     public string BookingStateText { get; set; }
-    public bool IsConfirmed { get; set; }
+    public bool IsApproved { get; set; }
 
 
     public List<string> Warnings { get; set; }
@@ -38,9 +38,9 @@ namespace Bogevang.Booking.Domain.Bookings.Models
     {
       Alert = BookingState == BookingDataModel.BookingStateType.Requested
         ? AlertType.New
-        : BookingState == BookingDataModel.BookingStateType.Confirmed && DateTime.Now > DepartureDate
+        : BookingState == BookingDataModel.BookingStateType.Approved && DateTime.Now > DepartureDate
           ? AlertType.Finalize
-          : BookingState == BookingDataModel.BookingStateType.Confirmed && DateTime.Now > ArrivalDate - TimeSpan.FromDays(10)
+          : BookingState == BookingDataModel.BookingStateType.Approved && DateTime.Now > ArrivalDate - TimeSpan.FromDays(10)
             ? AlertType.Key
             : (AlertType?)null;
 

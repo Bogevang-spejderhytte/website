@@ -57,7 +57,7 @@ namespace Bogevang.Booking.Domain.Bookings
         ContactEMail = model.ContactEMail,
         BookingState = model.BookingState.Value,
         BookingStateText = model.BookingState.GetDescription(),
-        IsConfirmed = model.IsConfirmed
+        IsApproved = model.IsApproved
       };
 
       await summary.UpdateCalculatedValues(TenantCategoryProvider);

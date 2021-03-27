@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace Bogevang.Booking.Website.Api
 {
-  [Route("api/confirm-booking")]
+  [Route("api/approve-booking")]
   [AutoValidateAntiforgeryToken]
   [ApiController]
-  public class ConfirmBookingApiController : ControllerBase
+  public class ApproveBookingApiController : ControllerBase
   {
     private readonly IApiResponseHelper ApiResponseHelper;
 
 
-    public ConfirmBookingApiController(
+    public ApproveBookingApiController(
         IAdvancedContentRepository domainRepository,
         IApiResponseHelper apiResponseHelper)
     {
@@ -27,8 +27,8 @@ namespace Bogevang.Booking.Website.Api
     [HttpPost]
     public async Task<JsonResult> Post([FromQuery] int id)
     {
-      var confirmCommand = new ConfirmBookingCommand { Id = id };
-      return await ApiResponseHelper.RunCommandAsync(confirmCommand);
+      var approveCommand = new ApproveBookingCommand { Id = id };
+      return await ApiResponseHelper.RunCommandAsync(approveCommand);
     }
   }
 }
