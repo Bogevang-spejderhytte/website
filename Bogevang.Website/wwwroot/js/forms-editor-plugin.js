@@ -10,6 +10,7 @@
       isWorking: true,
       isEditing: false,
       errors: [],
+      warnings: [],
       loaderModalOverlay: overlay
     }
   },
@@ -17,6 +18,7 @@
   methods: {
     clearErrors: function () {
       this.errors = [];
+      this.warnings = [];
       $('.editable').removeClass('is-invalid');
     },
 

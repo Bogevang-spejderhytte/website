@@ -1,4 +1,6 @@
-﻿using Bogevang.Booking.Domain.Bookings.CustomEntities;
+﻿using Bogevang.Booking.Domain.Bookings;
+using Bogevang.Booking.Domain.Bookings.Commands;
+using Bogevang.Booking.Domain.Bookings.CustomEntities;
 using Cofoundry.Domain;
 using Cofoundry.Web;
 using Microsoft.AspNetCore.Mvc;
@@ -12,15 +14,15 @@ namespace Bogevang.Booking.Website.Api
   [ApiController]
   public class BookingApiController : ControllerBase
   {
-    private readonly IAdvancedContentRepository DomainRepository;
+    private readonly IBookingProvider BookingProvider;
     private readonly IApiResponseHelper ApiResponseHelper;
 
 
     public BookingApiController(
-        IAdvancedContentRepository domainRepository,
+        IBookingProvider bBookingProvider,
         IApiResponseHelper apiResponseHelper)
     {
-      DomainRepository = domainRepository;
+      BookingProvider = bBookingProvider;
       ApiResponseHelper = apiResponseHelper;
     }
 
@@ -28,55 +30,16 @@ namespace Bogevang.Booking.Website.Api
     [HttpGet]
     public async Task<JsonResult> Get([FromQuery] int id)
     {
-      var entity = await DomainRepository.CustomEntities().GetById(id).AsDetails().ExecuteAsync();
-      // FIXME: check for custom entity type being a "Booking"
-      BookingDataModel booking = (BookingDataModel)entity.LatestVersion.Model;
-
+      var booking = await BookingProvider.GetBookingSummaryById(id);
       return ApiResponseHelper.SimpleQueryResponse(booking);
     }
 
 
     [HttpPost]
-    public async Task<JsonResult> Post([FromQuery] int id, [FromBody]BookingDataModel input)
+    public async Task<JsonResult> Post([FromQuery] int id, [FromBody] UpdateBookingCommand command)
     {
-      using (var scope = DomainRepository.Transactions().CreateScope())
-      {
-        var entity = await DomainRepository.CustomEntities().GetById(id).AsDetails().ExecuteAsync();
-        // FIXME: check for custom entity type being a "Booking"
-        BookingDataModel booking = (BookingDataModel)entity.LatestVersion.Model;
-
-        // For safety reasons, only pick what is needed from the posted data model. Do not assume anything else is ok.
-        // (it is kind of cheating when using the data model as a command)
-
-        booking.ArrivalDate = input.ArrivalDate.Value;
-        booking.DepartureDate = input.DepartureDate.Value;
-        booking.TenantCategoryId = input.TenantCategoryId;
-        booking.TenantName = input.TenantName;
-        booking.Purpose = input.Purpose;
-        booking.ContactName = input.ContactName;
-        booking.ContactPhone = input.ContactPhone;
-        booking.ContactAddress = input.ContactAddress;
-        booking.ContactCity = input.ContactCity;
-        booking.ContactEMail = input.ContactEMail;
-        booking.Comments = input.Comments;
-        booking.RentalPrice = input.RentalPrice;
-        booking.BookingState = input.BookingState;
-
-        UpdateCustomEntityDraftVersionCommand updateCmd = new UpdateCustomEntityDraftVersionCommand
-        {
-          CustomEntityDefinitionCode = BookingCustomEntityDefinition.DefinitionCode,
-          CustomEntityId = id,
-          Title = entity.LatestVersion.Title,
-          Publish = true,
-          Model = booking
-        };
-
-        await DomainRepository.CustomEntities().Versions().UpdateDraftAsync(updateCmd);
-
-        await scope.CompleteAsync();
-
-        return new JsonResult(new { ok = true });
-      }
+      command.BookingId = id;
+      return await ApiResponseHelper.RunCommandAsync(command);
     }
 
 

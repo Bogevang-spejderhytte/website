@@ -9,6 +9,7 @@ namespace Bogevang.Booking.Domain.Bookings
   public interface IBookingProvider
   {
     Task<BookingDataModel> GetBookingById(int bookingId);
+    Task<BookingSummary> GetBookingSummaryById(int bookingId);
     Task<IEnumerable<BookingSummary>> FindBookingsInInterval(SearchBookingSummariesQuery query);
   }
 }

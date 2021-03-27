@@ -84,7 +84,6 @@
 
       loadData: async function () {
         result = await this.getWithErrorHandling("/api/booking?id=" + this.bookingId);
-
         if (result) {
           const data = result.data;
           this.arrivalDate = new Date(data.arrivalDate);
@@ -101,6 +100,7 @@
           this.rentalPrice = data.rentalPrice;
           this.bookingState = data.bookingState;
           this.isConfirmed = data.isConfirmed;
+          this.warnings = data.warnings;
         }
       },
 

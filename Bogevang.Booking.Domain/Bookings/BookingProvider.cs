@@ -1,6 +1,7 @@
 ﻿using Bogevang.Booking.Domain.Bookings.CustomEntities;
 using Bogevang.Booking.Domain.Bookings.Models;
 using Bogevang.Booking.Domain.Bookings.Queries;
+using Bogevang.Booking.Domain.TenantCategories;
 using Bogevang.Common.Utility;
 using Cofoundry.Core;
 using Cofoundry.Core.MessageAggregator;
@@ -19,6 +20,7 @@ namespace Bogevang.Booking.Domain.Bookings
     IMessageHandler<CustomEntityDeletedMessage>
   {
     private readonly IAdvancedContentRepository ContentRepository;
+    private readonly ITenantCategoryProvider TenantCategoryProvider;
 
     static SemaphoreSlim BookingsSemaphore = new SemaphoreSlim(1, 1);
 
@@ -34,9 +36,11 @@ namespace Bogevang.Booking.Domain.Bookings
 
 
     public BookingProvider(
-      IAdvancedContentRepository contentRepository)
+      IAdvancedContentRepository contentRepository,
+      ITenantCategoryProvider tenantCategoryProvider)
     {
       ContentRepository = contentRepository;
+      TenantCategoryProvider = tenantCategoryProvider;
     }
 
 
@@ -48,14 +52,17 @@ namespace Bogevang.Booking.Domain.Bookings
       {
         if (BookingCache == null)
         {
-          var allBookings = await ContentRepository
+          var allBookingEntities = await ContentRepository
             .CustomEntities()
             .GetByDefinitionCode(BookingCustomEntityDefinition.DefinitionCode)
             .AsRenderSummary()
             .ExecuteAsync();
 
-          BookingCache = allBookings
-            .Select(MapBooking)
+          List<BookingCacheEntry> bookings = new List<BookingCacheEntry>();
+          foreach (var entity in allBookingEntities)
+            bookings.Add(await MapBooking(entity));
+
+          BookingCache = bookings
             .OrderByDescending(b => b.DataModel.ArrivalDate)
             .ToList();
         }
@@ -67,7 +74,7 @@ namespace Bogevang.Booking.Domain.Bookings
     }
 
 
-    private BookingCacheEntry MapBooking(CustomEntityRenderSummary entity)
+    private async Task<BookingCacheEntry> MapBooking(CustomEntityRenderSummary entity)
     {
       var model = (BookingDataModel)entity.Model;
       var summary = new BookingSummary
@@ -77,6 +84,7 @@ namespace Bogevang.Booking.Domain.Bookings
         ArrivalDate = model.ArrivalDate.Value,
         DepartureDate = model.DepartureDate.Value,
         Purpose = model.Purpose,
+        TenantCategoryId = model.TenantCategoryId.Value,
         TenantName = model.TenantName,
         ContactName = model.ContactName,
         ContactEMail = model.ContactEMail,
@@ -84,6 +92,8 @@ namespace Bogevang.Booking.Domain.Bookings
         BookingStateText = model.BookingState.GetDescription(),
         IsConfirmed = model.IsConfirmed
       };
+
+      await summary.UpdateCalculatedValues(TenantCategoryProvider);
 
       return new BookingCacheEntry
       {
@@ -117,6 +127,17 @@ namespace Bogevang.Booking.Domain.Bookings
       if (result == null)
         throw new EntityNotFoundException($"No booking with ID {bookingId}.");
       return result.DataModel;
+    }
+
+
+    public async Task<BookingSummary> GetBookingSummaryById(int bookingId)
+    {
+      await EnsureBookingsLoaded();
+
+      var result = BookingCache.FirstOrDefault(b => b.Entity.CustomEntityId == bookingId);
+      if (result == null)
+        throw new EntityNotFoundException($"No booking with ID {bookingId}.");
+      return result.Summary;
     }
 
 

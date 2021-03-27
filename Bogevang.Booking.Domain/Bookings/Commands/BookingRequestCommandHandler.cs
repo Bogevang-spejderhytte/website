@@ -1,7 +1,9 @@
 ﻿using Bogevang.Booking.Domain.Bookings.CustomEntities;
+using Bogevang.Booking.Domain.TenantCategories;
 using Bogevang.Templates.Domain;
 using Bogevang.Templates.Domain.CustomEntities;
 using Cofoundry.Core.Mail;
+using Cofoundry.Core.Validation;
 using Cofoundry.Domain;
 using Cofoundry.Domain.CQS;
 using System;
@@ -15,23 +17,30 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
   {
     private readonly IAdvancedContentRepository DomainRepository;
     private readonly ITemplateProvider TemplateProvider;
+    private readonly ITenantCategoryProvider TenantCategoryProvider;
     private readonly IMailDispatchService MailDispatchService;
 
 
     public BookingRequestCommandHandler(
         IAdvancedContentRepository domainRepository,
         ITemplateProvider templateProvider,
+        ITenantCategoryProvider tenantCategoryProvider,
         IMailDispatchService mailDispatchService)
     {
       DomainRepository = domainRepository;
       TemplateProvider = templateProvider;
+      TenantCategoryProvider = tenantCategoryProvider;
       MailDispatchService = mailDispatchService;
     }
 
 
     public async Task ExecuteAsync(BookingRequestCommand command, IExecutionContext executionContext)
     {
-      decimal rentalPrice = 1000;
+      var tenantCategory = await TenantCategoryProvider.GetTenantCategoryById(command.TenantCategoryId.Value);
+
+      DateTime lastAllowedArrivalDate = DateTime.Now.AddMonths(tenantCategory.AllowedBookingFutureMonths);
+      if (command.ArrivalDate.Value >= lastAllowedArrivalDate)
+        throw new ValidationErrorException(new ValidationError($"Den valgte lejertype kan ikke reservere mere end {tenantCategory.AllowedBookingFutureMonths} måneder ud i fremtiden. Dvs. senest {lastAllowedArrivalDate.ToShortDateString()}.", nameof(command.ArrivalDate)));
 
       var booking = new BookingDataModel
       {
@@ -46,7 +55,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
         ContactCity = command.ContactCity,
         ContactEMail = command.ContactEMail,
         Comments = command.Comments,
-        RentalPrice = rentalPrice,
+        RentalPrice = 0, // To be set later
         BookingState = BookingDataModel.BookingStateType.Requested
       };
 
