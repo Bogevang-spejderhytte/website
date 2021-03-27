@@ -48,8 +48,8 @@ namespace Bogevang.Booking.Website.Api
         // For safety reasons, only pick what is needed from the posted data model. Do not assume anything else is ok.
         // (it is kind of cheating when using the data model as a command)
 
-        booking.ArrivalDate = DateTime.SpecifyKind(input.ArrivalDate.Value, DateTimeKind.Utc);
-        booking.DepartureDate = DateTime.SpecifyKind(input.DepartureDate.Value, DateTimeKind.Utc);
+        booking.ArrivalDate = input.ArrivalDate.Value;
+        booking.DepartureDate = input.DepartureDate.Value;
         booking.TenantCategoryId = input.TenantCategoryId;
         booking.TenantName = input.TenantName;
         booking.Purpose = input.Purpose;

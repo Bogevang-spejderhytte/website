@@ -170,7 +170,7 @@ namespace Bogevang.Common.Utility
         else if (isDate)
         {
           html += $@"
-<input type=""date"" id=""{propName}"" v-model=""{propName}"" class=""form-control editable"" v-on:change=""clearValidation"" readonly>";
+<vuejs-datepicker id=""{propName}"" :monday-first=""true"" v-model=""{propName}"" :disabled=""!isEditing""></vuejs-datepicker>";
         }
         else if (customEntities != null)
         {

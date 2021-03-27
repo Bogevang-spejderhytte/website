@@ -79,10 +79,6 @@
         return dir == 'Asc' ? 'Desc' : 'Asc';
       },
 
-      datePart: function (s) {
-        return s.substr(0, 10);
-      },
-
       alertClass: function (a) {
         if (a == 'New')
           return 'fas fa-star color-new';

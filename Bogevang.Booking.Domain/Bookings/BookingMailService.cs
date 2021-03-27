@@ -28,6 +28,8 @@ namespace Bogevang.Booking.Domain.Bookings
       BookingDataModel booking = await BookingProvider.GetBookingById(bookingId);
       TemplateDataModel template = await TemplateProvider.GetTemplateByName(templateName);
 
+      booking.ArrivalDate = booking.ArrivalDate.Value.ToLocalTime();
+      booking.DepartureDate = booking.DepartureDate.Value.ToLocalTime();
       string message = TemplateProvider.MergeText(template.Text, booking);
 
       return new BookingMail

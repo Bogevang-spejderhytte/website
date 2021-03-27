@@ -3,6 +3,9 @@
 
   var bookingApp = new Vue({
     el: '#bookingApp',
+    components: {
+      vuejsDatepicker
+    },
     data: {
       bookingId: location.hash.substr(1),
       arrivalDate: null,
@@ -83,8 +86,8 @@
 
         if (result) {
           const data = result.data;
-          this.arrivalDate = data.arrivalDate.substr(0, 10);
-          this.departureDate = data.departureDate.substr(0, 10);
+          this.arrivalDate = new Date(data.arrivalDate);
+          this.departureDate = new Date(data.departureDate);
           this.tenantCategoryId = data.tenantCategoryId;
           this.tenantName = data.tenantName;
           this.purpose = data.purpose;
@@ -117,7 +120,6 @@
           rentalPrice: this.rentalPrice,
           bookingState: this.bookingState
         };
-
         return await this.postWithErrorHandling(
           "/api/booking?id=" + this.bookingId,
           saveArgs

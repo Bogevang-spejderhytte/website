@@ -8,6 +8,7 @@
 
     return {
       isWorking: true,
+      isEditing: false,
       errors: [],
       loaderModalOverlay: overlay
     }
@@ -22,6 +23,7 @@
 
     openEditableInputs: function() {
       this.clearErrors();
+      this.isEditing = true;
       $('.editable').prop('readonly', false);
       $('select.editable').prop('disabled', false);
     },
@@ -29,6 +31,7 @@
 
     closeEditableInputs: function () {
       this.clearErrors();
+      this.isEditing = false;
       $('.editable').prop('readonly', true);
       $('select.editable').prop('disabled', true);
     },

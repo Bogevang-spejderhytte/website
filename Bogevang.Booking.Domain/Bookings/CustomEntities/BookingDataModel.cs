@@ -23,12 +23,12 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
 
     [Display(Name = "Ankomstdato")]
     [Required]
-    [Date]
+    [DateLocal]
     public DateTime? ArrivalDate { get; set; }
 
     [Display(Name = "Afrejsedato")]
     [Required]
-    [Date]
+    [DateLocal]
     public DateTime? DepartureDate { get; set; }
 
 
