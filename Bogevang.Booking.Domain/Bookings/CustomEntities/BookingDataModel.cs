@@ -17,11 +17,7 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
       Approved,
 
       [Description("Aflyst")]
-      Cancelled,
-
-
-
-      Confirmed // Deprecated, do not use
+      Cancelled
     }
 
 
