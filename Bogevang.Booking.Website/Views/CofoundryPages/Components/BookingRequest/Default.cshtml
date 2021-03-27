@@ -7,9 +7,12 @@
 
   <partial name="_VueErrorSummary" />
 
-  <div class="row mb-3">
+  <div class="row align-items-center mb-3">
     @await Html.VueEditorColFor(m => m.ArrivalDate)
     @await Html.VueEditorColFor(m => m.DepartureDate)
+    <div class="col">
+      <button type="button" id="calendarButton" class="btn btn-info" v-on:click="showCalendar" title="Klik for at se hvornår Bøgevang er ledig. Kalenderen åbner i et nyt vindue.">Se kalenderen</button>
+    </div>
   </div>
 
   @await Html.VueEditorRowFor(m => m.TenantCategoryId)

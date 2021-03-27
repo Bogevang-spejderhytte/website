@@ -26,6 +26,11 @@
     },
 
     methods: {
+      showCalendar() {
+        window.open('/reservationer/kalender', 'bogevang-kalender');
+      },
+
+
       send: async function (e) {
         var result = await this.sendData();
         if (result) {
