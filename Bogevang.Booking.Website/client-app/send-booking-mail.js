@@ -36,7 +36,7 @@
       },
 
       cancel: function () {
-
+        window.location = '/reservationer/edit#' + this.bookingId;
       }
     }
   });

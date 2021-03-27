@@ -1,5 +1,6 @@
 ﻿using Antlr4.StringTemplate;
 using Bogevang.Templates.Domain.CustomEntities;
+using Cofoundry.Core;
 using Cofoundry.Domain;
 using System;
 using System.Reflection;
@@ -26,8 +27,11 @@ namespace Bogevang.Templates.Domain
         .GetByUrlSlug(TemplateCustomEntityDefinition.DefinitionCode, name)
         .AsRenderSummary()
         .ExecuteAsync();
-      var template = (TemplateDataModel)entity.Model;
 
+      if (entity == null)
+        throw new EntityNotFoundException($"Ukendt skabelonnavn '{name}'. Sørg for at oprette en skabelon i administrationsdelen med dette navn.");
+
+      var template = (TemplateDataModel)entity.Model;
       return template;
     }
 

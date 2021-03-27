@@ -5,25 +5,28 @@
 <form id="bookingApp">
   @Html.AntiForgeryToken()
 
-  <div class="btn-toolbar justify-content-between mt-2 mb-2" role="group">
-    <div class="btn-group" role="group">
-      <button type="button" id="editButton" class="btn btn-outline-secondary" v-on:click="edit">Ret</button>
-      <button type="button" id="saveButton" class="btn btn-outline-secondary" v-on:click="save" disabled>Gem</button>
-      <button type="button" id="cancelButton" class="btn btn-outline-secondary" v-on:click="cancel" disabled>Fortryd</button>
+  <nav class="navbar navbar-light bg-light">
+    <div class="container-fluid">
       <div class="btn-group" role="group">
-        <button id="actionGroupButton" type="button" class="btn btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-          Handlinger
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="actionGroupButton">
-          <li><button id="confirmButton" type="button" class="dropdown-item" v-on:click="confirm()">Bekræft <i v-if="isConfirmed" class="menu-status-icon fas fa-check color-ok" title="Reservationen er allerede bekræftet"></i></button></li>
-          <li><button id="deleteButton" type="button" class="dropdown-item" v-on:click="deleteBooking('/reservationer')">Slet</button></li>
-        </ul>
+        <button type="button" id="editButton" class="btn btn-outline-secondary" v-on:click="edit">Ret</button>
+        <button type="button" id="saveButton" class="btn btn-outline-secondary" v-on:click="save" disabled>Gem</button>
+        <button type="button" id="cancelButton" class="btn btn-outline-secondary" v-on:click="cancel" disabled>Fortryd</button>
+        <div class="btn-group" role="group">
+          <button id="actionGroupButton" type="button" class="btn btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            Handlinger
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="actionGroupButton">
+            <li><button id="confirmButton" type="button" class="dropdown-item" v-on:click="confirm()">Bekræft <i v-if="isConfirmed" class="menu-status-icon fas fa-check color-ok" title="Reservationen er allerede bekræftet"></i></button></li>
+            <li><button id="sendMailButton" type="button" class="dropdown-item" v-on:click="sendMail()">Send mail</button></li>
+            <li><button id="deleteButton" type="button" class="dropdown-item" v-on:click="deleteBooking('/reservationer')">Slet</button></li>
+          </ul>
+        </div>
+      </div>
+      <div class="btn-group" role="group">
+        <button type="button" id="closeButton" class="btn btn-outline-primary" v-on:click="close('/reservationer')">Afbryd</button>
       </div>
     </div>
-    <div class="btn-group" role="group">
-      <button type="button" id="closeButton" class="btn btn-outline-primary" v-on:click="close('/reservationer')">Afslut</button>
-    </div>
-  </div>
+  </nav>
 
   <partial name="_VueErrorSummary" />
 
