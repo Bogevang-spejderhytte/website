@@ -7,6 +7,7 @@
       vuejsDatepicker
     },
     data: {
+      da: vdp_translation_da.js,
       bookingId: location.hash.substr(1),
       arrivalDate: null,
       departureDate: null,

@@ -47,6 +47,7 @@ namespace Bogevang.Common.Utility
       ModelExpression expr = expressionProvider.CreateModelExpression(helper.ViewData, expression);
 
       string propName = expr.Metadata.PropertyName;
+      propName = Char.ToLowerInvariant(propName[0]) + propName.Substring(1);
 
       string description = expr.Metadata.Description;
       string describedBy = "";
@@ -103,7 +104,10 @@ namespace Bogevang.Common.Utility
       bool isBool = modelType == typeof(bool);
       bool isEnum = modelType.IsEnum;
       bool isDate = modelType.IsAssignableFrom(typeof(DateTime));
+      bool isMultiLine = false;
       bool isHtml = false;
+
+      MultiLineTextAttribute matt = null;
 
       List<KeyValuePair<string, string>> customEntities = null;
       MemberInfo[] memberInfo = expr.Metadata.ContainerType.GetMember(expr.Metadata.PropertyName);
@@ -127,6 +131,10 @@ namespace Bogevang.Common.Utility
         HtmlAttribute att = (HtmlAttribute)memberInfo[0].GetCustomAttributes(typeof(HtmlAttribute), false).FirstOrDefault();
         if (att != null)
           isHtml = true;
+
+        matt = (MultiLineTextAttribute)memberInfo[0].GetCustomAttributes(typeof(MultiLineTextAttribute), false).FirstOrDefault();
+        if (matt != null)
+          isMultiLine = true;
       }
 
       string html = "";
@@ -170,7 +178,7 @@ namespace Bogevang.Common.Utility
         else if (isDate)
         {
           html += $@"
-<vuejs-datepicker id=""{propName}"" :monday-first=""true"" v-model=""{propName}"" :disabled=""!isEditing""></vuejs-datepicker>";
+<vuejs-datepicker id=""{propName}"" :monday-first=""true"" :language=""da"" v-model=""{propName}"" v-on:change=""clearValidation"" :disabled=""!isEditing""></vuejs-datepicker>";
         }
         else if (customEntities != null)
         {
@@ -188,6 +196,11 @@ namespace Bogevang.Common.Utility
           html += @"
 </select>";
 
+        }
+        else if (isMultiLine)
+        {
+          html += $@"
+<textarea id=""{propName}"" v-model=""{propName}"" rows=""{matt.Rows}"" class=""form-control editable"" v-on:change=""clearValidation"" readonly></textarea>";
         }
         else if (isHtml)
         {

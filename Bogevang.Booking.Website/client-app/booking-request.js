@@ -3,7 +3,11 @@
 
   var bookingApp = new Vue({
     el: '#requestApp',
+    components: {
+      vuejsDatepicker
+    },
     data: {
+      da: vdp_translation_da.js,
       arrivalDate: null,
       departureDate: null,
       tenantCategoryId: null,

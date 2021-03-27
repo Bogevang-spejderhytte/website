@@ -152,7 +152,6 @@
 
 
     cofoundryErrorHandler: function (result) {
-      debugger
       result.errors.forEach(error => {
         this.errors.push(error.message);
         error.properties.forEach(property => {
