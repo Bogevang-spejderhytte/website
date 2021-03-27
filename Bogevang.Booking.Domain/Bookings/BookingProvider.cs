@@ -54,10 +54,16 @@ namespace Bogevang.Booking.Domain.Bookings
         TenantCategoryId = model.TenantCategoryId.Value,
         TenantName = model.TenantName,
         ContactName = model.ContactName,
+        ContactPhone = model.ContactPhone,
+        ContactAddress = model.ContactAddress,
+        ContactCity = model.ContactCity,
         ContactEMail = model.ContactEMail,
+        Comments = model.Comments,
+        RentalPrice = model.RentalPrice,
         BookingState = model.BookingState.Value,
         BookingStateText = model.BookingState.GetDescription(),
-        IsApproved = model.IsApproved
+        IsApproved = model.IsApproved,
+        LogEntries = model.LogEntries
       };
 
       await summary.UpdateCalculatedValues(TenantCategoryProvider);

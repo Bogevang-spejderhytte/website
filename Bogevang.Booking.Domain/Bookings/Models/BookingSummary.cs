@@ -19,15 +19,20 @@ namespace Bogevang.Booking.Domain.Bookings.Models
     public DateTime CreatedDate { get; set; }
     public DateTime ArrivalDate { get; set; }
     public DateTime DepartureDate { get; set; }
-    public string Purpose { get; set; }
     public int TenantCategoryId { get; set; }
     public string TenantName { get; set; }
+    public string Purpose { get; set; }
     public string ContactName { get; set; }
+    public string ContactPhone { get; set; }
+    public string ContactAddress { get; set; }
+    public string ContactCity { get; set; }
     public string ContactEMail { get; set; }
+    public string Comments { get; set; }
+    public decimal? RentalPrice { get; set; }
     public BookingDataModel.BookingStateType BookingState { get; set; }
     public string BookingStateText { get; set; }
     public bool IsApproved { get; set; }
-
+    public List<BookingLogEntry> LogEntries { get; set; }
 
     public List<string> Warnings { get; set; }
 

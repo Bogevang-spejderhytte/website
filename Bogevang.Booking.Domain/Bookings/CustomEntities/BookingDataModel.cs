@@ -74,7 +74,7 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
 
 
     [Display(Name = "Aftalt pris")]
-    public decimal RentalPrice { get; set; }
+    public decimal? RentalPrice { get; set; }
 
 
     [Display(Name = "Bookingstatus")]

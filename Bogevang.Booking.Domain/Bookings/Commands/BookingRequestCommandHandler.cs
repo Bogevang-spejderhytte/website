@@ -55,7 +55,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
         ContactCity = command.ContactCity,
         ContactEMail = command.ContactEMail,
         Comments = command.Comments,
-        RentalPrice = 0, // To be set later
+        RentalPrice = null, // To be set later
         BookingState = BookingDataModel.BookingStateType.Requested
       };
 
