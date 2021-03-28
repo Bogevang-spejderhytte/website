@@ -65,6 +65,7 @@ namespace Bogevang.Booking.Domain.Bookings
         IsApproved = model.IsApproved,
         IsRejected = model.IsRejected,
         WelcomeLetterIsSent = model.WelcomeLetterIsSent,
+        TenantSelfServiceToken = model.TenantSelfServiceToken,
         LogEntries = model.LogEntries
       };
 

@@ -1,0 +1,21 @@
+﻿@model IPageViewModel
+@inject ICofoundryTemplateHelper<IPageViewModel> Cofoundry
+
+@Cofoundry.Template.UseDescription("Skabelon for slutafregning")
+
+<div class="container">
+  <div class="row content-block">
+    <div class="col-sm-12">
+      <h1>@Model.PageTitle</h1>
+      <p>
+        @(await Cofoundry.Template.Region("Body")
+                .AllowMultipleBlocks()
+                .AllowBlockType<ContentSectionDataModel>()
+                .EmptyContentMinHeight(500)
+                .InvokeAsync())
+      </p>
+
+      @await Component.InvokeAsync("BookingCheckout")
+    </div>
+  </div>
+</div>

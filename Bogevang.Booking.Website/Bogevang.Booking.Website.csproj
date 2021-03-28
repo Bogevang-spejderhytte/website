@@ -15,11 +15,13 @@
     <None Remove="PageBlockTypes\BookingCalendar\BookingCalendar.cshtml" />
     <None Remove="test.html" />
     <None Remove="Views\CofoundryPages\Components\BookingCalendar\Default.cshtml" />
+    <None Remove="Views\CofoundryPages\Components\BookingCheckout\Default.cshtml" />
     <None Remove="Views\CofoundryPages\Components\BookingEditor\Default.cshtml" />
     <None Remove="Views\CofoundryPages\Components\BookingList\Default.cshtml" />
     <None Remove="Views\CofoundryPages\Components\BookingRequest\Default.cshtml" />
     <None Remove="Views\CofoundryPages\Components\SendBookingMail\Default.cshtml" />
     <None Remove="Views\PageTemplates\_Booking.cshtml" />
+    <None Remove="Views\PageTemplates\_BookingCheckout.cshtml" />
     <None Remove="Views\PageTemplates\_BookingList.cshtml" />
     <None Remove="Views\PageTemplates\_BookingRequest.cshtml" />
     <None Remove="Views\PageTemplates\_SendBookingMail.cshtml" />
@@ -42,6 +44,7 @@
     <EmbeddedResource Include="client-app\send-booking-mail.js" />
     <EmbeddedResource Include="PageBlockTypes\BookingCalendar\BookingCalendar.cshtml" />
     <EmbeddedResource Include="Views\CofoundryPages\Components\BookingCalendar\Default.cshtml" />
+    <EmbeddedResource Include="Views\CofoundryPages\Components\BookingCheckout\Default.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -56,6 +59,7 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\PageTemplates\_BookingCheckout.cshtml" />
     <EmbeddedResource Include="Views\PageTemplates\_BookingList.cshtml">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>

@@ -31,22 +31,10 @@ namespace Bogevang.Booking.Website.Api
     }
 
 
-    //[HttpGet]
-    //public async Task<JsonResult> Get([FromQuery] int id, [FromQuery] string template)
-    //{
-    //  BookingMail mail = await BookingMailService.CreateBookingMail(id, template);
-    //  return ApiResponseHelper.SimpleQueryResponse(mail);
-    //}
-
-
     [HttpPost]
     public Task<JsonResult> Post([FromBody] SendBookingMailCommand command)
     {
       return ApiResponseHelper.RunCommandAsync(command);
-
-      //using (var scope = DomainRepository.Transactions().CreateScope())
-      //{
-      //}
     }
   }
 }

@@ -108,8 +108,17 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
     public bool DepositReturned { get; set; }
 
 
+    [Display(Name = "Automatisk genereret adgangskode til selvbetjening")]
+    public string TenantSelfServiceToken { get; set; }
+
+
     public List<BookingLogEntry> LogEntries { get; set; }
 
+
+    public BookingDataModel()
+    {
+      TenantSelfServiceToken = RandomKeyGenerator.GetRandomString(20);
+    }
 
     public string MakeTitle()
     {

@@ -25,6 +25,7 @@
       isApproved: false,
       isRejected: false,
       welcomeLetterIsSent: false,
+      tenantSelfServiceToken: null
     },
 
     async mounted() {
@@ -95,6 +96,12 @@
       },
 
 
+      openSelfService() {
+        const url = '/reservationer/slutafregning?id=' + this.bookingId + '&token=' + this.tenantSelfServiceToken;
+        window.open(url, 'bogevang-secondary');
+      },
+
+
       cancel: function (e) {
         this.stopEditing();
         this.loadData();
@@ -127,6 +134,7 @@
           this.isRejected = data.isRejected;
           this.welcomeLetterIsSent = data.welcomeLetterIsSent;
           this.warnings = data.warnings;
+          this.tenantSelfServiceToken = data.tenantSelfServiceToken;
         }
       },
 

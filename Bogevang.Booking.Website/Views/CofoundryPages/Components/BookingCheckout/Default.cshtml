@@ -1,0 +1,20 @@
+﻿@using Bogevang.Common.Utility
+@using Bogevang.Booking.Website.ViewModels
+@model BookingCheckoutViewModel
+
+<form id="requestApp">
+  @Html.AntiForgeryToken()
+
+  <partial name="_VueErrorSummary" />
+
+  <p>Aftalenummer: @Model.Id</p>
+
+  <div class="row align-items-center mb-3">
+    @await Html.VueEditorColFor(m => m.ArrivalDate)
+    @await Html.VueEditorColFor(m => m.DepartureDate)
+  </div>
+
+  <button type="button" id="sendButton" class="btn btn-primary" v-on:click="send">Send</button>
+  <button type="button" id="cancelButton" class="btn btn-secondary" v-on:click="cancel">Fortryd</button>
+
+</form>
