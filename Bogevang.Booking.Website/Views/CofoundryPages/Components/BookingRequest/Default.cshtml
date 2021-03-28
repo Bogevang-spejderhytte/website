@@ -11,6 +11,9 @@
     @await Html.VueEditorColFor(m => m.ArrivalDate)
     @await Html.VueEditorColFor(m => m.DepartureDate)
     <div class="col">
+      <button type="button" id="ratesButton" class="btn btn-info" v-on:click="showRates" title="Klik for at se priser. Prislisten åbner i et nyt vindue.">Se priser</button>
+    </div>
+    <div class="col">
       <button type="button" id="calendarButton" class="btn btn-info" v-on:click="showCalendar" title="Klik for at se hvornår Bøgevang er ledig. Kalenderen åbner i et nyt vindue.">Se kalenderen</button>
     </div>
   </div>

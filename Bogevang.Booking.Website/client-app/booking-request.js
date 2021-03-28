@@ -26,8 +26,13 @@
     },
 
     methods: {
+      showRates() {
+        window.open('/reservationer/priser', 'bogevang-secondary');
+      },
+
+
       showCalendar() {
-        window.open('/reservationer/kalender', 'bogevang-kalender');
+        window.open('/reservationer/kalender', 'bogevang-secondary');
       },
 
 

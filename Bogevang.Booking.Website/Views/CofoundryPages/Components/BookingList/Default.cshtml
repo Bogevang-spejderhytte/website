@@ -22,6 +22,7 @@
         <th scope="col">Formål</th>
         <th scope="col">Kontaktperson</th>
         <th scope="col">Status</th>
+        <th scope="col" class="text-end">Pris</th>
         <th scope="col" class="clickable" v-on:click="orderByCreated()">Oprettet <two-state-icon one="fas fa-sort-down" two="fas fa-sort-up" v-bind:state="createdIconState()"></two-state-icon></th>
         <th scope="col"></th>
       </tr>
@@ -35,6 +36,7 @@
         <td>{{booking.purpose}}</td>
         <td>{{booking.contactName}}</td>
         <td>{{booking.bookingStateText}}</td>
+        <td class="text-end">{{booking.rentalPrice}}</td>
         <td class="date">{{booking.createdDate}}</td>
         <td><a :href="'/reservationer/edit#' + booking.id" title="Vis reservation"><i class="fas fa-pen"></i></a></td>
       </tr>

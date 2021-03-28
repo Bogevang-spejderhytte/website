@@ -57,6 +57,9 @@ namespace Bogevang.Booking.Domain.Bookings.Models
       if (ArrivalDate >= lastAllowedArrivalDate)
         Warnings.Add($"Bemærk at ankomstdatoen ligger mere end de tilladte {tenantCategory.AllowedBookingFutureMonths} måneder efter at ansøgningen blev oprettet. " +
           $"Datoen er beregnet på baggrund af lejerkategorien.");
+
+      if (RentalPrice == null)
+        Warnings.Add("Bemærk at der endnu ikke er aftalt nogen pris.");
     }
   }
 }
