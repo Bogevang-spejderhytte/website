@@ -5,15 +5,15 @@ using System.Threading.Tasks;
 
 namespace Bogevang.Booking.Website.Api
 {
-  [Route("api/approve-booking")]
+  [Route("api/send-welcome-letter")]
   [AutoValidateAntiforgeryToken]
   [ApiController]
-  public class ApproveBookingApiController : ControllerBase
+  public class SendWelcomeLetterApiController : ControllerBase
   {
     private readonly IApiResponseHelper ApiResponseHelper;
 
 
-    public ApproveBookingApiController(
+    public SendWelcomeLetterApiController(
         IApiResponseHelper apiResponseHelper)
     {
       ApiResponseHelper = apiResponseHelper;
@@ -23,8 +23,8 @@ namespace Bogevang.Booking.Website.Api
     [HttpPost]
     public async Task<JsonResult> Post([FromQuery] int id)
     {
-      var approveCommand = new ApproveBookingCommand { Id = id };
-      return await ApiResponseHelper.RunCommandAsync(approveCommand);
+      var sendWelcomeLetterCommand = new SendWelcomeLetterCommand { Id = id };
+      return await ApiResponseHelper.RunCommandAsync(sendWelcomeLetterCommand);
     }
   }
 }

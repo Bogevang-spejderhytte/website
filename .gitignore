@@ -5,8 +5,8 @@
 
 TMP-SimpleHouseTheme/
 Bogevang.Website.Booking/
-Bogevang.Website/App_Data/Emails/
-Bogevang.Website/App_Data/Images/
+Bogevang.Website/App_Data/
+
 
 appsettings.Development.json
 

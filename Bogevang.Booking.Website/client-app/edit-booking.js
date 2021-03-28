@@ -24,6 +24,7 @@
       bookingState: null,
       isApproved: false,
       isRejected: false,
+      welcomeLetterIsSent: false,
     },
 
     async mounted() {
@@ -49,7 +50,7 @@
         if (!confirm('Godkend denne reservation?'))
           return;
 
-        var result = await this.approveBooking();
+        var result = await this.doApprove();
         if (result) {
           window.location = '/reservationer/send-mail?id=' + this.bookingId + '&template=godkendelsesbrev';
         }
@@ -60,9 +61,20 @@
         if (!confirm('Afvis denne reservation?'))
           return;
 
-        var result = await this.rejectBooking();
+        var result = await this.doReject();
         if (result) {
           window.location = '/reservationer/send-mail?id=' + this.bookingId + '&template=afvisningsbrev';
+        }
+      },
+
+
+      sendWelcomeLetter: async function () {
+        if (!confirm('Send velkomstbrev?'))
+          return;
+
+        var result = await this.doSendWelcomeLetter();
+        if (result) {
+          window.location = '/reservationer/send-mail?id=' + this.bookingId + '&template=velkomstbrev';
         }
       },
 
@@ -113,6 +125,7 @@
           this.bookingState = data.bookingState;
           this.isApproved = data.isApproved;
           this.isRejected = data.isRejected;
+          this.welcomeLetterIsSent = data.welcomeLetterIsSent;
           this.warnings = data.warnings;
         }
       },
@@ -141,7 +154,7 @@
       },
 
 
-      approveBooking: async function () {
+      doApprove: async function () {
         var approveArgs = {}
 
         return await this.postWithErrorHandling(
@@ -151,12 +164,22 @@
       },
 
 
-      rejectBooking: async function () {
+      doReject: async function () {
         var rejectArgs = {}
 
         return await this.postWithErrorHandling(
           "/api/reject-booking?id=" + this.bookingId,
           rejectArgs
+        );
+      },
+
+
+      doSendWelcomeLetter: async function () {
+        var sendArgs = {}
+
+        return await this.postWithErrorHandling(
+          "/api/send-welcome-letter?id=" + this.bookingId,
+          sendArgs
         );
       },
 
@@ -176,6 +199,7 @@
         $('#deleteButton').prop('disabled', true);
         $('#approveButton').prop('disabled', true);
         $('#rejectButton').prop('disabled', true);
+        $('#sendWelcomeLetterButton').prop('disabled', true);
         $('#closeButton').prop('disabled', true);
       },
 
@@ -189,6 +213,7 @@
         $('#deleteButton').prop('disabled', false);
         $('#approveButton').prop('disabled', false);
         $('#rejectButton').prop('disabled', false);
+        $('#sendWelcomeLetterButton').prop('disabled', false);
         $('#closeButton').prop('disabled', false);
       }
     }

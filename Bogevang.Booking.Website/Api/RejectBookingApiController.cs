@@ -1,5 +1,4 @@
 ﻿using Bogevang.Booking.Domain.Bookings.Commands;
-using Cofoundry.Domain;
 using Cofoundry.Web;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -15,7 +14,6 @@ namespace Bogevang.Booking.Website.Api
 
 
     public RejectBookingApiController(
-        IAdvancedContentRepository domainRepository,
         IApiResponseHelper apiResponseHelper)
     {
       ApiResponseHelper = apiResponseHelper;

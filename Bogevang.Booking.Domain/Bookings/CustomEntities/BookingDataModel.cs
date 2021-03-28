@@ -92,6 +92,10 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
     public bool IsRejected { get; set; }
 
 
+    [Display(Name = "Velkomstbrev er sendt")]
+    public bool WelcomeLetterIsSent { get; set; }
+
+
     [Display(Name = "Depositum modtaget")]
     public bool DepositReceived { get; set; }
 
