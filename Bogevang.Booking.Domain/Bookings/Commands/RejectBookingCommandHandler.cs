@@ -7,38 +7,38 @@ using System.Threading.Tasks;
 
 namespace Bogevang.Booking.Domain.Bookings.Commands
 {
-  public class ApproveBookingCommandHandler
-      : ICommandHandler<ApproveBookingCommand>,
-        IIgnorePermissionCheckHandler  // Depends on custom entity permission checking
-
+  public class RejectBookingCommandHandler
+    : ICommandHandler<RejectBookingCommand>,
+      IIgnorePermissionCheckHandler
   {
     private readonly IAdvancedContentRepository DomainRepository;
+    private readonly IBookingProvider BookingProvider;
     private readonly ICurrentUserProvider CurrentUserProvider;
 
-
-    public ApproveBookingCommandHandler(
-        IAdvancedContentRepository domainRepository,
-        ICurrentUserProvider currentUserProvider)
+    
+    public RejectBookingCommandHandler(
+      IAdvancedContentRepository domainRepository,
+      IBookingProvider bookingProvider,
+      ICurrentUserProvider currentUserProvider)
     {
       DomainRepository = domainRepository;
+      BookingProvider = bookingProvider;
       CurrentUserProvider = currentUserProvider;
     }
 
 
-    public async Task ExecuteAsync(ApproveBookingCommand command, IExecutionContext executionContext)
+    public async Task ExecuteAsync(RejectBookingCommand command, IExecutionContext executionContext)
     {
-      var entity = await DomainRepository.CustomEntities().GetById(command.Id).AsDetails().ExecuteAsync();
-      // FIXME Check for being a booking
-      BookingDataModel booking = (BookingDataModel)entity.LatestVersion.Model;
+      var booking = await BookingProvider.GetBookingById(command.Id);
 
-      booking.BookingState = BookingDataModel.BookingStateType.Approved;
-      booking.IsApproved = true;
-      booking.IsRejected = false;
+      booking.BookingState = BookingDataModel.BookingStateType.Closed;
+      booking.IsApproved = false;
+      booking.IsRejected = true;
 
       var user = await CurrentUserProvider.GetAsync();
       booking.AddLogEntry(new BookingLogEntry
       {
-        Text = "Reservationen blev bekræftet.",
+        Text = "Reservationen blev afvist.",
         Username = user.User.GetFullName(),
         UserId = user.User.UserId,
         Timestamp = DateTime.Now

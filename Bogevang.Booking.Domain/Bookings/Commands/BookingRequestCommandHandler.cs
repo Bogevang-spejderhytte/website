@@ -63,7 +63,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
       {
         CustomEntityDefinitionCode = BookingCustomEntityDefinition.DefinitionCode,
         Model = booking,
-        Title = "Reservation",
+        Title = booking.MakeTitle(),
         Publish = true,
 
       };

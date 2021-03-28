@@ -1,4 +1,5 @@
 ﻿using Bogevang.Booking.Domain.TenantCategories.CustomEntities;
+using Bogevang.Common.Utility;
 using Cofoundry.Domain;
 using System;
 using System.Collections.Generic;
@@ -16,8 +17,8 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
       [Description("Godkendt")]
       Approved,
 
-      [Description("Aflyst")]
-      Cancelled
+      [Description("Afsluttet")]
+      Closed
     }
 
 
@@ -87,6 +88,10 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
     public bool IsApproved { get; set; }
 
 
+    [Display(Name = "Reservation afvist")]
+    public bool IsRejected { get; set; }
+
+
     [Display(Name = "Depositum modtaget")]
     public bool DepositReceived { get; set; }
 
@@ -101,6 +106,11 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
 
     public List<BookingLogEntry> LogEntries { get; set; }
 
+
+    public string MakeTitle()
+    {
+      return $"Reservation {ArrivalDate.Value.ToShortDateString()} - {DepartureDate.Value.ToShortDateString()} ({BookingState.GetDescription()})";
+    }
 
     public void AddLogEntry(BookingLogEntry entry)
     {

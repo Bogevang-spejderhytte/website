@@ -22,7 +22,8 @@
       comments: null,
       rentalPrice: null,
       bookingState: null,
-      isApproved: false
+      isApproved: false,
+      isRejected: false,
     },
 
     async mounted() {
@@ -50,7 +51,18 @@
 
         var result = await this.approveBooking();
         if (result) {
-          window.location = '/reservationer/send-mail?id=' + this.bookingId + '&template=reservationskvittering';
+          window.location = '/reservationer/send-mail?id=' + this.bookingId + '&template=godkendelsesbrev';
+        }
+      },
+
+
+      reject: async function () {
+        if (!confirm('Afvis denne reservation?'))
+          return;
+
+        var result = await this.rejectBooking();
+        if (result) {
+          window.location = '/reservationer/send-mail?id=' + this.bookingId + '&template=afvisningsbrev';
         }
       },
 
@@ -100,6 +112,7 @@
           this.rentalPrice = data.rentalPrice;
           this.bookingState = data.bookingState;
           this.isApproved = data.isApproved;
+          this.isRejected = data.isRejected;
           this.warnings = data.warnings;
         }
       },
@@ -138,6 +151,16 @@
       },
 
 
+      rejectBooking: async function () {
+        var rejectArgs = {}
+
+        return await this.postWithErrorHandling(
+          "/api/reject-booking?id=" + this.bookingId,
+          rejectArgs
+        );
+      },
+
+
       deleteData: async function () {
         return await this.deletetWithErrorHandling(
           "/api/booking?id=" + this.bookingId);
@@ -152,6 +175,7 @@
         $('#cancelButton').prop('disabled', false);
         $('#deleteButton').prop('disabled', true);
         $('#approveButton').prop('disabled', true);
+        $('#rejectButton').prop('disabled', true);
         $('#closeButton').prop('disabled', true);
       },
 
@@ -164,6 +188,7 @@
         $('#cancelButton').prop('disabled', true);
         $('#deleteButton').prop('disabled', false);
         $('#approveButton').prop('disabled', false);
+        $('#rejectButton').prop('disabled', false);
         $('#closeButton').prop('disabled', false);
       }
     }

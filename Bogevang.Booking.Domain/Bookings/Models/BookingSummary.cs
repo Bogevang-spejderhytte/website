@@ -32,6 +32,7 @@ namespace Bogevang.Booking.Domain.Bookings.Models
     public BookingDataModel.BookingStateType BookingState { get; set; }
     public string BookingStateText { get; set; }
     public bool IsApproved { get; set; }
+    public bool IsRejected { get; set; }
     public List<BookingLogEntry> LogEntries { get; set; }
 
     public List<string> Warnings { get; set; }
