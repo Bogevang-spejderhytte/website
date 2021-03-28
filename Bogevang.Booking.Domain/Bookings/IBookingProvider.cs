@@ -10,6 +10,6 @@ namespace Bogevang.Booking.Domain.Bookings
   {
     Task<BookingDataModel> GetBookingById(int bookingId);
     Task<BookingSummary> GetBookingSummaryById(int bookingId);
-    Task<IEnumerable<BookingSummary>> FindBookingsInInterval(SearchBookingSummariesQuery query);
+    Task<IList<BookingSummary>> FindBookingsInInterval(SearchBookingSummariesQuery query);
   }
 }

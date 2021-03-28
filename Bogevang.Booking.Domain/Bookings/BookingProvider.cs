@@ -41,7 +41,7 @@ namespace Bogevang.Booking.Domain.Bookings
     }
 
 
-    protected override async Task<CacheEntry> MapEntity(CustomEntityRenderSummary entity)
+    protected override CacheEntry MapEntity(CustomEntityRenderSummary entity)
     {
       var model = (BookingDataModel)entity.Model;
       var summary = new BookingSummary
@@ -66,8 +66,6 @@ namespace Bogevang.Booking.Domain.Bookings
         LogEntries = model.LogEntries
       };
 
-      await summary.UpdateCalculatedValues(TenantCategoryProvider);
-
       return new CacheEntry
       {
         Entity = entity,
@@ -77,12 +75,25 @@ namespace Bogevang.Booking.Domain.Bookings
     }
 
 
-    protected override List<CacheEntry> PostProcess(List<CacheEntry> entries)
+    protected override async Task PostProcessCache()
     {
-      return entries.OrderBy(b => b.DataModel.ArrivalDate).ToList();
+      foreach (var entry in Cache)
+        await entry.Summary.UpdateCalculatedValues(this, TenantCategoryProvider);
+      Cache.Sort(CompareBookingByArrivalDate);
     }
 
+    
+    private int CompareBookingByArrivalDate(CacheEntry x, CacheEntry y)
+    {
+      if (x.DataModel.ArrivalDate < y.DataModel.ArrivalDate)
+        return -1;
+      else if (x.DataModel.ArrivalDate > y.DataModel.ArrivalDate)
+        return 1;
+      else
+        return 0;
+    }
 
+    
     public async Task<BookingDataModel> GetBookingById(int bookingId)
     {
       await EnsureCacheLoaded();
@@ -105,7 +116,7 @@ namespace Bogevang.Booking.Domain.Bookings
     }
 
 
-    public async Task<IEnumerable<BookingSummary>> FindBookingsInInterval(SearchBookingSummariesQuery query)
+    public async Task<IList<BookingSummary>> FindBookingsInInterval(SearchBookingSummariesQuery query)
     {
       await EnsureCacheLoaded();
 
@@ -113,7 +124,8 @@ namespace Bogevang.Booking.Domain.Bookings
       DateTime endValue = query?.End ?? new DateTime(3000, 1, 1);
 
       var filtered = Cache
-        .Where(b => b.DataModel.ArrivalDate >= startValue && b.DataModel.ArrivalDate < endValue);
+        // Calculate interval overlap
+        .Where(b => b.DataModel.ArrivalDate <= endValue && b.DataModel.DepartureDate >= startValue);
 
       if (query?.BookingState != null)
         filtered = filtered
@@ -134,7 +146,7 @@ namespace Bogevang.Booking.Domain.Bookings
           filtered = filtered.OrderByDescending(b => b.Entity.CreateDate);
       }
 
-      return filtered.Select(b => b.Summary);
+      return filtered.Select(b => b.Summary).ToList();
     }
 
 

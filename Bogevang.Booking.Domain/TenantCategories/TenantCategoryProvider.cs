@@ -28,22 +28,16 @@ namespace Bogevang.Booking.Domain.TenantCategories
     }
 
 
-    protected override Task<CacheEntry> MapEntity(CustomEntityRenderSummary entity)
+    protected override CacheEntry MapEntity(CustomEntityRenderSummary entity)
     {
       var model = (TenantCategoryDataModel)entity.Model;
 
-      return Task.FromResult(new CacheEntry
+      return new CacheEntry
       {
         Entity = entity,
         DataModel = model,
         Summary = model
-      });
-    }
-
-
-    protected override List<CacheEntry> PostProcess(List<CacheEntry> entries)
-    {
-      return entries;
+      };
     }
 
 

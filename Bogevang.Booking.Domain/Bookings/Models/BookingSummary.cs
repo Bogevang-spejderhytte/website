@@ -39,7 +39,9 @@ namespace Bogevang.Booking.Domain.Bookings.Models
     public AlertType? Alert { get; set; }
 
 
-    public async Task UpdateCalculatedValues(ITenantCategoryProvider tenantCategoryProvider)
+    public async Task UpdateCalculatedValues(
+      IBookingProvider bookingProvider,
+      ITenantCategoryProvider tenantCategoryProvider)
     {
       Alert = BookingState == BookingDataModel.BookingStateType.Requested
         ? AlertType.New
@@ -60,6 +62,23 @@ namespace Bogevang.Booking.Domain.Bookings.Models
 
       if (RentalPrice == null)
         Warnings.Add("Bemærk at der endnu ikke er aftalt nogen pris.");
+
+      // Look up overlap for future bookings (no need to add warning for historic bookings)
+      if (DateTime.Now < ArrivalDate)
+      {
+        var overlappingBookings = await bookingProvider.FindBookingsInInterval(new Queries.SearchBookingSummariesQuery
+        {
+          Start = ArrivalDate,
+          End = DepartureDate
+        });
+
+        foreach (var booking in overlappingBookings)
+        {
+          // Do not include self
+          if (booking.Id != Id)
+            Warnings.Add($"Denne reservation overlapper med reservation #{booking.Id} den {booking.ArrivalDate.ToShortDateString()} til {booking.DepartureDate.ToShortDateString()}.");
+        }
+      }
     }
   }
 }

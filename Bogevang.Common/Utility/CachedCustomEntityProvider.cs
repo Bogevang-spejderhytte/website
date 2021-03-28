@@ -40,6 +40,7 @@ namespace Bogevang.Common.Utility
     {
       await CacheSemaphore.WaitAsync();
 
+      bool doPostProcess = false;
       try
       {
         if (Cache == null)
@@ -50,17 +51,19 @@ namespace Bogevang.Common.Utility
             .AsRenderSummary()
             .ExecuteAsync();
 
-          List<CacheEntry> entries = new List<CacheEntry>();
-          foreach (var entity in allEntities)
-            entries.Add(await MapEntity(entity));
-
-          Cache = PostProcess(entries);
+          Cache = allEntities.Select(e => MapEntity(e)).ToList();
+          doPostProcess = true;
         }
       }
       finally
       {
         CacheSemaphore.Release();
       }
+
+      // Post processing may involved a callback to EnsureCacheLoad, which will block on the semaphore,
+      // so wait until semaphore is released.
+      if (doPostProcess)
+        await PostProcessCache();
     }
 
 
@@ -68,9 +71,9 @@ namespace Bogevang.Common.Utility
 
     protected abstract bool IsRelevantEntityCode(string entityCode);
 
-    protected abstract Task<CacheEntry> MapEntity(CustomEntityRenderSummary entity);
+    protected abstract CacheEntry MapEntity(CustomEntityRenderSummary entity);
 
-    protected abstract List<CacheEntry> PostProcess(List<CacheEntry> entries);
+    protected virtual Task PostProcessCache() => Task.CompletedTask;
 
 
     private async Task ResetCache()
