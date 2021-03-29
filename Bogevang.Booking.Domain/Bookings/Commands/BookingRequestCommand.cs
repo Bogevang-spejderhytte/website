@@ -18,7 +18,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
     public DateTime? DepartureDate { get; set; }
 
 
-    [Display(Name = "Lejers oprindelse", Description = "Angiv hvor lejer kommer fra. Oplysningen bruges til statistik, prisberegning og ved Bøgevangs ansøgning om kommunalt tilskud.")]
+    [Display(Name = "Lejers baggrund", Description = "Angiv hvor lejer kommer fra. Oplysningen bruges til statistik, prisberegning og ved Bøgevangs ansøgning om kommunalt tilskud.")]
     [CustomEntity(TenantCategoryCustomEntityDefinition.DefinitionCode)]
     [Required]
     public int? TenantCategoryId { get; set; }
@@ -69,6 +69,10 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
     [MultiLineText(Rows = 6)]
     [MaxLength(2000)]
     public string Comments { get; set; }
+
+
+    [Display(Name = @"html:Jeg har læst og accepteret <a href=""/handelsbetingelser"" target=""bogevang-secondary"">handelsbetingelserne</a>.")]
+    public bool ApproveTerms { get; set; }
 
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

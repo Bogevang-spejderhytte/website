@@ -16,7 +16,6 @@
 
     methods: {
       send: async function () {
-        debugger
         var subject = $('#subject')[0].value;
         var message = tinymce.get('message').getContent();
         var sendCommand = {

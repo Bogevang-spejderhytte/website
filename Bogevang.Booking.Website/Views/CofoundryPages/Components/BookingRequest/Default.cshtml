@@ -27,6 +27,7 @@
   @await Html.VueEditorRowFor(m => m.ContactCity)
   @await Html.VueEditorRowFor(m => m.ContactEMail)
   @await Html.VueEditorRowFor(m => m.Comments)
+  @await Html.VueEditorRowFor(m => m.ApproveTerms)
 
   <button type="button" id="sendButton" class="btn btn-primary" v-on:click="send">Send</button>
   <button type="button" id="cancelButton" class="btn btn-secondary" v-on:click="cancel">Fortryd</button>

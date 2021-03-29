@@ -54,6 +54,13 @@
     },
 
 
+    truncateHoursFromDate(d) {
+      return d == null
+        ? null
+        : new Date(d.setHours(0, 0, 0))
+    },
+
+
     getWithErrorHandling: async function (url, errorHandler) {
       const options = {
         method: 'GET'

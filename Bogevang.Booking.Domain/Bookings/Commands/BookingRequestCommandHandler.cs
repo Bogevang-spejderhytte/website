@@ -19,18 +19,21 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
     private readonly ITemplateProvider TemplateProvider;
     private readonly ITenantCategoryProvider TenantCategoryProvider;
     private readonly IMailDispatchService MailDispatchService;
+    private readonly BookingSettings BookingSettings;
 
 
     public BookingRequestCommandHandler(
         IAdvancedContentRepository domainRepository,
         ITemplateProvider templateProvider,
         ITenantCategoryProvider tenantCategoryProvider,
-        IMailDispatchService mailDispatchService)
+        IMailDispatchService mailDispatchService,
+        BookingSettings bookingSettings)
     {
       DomainRepository = domainRepository;
       TemplateProvider = templateProvider;
       TenantCategoryProvider = tenantCategoryProvider;
       MailDispatchService = mailDispatchService;
+      BookingSettings = bookingSettings;
     }
 
 
@@ -56,6 +59,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
         ContactEMail = command.ContactEMail,
         Comments = command.Comments,
         RentalPrice = null, // To be set later
+        Deposit = BookingSettings.StandardDeposit,
         BookingState = BookingDataModel.BookingStateType.Requested
       };
 

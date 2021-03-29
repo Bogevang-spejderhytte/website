@@ -140,10 +140,9 @@
 
 
       saveData: async function () {
-        debugger
         var saveArgs = {
-          arrivalDate: new Date(this.arrivalDate.setHours(0,0,0)),
-          departureDate: new Date(this.departureDate.setHours(0, 0, 0)),
+          arrivalDate: this.truncateHoursFromDate(this.arrivalDate),
+          departureDate: this.truncateHoursFromDate(this.departureDate),
           tenantCategoryId: this.tenantCategoryId,
           tenantName: this.tenantName,
           purpose: this.purpose,

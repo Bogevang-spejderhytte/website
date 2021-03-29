@@ -78,6 +78,10 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
     public decimal? RentalPrice { get; set; }
 
 
+    [Display(Name = "Depositum")]
+    public decimal? Deposit { get; set; }
+
+
     [Display(Name = "Bookingstatus")]
     [SelectList(typeof(BookingStateType))]
     [Required]

@@ -96,7 +96,11 @@ namespace Bogevang.Common.Utility
       string propName = expr.Metadata.PropertyName;
       propName = Char.ToLowerInvariant(propName[0]) + propName.Substring(1);
 
-      string displayName = expr.Metadata.DisplayName;
+      string displayName = expr.Metadata.DisplayName ?? "";
+      if (displayName.StartsWith("html:"))
+        displayName = displayName.Substring(5);
+      else
+        displayName = WebUtility.HtmlEncode(displayName);
 
       Type modelType = expr.Metadata.ModelType;
       modelType = Nullable.GetUnderlyingType(modelType) ?? modelType;
@@ -145,13 +149,13 @@ namespace Bogevang.Common.Utility
 <input type=""checkbox"" id=""{propName}"" v-model=""{propName}"" class=""form-check-input editable"" v-on:change=""clearValidation"" readonly>";
 
         if (addLabel)
-          html += $@"<label for=""{propName}"" class=""form-label"">{WebUtility.HtmlEncode(displayName)}</label>";
+          html += $@" <label for=""{propName}"" class=""form-label"">{displayName}</label>";
       }
       else
       {
         if (addLabel)
           html += $@"
-<label for=""{propName}"" class=""form-label"">{WebUtility.HtmlEncode(displayName)}</label>";
+<label for=""{propName}"" class=""form-label"">{displayName}</label>";
 
         if (isEnum)
         {
