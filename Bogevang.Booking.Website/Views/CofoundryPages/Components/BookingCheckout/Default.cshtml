@@ -2,19 +2,68 @@
 @using Bogevang.Booking.Website.ViewModels
 @model BookingCheckoutViewModel
 
-<form id="requestApp">
+@if (Model.BookingId > 0)
+{
+<form id="checkoutApp">
   @Html.AntiForgeryToken()
 
   <partial name="_VueErrorSummary" />
 
-  <p>Aftalenummer: @Model.Id</p>
-
-  <div class="row align-items-center mb-3">
-    @await Html.VueEditorColFor(m => m.ArrivalDate)
-    @await Html.VueEditorColFor(m => m.DepartureDate)
+  <div class="row mb-3">
+    <label for="bookingId" class="col-3 col-form-label">Aftalenummer:</label>
+    <div class="col">
+      <input type="text" class="form-control" id="bookingId" value="@Model.BookingId" readonly>
+    </div>
   </div>
+
+  <div class="row mb-3">
+    <label for="arrivalDate" class="col-3 col-form-label">Periode:</label>
+    <div class="col">
+      <div class="input-group">
+        <input type="text" class="form-control" id="arrivalDate" value="@Model.ArrivalDate.ToShortDateString()" readonly>
+        &nbsp;-&nbsp;
+        <input type="text" class="form-control" id="arrivalDate" value="@Model.DepartureDate.ToShortDateString()" readonly>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <label for="contactName" class="col-3 col-form-label">Kontaktperson:</label>
+    <div class="col">
+      <input type="text" class="form-control" id="contactName" value="@Model.ContactName" readonly>
+    </div>
+  </div>
+
+  @await Html.VueEditorRowFor(m => m.StartReading)
+  @await Html.VueEditorRowFor(m => m.EndReading)
+
+  <div class="row mb-3">
+    <label for="kwh" class="col-3 form-label">Forbrug:</label>
+    <div class="col">
+      <div class="input-group">
+        <input type="text" class="form-control" id="kwhUsed" v-model="kwhUsed" readonly>
+        &nbsp;(kWh) =&nbsp;
+        <input type="text" class="form-control" id="electricityPrice" v-model="electricityPrice" readonly>
+        &nbsp;kr.
+      </div>
+    </div>
+  </div>
+
+
+  @await Html.VueEditorRowFor(m => m.Comments)
+
 
   <button type="button" id="sendButton" class="btn btn-primary" v-on:click="send">Send</button>
   <button type="button" id="cancelButton" class="btn btn-secondary" v-on:click="cancel">Fortryd</button>
 
 </form>
+
+<partial name="_VueLoaderOverlay" />
+
+<script defer src="~/js/forms-editor-plugin.js"></script>
+<script defer src="~/booking/scripts/checkout-booking.js"></script>
+}
+else
+{ 
+  <p>Der er ikke angivet noget aftalenummer.</p>
+}

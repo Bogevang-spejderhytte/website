@@ -27,18 +27,16 @@ namespace Bogevang.Booking.Website.ViewComponents
 
         if (token != booking.TenantSelfServiceToken)
           throw new AuthenticationFailedException("Ugyldigt eller manglende adgangsnøgle");
-
-        var viewModel = new BookingCheckoutViewModel
+        
+        return View(new BookingCheckoutViewModel
         {
-          Id = booking.Id,
+          BookingId = booking.Id,
           ArrivalDate = booking.ArrivalDate,
           DepartureDate = booking.DepartureDate,
           ContactName = booking.ContactName
-        };
-        return View(viewModel);
+        });
       }
 
-      // FIXME: throw unknown entity
       return View(new BookingCheckoutViewModel());
     }
   }

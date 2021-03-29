@@ -89,7 +89,7 @@
         if (!confirm('Slet denne reservation (uden at informere lejer)?'))
           return;
 
-        result = await this.deleteData();
+        result = await this.doDelete();
         if (result) {
           window.location = url;
         }
@@ -192,7 +192,7 @@
       },
 
 
-      deleteData: async function () {
+      doDelete: async function () {
         return await this.deletetWithErrorHandling(
           "/api/booking?id=" + this.bookingId);
       },

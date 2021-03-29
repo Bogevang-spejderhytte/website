@@ -178,7 +178,7 @@ namespace Bogevang.Common.Utility
         else if (isDate)
         {
           html += $@"
-<vuejs-datepicker id=""{propName}"" :monday-first=""true"" :language=""da"" v-model=""{propName}"" v-on:change=""clearValidation"" :disabled=""!isEditing""></vuejs-datepicker>";
+<vuejs-datepicker id=""{propName}"" bootstrap-styling=""true"" :monday-first=""true"" :language=""da"" v-model=""{propName}"" v-on:change=""clearValidation"" :disabled=""!isEditing""></vuejs-datepicker>";
         }
         else if (customEntities != null)
         {

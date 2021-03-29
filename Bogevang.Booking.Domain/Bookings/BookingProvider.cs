@@ -66,6 +66,7 @@ namespace Bogevang.Booking.Domain.Bookings
         IsRejected = model.IsRejected,
         WelcomeLetterIsSent = model.WelcomeLetterIsSent,
         TenantSelfServiceToken = model.TenantSelfServiceToken,
+        CheckoutUrl = "https://localhost:44313/reservationer/slutafregning?id=" + entity.CustomEntityId + "&token=" + model.TenantSelfServiceToken, // FIXME: hard coded URL
         LogEntries = model.LogEntries
       };
 

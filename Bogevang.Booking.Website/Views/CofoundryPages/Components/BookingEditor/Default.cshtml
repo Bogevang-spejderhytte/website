@@ -17,7 +17,7 @@
           </button>
           <ul class="dropdown-menu" aria-labelledby="actionGroupButton" style="width: 15em">
             <li><button id="approveButton" type="button" class="dropdown-item" v-on:click="approve()">Godkend <i v-if="isApproved" class="menu-status-icon fas fa-check color-ok" title="Reservationen er allerede godkendt"></i></button></li>
-            <li><button id="rejectButton" type="button" class="dropdown-item" v-on:click="reject()">Afvist <i v-if="isRejected" class="menu-status-icon fas fa-check color-ok" title="Reservationen er allerede afvist"></i></button></li>
+            <li><button id="rejectButton" type="button" class="dropdown-item" v-on:click="reject()">Afvis <i v-if="isRejected" class="menu-status-icon fas fa-check color-ok" title="Reservationen er allerede afvist"></i></button></li>
             <li><button id="sendWelcomeLetterButton" type="button" class="dropdown-item" v-on:click="sendWelcomeLetter()">Send velkomstbrev <i v-if="welcomeLetterIsSent" class="menu-status-icon fas fa-check color-ok" title="Velkomstbrevet er allerede sendt"></i></button></li>
             <li><button id="sendMailButton" type="button" class="dropdown-item" v-on:click="sendMail()">Send mail</button></li>
             <li><button id="deleteButton" type="button" class="dropdown-item" v-on:click="deleteBooking('/reservationer')">Slet</button></li>

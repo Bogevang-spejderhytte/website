@@ -15,18 +15,12 @@ namespace Bogevang.Booking.Website.Api
   [ApiController]
   public class SendBookingMailApiController : ControllerBase
   {
-    private readonly IBookingProvider BookingProvider;
-    private readonly IBookingMailService BookingMailService;
     private readonly IApiResponseHelper ApiResponseHelper;
 
 
     public SendBookingMailApiController(
-      IBookingProvider bookingProvider,
-      IBookingMailService bookingMailService,
       IApiResponseHelper apiResponseHelper)
     {
-      BookingProvider = bookingProvider;
-      BookingMailService = bookingMailService;
       ApiResponseHelper = apiResponseHelper;
     }
 
