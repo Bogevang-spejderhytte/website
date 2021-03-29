@@ -7,6 +7,7 @@
       bookingId: null,
       startReading: null,
       endReading: null,
+      deposit: null,
       comments: null
     },
 
@@ -17,13 +18,18 @@
       },
 
       electricityPrice() {
-        return this.kwhUsed * 2.5;
+        return this.kwhUsed * electricityPrice;
+      },
+
+      totalPrice() {
+        return this.electricityPrice - this.deposit;
       }
     },
 
     async mounted() {
       const urlParams = new URLSearchParams(window.location.search);
       this.bookingId = urlParams.get('id');
+      this.deposit = bookingDeposit; // Global variable in html code
       this.startEditing();
     },
 

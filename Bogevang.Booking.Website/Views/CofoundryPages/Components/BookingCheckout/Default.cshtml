@@ -1,69 +1,111 @@
 ﻿@using Bogevang.Common.Utility
+@using Bogevang.Booking.Domain
 @using Bogevang.Booking.Website.ViewModels
 @model BookingCheckoutViewModel
 
+@inject BookingSettings bookingSettings
+
 @if (Model.BookingId > 0)
 {
-<form id="checkoutApp">
-  @Html.AntiForgeryToken()
+  <script>
+    bookingDeposit = @Model.Deposit.ToString(System.Globalization.CultureInfo.InvariantCulture);
+    electricityPrice = @bookingSettings.ElectricityPrice.ToString(System.Globalization.CultureInfo.InvariantCulture);
+  </script>
 
-  <partial name="_VueErrorSummary" />
+  <form id="checkoutApp">
+    @Html.AntiForgeryToken()
 
-  <div class="row mb-3">
-    <label for="bookingId" class="col-3 col-form-label">Aftalenummer:</label>
-    <div class="col">
-      <input type="text" class="form-control" id="bookingId" value="@Model.BookingId" readonly>
-    </div>
-  </div>
+    <partial name="_VueErrorSummary" />
 
-  <div class="row mb-3">
-    <label for="arrivalDate" class="col-3 col-form-label">Periode:</label>
-    <div class="col">
-      <div class="input-group">
-        <input type="text" class="form-control" id="arrivalDate" value="@Model.ArrivalDate.ToShortDateString()" readonly>
-        &nbsp;-&nbsp;
-        <input type="text" class="form-control" id="arrivalDate" value="@Model.DepartureDate.ToShortDateString()" readonly>
+    <div class="row mb-3">
+      <label for="bookingId" class="col-3 col-form-label">Aftalenummer:</label>
+      <div class="col">
+        <input type="text" class="form-control" id="bookingId" value="@Model.BookingId" readonly>
       </div>
     </div>
-  </div>
 
-  <div class="row mb-3">
-    <label for="contactName" class="col-3 col-form-label">Kontaktperson:</label>
-    <div class="col">
-      <input type="text" class="form-control" id="contactName" value="@Model.ContactName" readonly>
+    <div class="row mb-3">
+      <label for="arrivalDate" class="col-3 col-form-label">Periode:</label>
+      <div class="col">
+        <div class="input-group">
+          <input type="text" class="form-control" id="arrivalDate" value="@Model.ArrivalDate.ToShortDateString()" readonly>
+          &nbsp;-&nbsp;
+          <input type="text" class="form-control" id="arrivalDate" value="@Model.DepartureDate.ToShortDateString()" readonly>
+        </div>
+      </div>
     </div>
-  </div>
 
-  @await Html.VueEditorRowFor(m => m.StartReading)
-  @await Html.VueEditorRowFor(m => m.EndReading)
+    <div class="row mb-3">
+      <label for="contactName" class="col-3 col-form-label">Kontaktperson:</label>
+      <div class="col">
+        <input type="text" class="form-control" id="contactName" value="@Model.ContactName" readonly>
+      </div>
+    </div>
 
-  <div class="row mb-3">
-    <label for="kwh" class="col-3 form-label">Forbrug:</label>
-    <div class="col">
-      <div class="input-group">
+    <div class="row mb-3">
+      @await Html.VueEditorColFor(m => m.StartReading)
+      @await Html.VueEditorColFor(m => m.EndReading)
+    </div>
+
+    <div class="row mb-3">
+      <div class="col">
+      </div>
+      <div class="col">
+        <label for="electricityPrice" class="form-label">Pris pr. kWh (kr)</label>
+        <input type="text" class="form-control" id="electricityPrice" value="@bookingSettings.ElectricityPrice.ToString()" readonly>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col">
+        <label for="kwhUsed" class="form-label">Forbrug (kWh)</label>
         <input type="text" class="form-control" id="kwhUsed" v-model="kwhUsed" readonly>
-        &nbsp;(kWh) =&nbsp;
+      </div>
+      <div class="col">
+        <label for="electricityPrice" class="form-label">El-omkostning (kr)</label>
         <input type="text" class="form-control" id="electricityPrice" v-model="electricityPrice" readonly>
-        &nbsp;kr.
       </div>
     </div>
-  </div>
+
+    <div class="row mb-3">
+      <div class="col">
+      </div>
+      <div class="col">
+        <label for="deposit" class="form-label">Depositum (kr)</label>
+        <input type="text" class="form-control" id="deposit" v-model="deposit" readonly>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col">
+      </div>
+      <div class="col">
+        <label for="totalPrice" class="form-label">At betale</label>
+        <input type="text" class="form-control" id="totalPrice" v-model="totalPrice" readonly>
+      </div>
+    </div>
+
+    <div v-if="totalPrice > 0" class="alert alert-primary">
+      <p>Betal venligst det udestående beløb tilbage på konto @bookingSettings.BankAccount.</p>
+    </div>
+    <div v-if="totalPrice < 0" class="alert alert-primary">
+      <p>Oplys venligst bankkontonummer i kommentarfeltet herunder, så du kan få det udestående beløb tilbagebetalt.</p>
+    </div>
+
+    @await Html.VueEditorRowFor(m => m.Comments)
 
 
-  @await Html.VueEditorRowFor(m => m.Comments)
+    <button type="button" id="sendButton" class="btn btn-primary" v-on:click="send">Send</button>
+    <button type="button" id="cancelButton" class="btn btn-secondary" v-on:click="cancel">Fortryd</button>
 
+  </form>
 
-  <button type="button" id="sendButton" class="btn btn-primary" v-on:click="send">Send</button>
-  <button type="button" id="cancelButton" class="btn btn-secondary" v-on:click="cancel">Fortryd</button>
+  <partial name="_VueLoaderOverlay" />
 
-</form>
-
-<partial name="_VueLoaderOverlay" />
-
-<script defer src="~/js/forms-editor-plugin.js"></script>
-<script defer src="~/booking/scripts/checkout-booking.js"></script>
+  <script defer src="~/js/forms-editor-plugin.js"></script>
+  <script defer src="~/booking/scripts/checkout-booking.js"></script>
 }
 else
-{ 
+{
   <p>Der er ikke angivet noget aftalenummer.</p>
 }

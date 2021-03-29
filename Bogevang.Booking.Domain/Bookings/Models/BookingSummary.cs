@@ -29,6 +29,7 @@ namespace Bogevang.Booking.Domain.Bookings.Models
     public string ContactEMail { get; set; }
     public string Comments { get; set; }
     public decimal? RentalPrice { get; set; }
+    public decimal Deposit { get; set; }
     public BookingDataModel.BookingStateType BookingState { get; set; }
     public string BookingStateText { get; set; }
     public bool IsApproved { get; set; }

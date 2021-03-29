@@ -60,6 +60,7 @@ namespace Bogevang.Booking.Domain.Bookings
         ContactEMail = model.ContactEMail,
         Comments = model.Comments,
         RentalPrice = model.RentalPrice,
+        Deposit = model.Deposit ?? 0,
         BookingState = model.BookingState.Value,
         BookingStateText = model.BookingState.GetDescription(),
         IsApproved = model.IsApproved,

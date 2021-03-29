@@ -19,6 +19,8 @@ namespace Bogevang.Booking.Website.ViewModels
     [Display(Name = "Aflæsning af el-måler ved afrejse (kWh)")]
     public decimal EndReading { get; set; }
 
+    public decimal Deposit { get; set; }
+
     [Display(Name = "Bemærkninger", Description = "Har du nogen bemærkninger til opholdet eller ideer til forbedringer, så skriv dem her.")]
     [MultiLineText(Rows = 6)]
     [MaxLength(2000)]

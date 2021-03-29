@@ -7,5 +7,9 @@ namespace Bogevang.Booking.Domain
   {
     [Required]
     public decimal StandardDeposit { get; set; }
+    
+    public decimal ElectricityPrice { get; set; }
+
+    public string BankAccount { get; set; }
   }
 }
