@@ -1,17 +1,18 @@
 ﻿FormsEditorMixin =
 {
   data: function () {
-    var overlay = new bootstrap.Modal(document.getElementById('loaderOverlay'), {
-      backdrop: "static", //remove ability to close modal with click
-      keyboard: false, //remove option to close with keyboard
-    });
+    if (!FormsEditorMixin.editorModalOverlay) {
+      FormsEditorMixin.editorModalOverlay = new bootstrap.Modal(document.getElementById('loaderOverlay'), {
+        backdrop: "static", //remove ability to close modal with click
+        keyboard: false, //remove option to close with keyboard
+      });
+    }
 
     return {
       isWorking: true,
       isEditing: false,
       errors: [],
-      warnings: [],
-      loaderModalOverlay: overlay
+      warnings: []
     }
   },
 
@@ -45,12 +46,12 @@
 
 
     showModalSpinner: function () {
-      this.loaderModalOverlay.show();
+      FormsEditorMixin.editorModalOverlay.show();
     },
 
 
     hideModalSpinner: function () {
-      this.loaderModalOverlay.hide();
+      FormsEditorMixin.editorModalOverlay.hide();
     },
 
 
@@ -58,6 +59,15 @@
       return d == null
         ? null
         : new Date(d.setHours(0, 0, 0))
+    },
+
+
+    datestr2localTimestamp(s) {
+      var d = new Date(s);
+      const offset = d.getTimezoneOffset();
+      d = new Date(d.getTime() - (offset * 60 * 1000));
+      parts = d.toISOString().split('T');
+      return parts[0] + ' ' + parts[1].substring(0, 8);
     },
 
 

@@ -13,17 +13,20 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
     ICommandHandler<SendBookingMailCommand>,
     IIgnorePermissionCheckHandler  // FIXME!!!!
   {
+    private readonly IAdvancedContentRepository DomainRepository;
     private readonly IBookingProvider BookingProvider;
     private readonly ITemplateProvider TemplateProvider;
     private readonly IMailDispatchService MailDispatchService;
     private readonly ICurrentUserProvider CurrentUserProvider;
 
     public SendBookingMailCommandHandler(
+      IAdvancedContentRepository domainRepository,
       IBookingProvider bookingProvider,
       ITemplateProvider templateProvider,
       IMailDispatchService mailDispatchService,
       ICurrentUserProvider currentUserProvider)
     {
+      DomainRepository = domainRepository;
       BookingProvider = bookingProvider;
       TemplateProvider = templateProvider;
       MailDispatchService = mailDispatchService;
@@ -34,7 +37,6 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
     public async Task ExecuteAsync(SendBookingMailCommand command, IExecutionContext executionContext)
     {
       BookingDataModel booking = await BookingProvider.GetBookingById(command.BookingId);
-      // FIXME: verify booking exists
 
       MailAddress to = new MailAddress(booking.ContactEMail, booking.ContactName);
       MailMessage message = new MailMessage
@@ -46,14 +48,18 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
 
       await MailDispatchService.DispatchAsync(message);
 
-      var user = await CurrentUserProvider.GetAsync();
-      booking.AddLogEntry(new BookingLogEntry
+      await booking.AddLogEntry(CurrentUserProvider, $"Sendt: {command.Subject}.");
+
+      UpdateCustomEntityDraftVersionCommand updateCmd = new UpdateCustomEntityDraftVersionCommand
       {
-        Text = "Kvitteringsmail blev udsendt.",
-        Username = user.User.GetFullName(),
-        UserId = user.User.UserId,
-        Timestamp = DateTime.Now
-      });
+        CustomEntityDefinitionCode = BookingCustomEntityDefinition.DefinitionCode,
+        CustomEntityId = command.BookingId,
+        Title = booking.MakeTitle(),
+        Publish = true,
+        Model = booking
+      };
+
+      await DomainRepository.CustomEntities().Versions().UpdateDraftAsync(updateCmd);
     }
   }
 }

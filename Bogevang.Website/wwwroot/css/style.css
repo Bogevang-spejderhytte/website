@@ -2,6 +2,7 @@
 {
     height: 200px;
     padding-top: 200px;
+    margin-bottom: 5px;
     background-image: url(../media/banner-background.jpg);
     display: flex;
     justify-content: space-between;

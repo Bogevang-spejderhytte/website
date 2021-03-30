@@ -38,7 +38,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
       var user = await CurrentUserProvider.GetAsync();
       booking.AddLogEntry(new BookingLogEntry
       {
-        Text = "Reservationen blev bekræftet.",
+        Text = "Reservationen blev godkendt.",
         Username = user.User.GetFullName(),
         UserId = user.User.UserId,
         Timestamp = DateTime.Now

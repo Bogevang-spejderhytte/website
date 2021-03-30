@@ -25,7 +25,8 @@
       isApproved: false,
       isRejected: false,
       welcomeLetterIsSent: false,
-      tenantSelfServiceToken: null
+      tenantSelfServiceToken: null,
+      logEntries: []
     },
 
     async mounted() {
@@ -135,6 +136,7 @@
           this.welcomeLetterIsSent = data.welcomeLetterIsSent;
           this.warnings = data.warnings;
           this.tenantSelfServiceToken = data.tenantSelfServiceToken;
+          this.logEntries = data.logEntries;
         }
       },
 

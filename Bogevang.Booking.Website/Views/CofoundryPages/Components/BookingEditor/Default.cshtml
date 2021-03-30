@@ -5,6 +5,18 @@
 <form id="bookingApp">
   @Html.AntiForgeryToken()
 
+  <ul class="nav nav-tabs" id="editorTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="main-tab" data-bs-toggle="tab" data-bs-target="#mainTabArea" type="button" role="tab" aria-controls="mainTabArea" aria-selected="true">Start</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="finance-tab" data-bs-toggle="tab" data-bs-target="#financeTabArea" type="button" role="tab" aria-controls="financeTabArea" aria-selected="false">Økonomi</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="history-tab" data-bs-toggle="tab" data-bs-target="#historyTabArea" type="button" role="tab" aria-controls="historyTabArea" aria-selected="false">Historik</button>
+    </li>
+  </ul>
+
   <nav class="navbar navbar-light bg-light">
     <div class="container-fluid">
       <div class="btn-group" role="group">
@@ -25,7 +37,7 @@
         </div>
       </div>
       <div class="btn-group" role="group">
-        <button type="button" id="selfServiceButton" class="btn btn-outline-secondary" v-on:click="openSelfService()">Selvbetjening</button>
+        <button type="button" id="selfServiceButton" class="btn btn-outline-secondary" v-on:click="openSelfService()" title="Klik for at se lejers selvbetjeningsside.">Selvbetjening</button>
       </div>
       <div class="btn-group" role="group">
         <button type="button" id="closeButton" class="btn btn-outline-primary" v-on:click="close('/reservationer')">Afslut</button>
@@ -35,22 +47,47 @@
 
   <partial name="_VueErrorSummary" />
 
-  <div class="row mb-3">
-    @await Html.VueEditorColFor(m => m.ArrivalDate)
-    @await Html.VueEditorColFor(m => m.DepartureDate)
-  </div>
+  <div class="tab-content" id="editorTabsContent">
+    <div class="tab-pane fade show active" id="mainTabArea" role="tabpanel" aria-labelledby="main-tab">
+      <div class="row mb-3">
+        @await Html.VueEditorColFor(m => m.ArrivalDate)
+        @await Html.VueEditorColFor(m => m.DepartureDate)
+      </div>
 
-  @await Html.VueEditorRowFor(m => m.TenantCategoryId)
-  @await Html.VueEditorRowFor(m => m.TenantName)
-  @await Html.VueEditorRowFor(m => m.Purpose)
-  @await Html.VueEditorRowFor(m => m.ContactName)
-  @await Html.VueEditorRowFor(m => m.ContactPhone)
-  @await Html.VueEditorRowFor(m => m.ContactAddress)
-  @await Html.VueEditorRowFor(m => m.ContactCity)
-  @await Html.VueEditorRowFor(m => m.ContactEMail)
-  @await Html.VueEditorRowFor(m => m.Comments)
-  @await Html.VueEditorRowFor(m => m.RentalPrice)
-  @await Html.VueEditorRowFor(m => m.BookingState)
+      @await Html.VueEditorRowFor(m => m.TenantCategoryId)
+      @await Html.VueEditorRowFor(m => m.TenantName)
+      @await Html.VueEditorRowFor(m => m.Purpose)
+      @await Html.VueEditorRowFor(m => m.ContactName)
+      @await Html.VueEditorRowFor(m => m.ContactPhone)
+      @await Html.VueEditorRowFor(m => m.ContactAddress)
+      @await Html.VueEditorRowFor(m => m.ContactCity)
+      @await Html.VueEditorRowFor(m => m.ContactEMail)
+      @await Html.VueEditorRowFor(m => m.Comments)
+      @await Html.VueEditorRowFor(m => m.RentalPrice)
+      @await Html.VueEditorRowFor(m => m.BookingState)
+    </div>
+    <div class="tab-pane fade" id="financeTabArea" role="tabpanel" aria-labelledby="finance-tab">
+    </div>
+    <div class="tab-pane fade" id="historyTabArea" role="tabpanel" aria-labelledby="history-tab">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Dato</th>
+            <th>Tekst</th>
+            <th>Bruger</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="entry in logEntries">
+            <td>{{datestr2localTimestamp(entry.timestamp)}}</td>
+            <td>{{entry.text}}</td>
+            <td>{{entry.username}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
 </form>
 
 <partial name="_VueLoaderOverlay" />
