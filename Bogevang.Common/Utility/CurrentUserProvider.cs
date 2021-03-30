@@ -44,6 +44,18 @@ namespace Bogevang.Common.Utility
         details.User = await QueryExecutor.ExecuteAsync(query);
         details.IsLoggedIn = true;
       }
+      else
+      {
+        details.User = new UserMicroSummary
+        {
+          Username = "Anonym",
+          FirstName = "Anonym",
+          LastName = "",
+          Email = null,
+          UserArea = null,
+          UserId = 0
+        };
+      }
 
       UserDetails = details;
     }

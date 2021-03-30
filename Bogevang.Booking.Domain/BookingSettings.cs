@@ -11,5 +11,7 @@ namespace Bogevang.Booking.Domain
     public decimal ElectricityPrice { get; set; }
 
     public string BankAccount { get; set; }
+
+    public string CheckoutUrlPath { get; set; }
   }
 }

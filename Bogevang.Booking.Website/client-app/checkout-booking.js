@@ -37,9 +37,6 @@
 
     methods: {
       send: async function (e) {
-        if (!confirm("Indsend slutafregning?"))
-          return;
-
         var result = await this.sendData();
         if (result) {
           window.location = "/checkout-success";

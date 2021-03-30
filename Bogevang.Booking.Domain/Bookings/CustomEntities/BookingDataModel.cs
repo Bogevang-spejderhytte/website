@@ -117,10 +117,14 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
     public bool DepositReturned { get; set; }
 
 
-    [Display(Name = "Automatisk genereret adgangskode til selvbetjening")]
+    [Display(Name = "Automatisk genereret adgangskode til lejer-selvbetjening")]
     public string TenantSelfServiceToken { get; set; }
 
-    
+
+    [Display(Name = "Automatisk genereret adgangskode til administrator-selvbetjening")]
+    public string AdminSelfServiceToken { get; set; }
+
+
     [Display(Name = "Aflæsning af el-måler ved ankomst (kWh)")]
     public decimal? ElectricityReadingStart { get; set; }
 
@@ -134,7 +138,8 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
 
     public BookingDataModel()
     {
-      TenantSelfServiceToken = RandomKeyGenerator.GetRandomString(20);
+      TenantSelfServiceToken = RandomKeyGenerator.GetRandomString(30);
+      AdminSelfServiceToken = RandomKeyGenerator.GetRandomString(30);
       LogEntries = new List<BookingLogEntry>();
     }
 

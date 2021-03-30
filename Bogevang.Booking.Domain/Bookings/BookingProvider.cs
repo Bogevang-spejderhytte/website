@@ -17,17 +17,21 @@ namespace Bogevang.Booking.Domain.Bookings
     CachedCustomEntityProvider<BookingDataModel, BookingSummary>, 
     IBookingProvider
   {
-    private readonly IAdvancedContentRepository ContentRepository;
     private readonly ITenantCategoryProvider TenantCategoryProvider;
+    private readonly IContentRouteLibrary ContentRouteLibrary;
+    private readonly BookingSettings BookingSettings;
 
 
     public BookingProvider(
       IAdvancedContentRepository contentRepository,
-      ITenantCategoryProvider tenantCategoryProvider)
+      ITenantCategoryProvider tenantCategoryProvider,
+      IContentRouteLibrary contentRouteLibrary,
+      BookingSettings bookingSettings)
       : base(contentRepository)
     {
-      ContentRepository = contentRepository;
       TenantCategoryProvider = tenantCategoryProvider;
+      ContentRouteLibrary = contentRouteLibrary;
+      BookingSettings = bookingSettings;
     }
 
 
@@ -44,6 +48,9 @@ namespace Bogevang.Booking.Domain.Bookings
     protected override CacheEntry MapEntity(CustomEntityRenderSummary entity)
     {
       var model = (BookingDataModel)entity.Model;
+
+      string checkoutUrl = ContentRouteLibrary.ToAbsolute(BookingSettings.CheckoutUrlPath + "?id=" + entity.CustomEntityId + "&token=" + model.TenantSelfServiceToken);
+
       var summary = new BookingSummary
       {
         Id = entity.CustomEntityId,
@@ -67,7 +74,7 @@ namespace Bogevang.Booking.Domain.Bookings
         IsRejected = model.IsRejected,
         WelcomeLetterIsSent = model.WelcomeLetterIsSent,
         TenantSelfServiceToken = model.TenantSelfServiceToken,
-        CheckoutUrl = "https://localhost:44313/reservationer/slutafregning?id=" + entity.CustomEntityId + "&token=" + model.TenantSelfServiceToken, // FIXME: hard coded URL
+        CheckoutUrl = checkoutUrl,
         LogEntries = model.LogEntries
       };
 

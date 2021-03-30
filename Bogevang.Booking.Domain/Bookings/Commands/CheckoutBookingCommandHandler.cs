@@ -13,7 +13,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
 {
   public class CheckoutBookingCommandHandler
       : ICommandHandler<CheckoutBookingCommand>,
-        IIgnorePermissionCheckHandler  // Depends on custom entity permission checking
+        IIgnorePermissionCheckHandler  // Depends on token checking
 
   {
     private readonly IAdvancedContentRepository DomainRepository;
@@ -70,7 +70,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
         Model = booking
       };
 
-      await DomainRepository.CustomEntities().Versions().UpdateDraftAsync(updateCmd);
+      await DomainRepository.WithElevatedPermissions().CustomEntities().Versions().UpdateDraftAsync(updateCmd);
 
       // FIXME: Error handler and transactions
       await SendCheckoutConfirmationMail(booking);
