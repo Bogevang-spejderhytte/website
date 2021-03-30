@@ -5,6 +5,7 @@
     el: '#checkoutApp',
     data: {
       bookingId: null,
+      bookingToken: null,
       startReading: null,
       endReading: null,
       deposit: null,
@@ -29,12 +30,16 @@
     async mounted() {
       const urlParams = new URLSearchParams(window.location.search);
       this.bookingId = urlParams.get('id');
+      this.bookingToken = urlParams.get('token');
       this.deposit = bookingDeposit; // Global variable in html code
       this.startEditing();
     },
 
     methods: {
       send: async function (e) {
+        if (!confirm("Indsend slutafregning?"))
+          return;
+
         var result = await this.sendData();
         if (result) {
           window.location = "/checkout-success";
@@ -49,10 +54,14 @@
 
       sendData: async function () {
         var sendArgs = {
+          token: this.bookingToken,
+          startReading: this.startReading,
+          endReading: this.endReading,
+          comments: this.comments
         };
 
         return this.postWithErrorHandling(
-          "/api/checkout-booking?" + this.bookingId,
+          "/api/checkout-booking?id=" + this.bookingId,
           sendArgs
         );
       },

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace Bogevang.Booking.Domain.Bookings.CustomEntities
 {
@@ -100,6 +101,10 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
     public bool WelcomeLetterIsSent { get; set; }
 
 
+    [Display(Name = "El-forbrug er indmeldt")]
+    public bool IsCheckedOut { get; set; }
+
+
     [Display(Name = "Depositum modtaget")]
     public bool DepositReceived { get; set; }
 
@@ -115,6 +120,14 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
     [Display(Name = "Automatisk genereret adgangskode til selvbetjening")]
     public string TenantSelfServiceToken { get; set; }
 
+    
+    [Display(Name = "Aflæsning af el-måler ved ankomst (kWh)")]
+    public decimal? ElectricityReadingStart { get; set; }
+
+    
+    [Display(Name = "Aflæsning af el-måler ved afrejse (kWh)")]
+    public decimal? ElectricityReadingEnd { get; set; }
+
 
     public List<BookingLogEntry> LogEntries { get; set; }
 
@@ -122,11 +135,25 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
     public BookingDataModel()
     {
       TenantSelfServiceToken = RandomKeyGenerator.GetRandomString(20);
+      LogEntries = new List<BookingLogEntry>();
     }
 
     public string MakeTitle()
     {
       return $"Reservation {ArrivalDate.Value.ToShortDateString()} - {DepartureDate.Value.ToShortDateString()} ({BookingState.GetDescription()})";
+    }
+
+
+    public async Task AddLogEntry(ICurrentUserProvider currentUserProvider, string text)
+    {
+      var user = await currentUserProvider.GetAsync();
+      AddLogEntry(new BookingLogEntry
+      {
+        Text = text,
+        Username = user.User.GetFullName(),
+        UserId = user.User.UserId,
+        Timestamp = DateTime.Now
+      });
     }
 
     public void AddLogEntry(BookingLogEntry entry)

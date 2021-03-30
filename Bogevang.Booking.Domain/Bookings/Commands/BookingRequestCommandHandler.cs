@@ -1,5 +1,6 @@
 ﻿using Bogevang.Booking.Domain.Bookings.CustomEntities;
 using Bogevang.Booking.Domain.TenantCategories;
+using Bogevang.Common.Utility;
 using Bogevang.Templates.Domain;
 using Bogevang.Templates.Domain.CustomEntities;
 using Cofoundry.Core.Mail;
@@ -20,20 +21,23 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
     private readonly ITenantCategoryProvider TenantCategoryProvider;
     private readonly IMailDispatchService MailDispatchService;
     private readonly BookingSettings BookingSettings;
+    private readonly ICurrentUserProvider CurrentUserProvider;
 
 
     public BookingRequestCommandHandler(
-        IAdvancedContentRepository domainRepository,
-        ITemplateProvider templateProvider,
-        ITenantCategoryProvider tenantCategoryProvider,
-        IMailDispatchService mailDispatchService,
-        BookingSettings bookingSettings)
+      IAdvancedContentRepository domainRepository,
+      ITemplateProvider templateProvider,
+      ITenantCategoryProvider tenantCategoryProvider,
+      IMailDispatchService mailDispatchService,
+      BookingSettings bookingSettings,
+      ICurrentUserProvider currentUserProvider)
     {
       DomainRepository = domainRepository;
       TemplateProvider = templateProvider;
       TenantCategoryProvider = tenantCategoryProvider;
       MailDispatchService = mailDispatchService;
       BookingSettings = bookingSettings;
+      CurrentUserProvider = currentUserProvider;
     }
 
 
@@ -62,6 +66,8 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
         Deposit = BookingSettings.StandardDeposit,
         BookingState = BookingDataModel.BookingStateType.Requested
       };
+
+      await booking.AddLogEntry(CurrentUserProvider, "Reservationen blev indsendt af lejer.");
 
       var addCommand = new AddCustomEntityCommand
       {
