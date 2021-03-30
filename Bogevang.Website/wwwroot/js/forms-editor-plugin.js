@@ -27,7 +27,7 @@
     openEditableInputs: function() {
       this.clearErrors();
       this.isEditing = true;
-      $('input.editable').prop('readonly', false);
+      $('.editable').prop('readonly', false);
       $('input.editable').prop('disabled', false);
       $('select.editable').prop('disabled', false);
     },
@@ -36,7 +36,7 @@
     closeEditableInputs: function () {
       this.clearErrors();
       this.isEditing = false;
-      $('input.editable').prop('readonly', true);
+      $('.editable').prop('readonly', true);
       $('input.editable').prop('disabled', true);
       $('select.editable').prop('disabled', true);
     },
