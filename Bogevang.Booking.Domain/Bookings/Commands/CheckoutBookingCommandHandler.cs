@@ -51,6 +51,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
       booking.IsCheckedOut = true;
       booking.ElectricityReadingStart = command.StartReading;
       booking.ElectricityReadingEnd = command.EndReading;
+      booking.ElectricityPriceUnit = BookingSettings.ElectricityPrice;
 
       if (!string.IsNullOrEmpty(command.Comments))
         booking.Comments += $"\n\n=== Kommentarer til slutregnskab [{DateTime.Now}] ===\n{command.Comments}";

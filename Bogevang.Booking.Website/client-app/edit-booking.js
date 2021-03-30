@@ -6,6 +6,7 @@
     components: {
       vuejsDatepicker
     },
+
     data: {
       da: vdp_translation_da.js,
       bookingId: location.hash.substr(1),
@@ -26,7 +27,27 @@
       isRejected: false,
       welcomeLetterIsSent: false,
       tenantSelfServiceToken: null,
+      deposit: null,
+      depositReceived: null,
+      electricityReadingStart: null,
+      electricityReadingEnd: null,
+      electricityPriceUnit: null,
       logEntries: []
+    },
+
+    computed: {
+      kwhUsed() {
+        const kwh = this.electricityReadingEnd - this.electricityReadingStart;
+        return kwh < 0 ? null : kwh;
+      },
+
+      electricityPriceTotal() {
+        return this.kwhUsed * this.electricityPriceUnit;
+      },
+
+      totalPrice() {
+        return this.electricityPriceTotal - this.deposit;
+      }
     },
 
     async mounted() {
@@ -136,6 +157,11 @@
           this.welcomeLetterIsSent = data.welcomeLetterIsSent;
           this.warnings = data.warnings;
           this.tenantSelfServiceToken = data.tenantSelfServiceToken;
+          this.deposit = data.deposit;
+          this.depositReceived = data.depositReceived;
+          this.electricityReadingStart = data.electricityReadingStart;
+          this.electricityReadingEnd = data.electricityReadingEnd;
+          this.electricityPriceUnit = data.electricityPriceUnit;
           this.logEntries = data.logEntries;
         }
       },
@@ -155,7 +181,12 @@
           contactEMail: this.contactEMail,
           comments: this.comments,
           rentalPrice: this.rentalPrice,
-          bookingState: this.bookingState
+          bookingState: this.bookingState,
+          deposit: this.deposit,
+          depositReceived: this.depositReceived,
+          electricityReadingStart: this.electricityReadingStart,
+          electricityReadingEnd: this.electricityReadingEnd,
+          electricityPriceUnit: this.electricityPriceUnit
         };
         return await this.postWithErrorHandling(
           "/api/booking?id=" + this.bookingId,
@@ -210,6 +241,7 @@
         $('#approveButton').prop('disabled', true);
         $('#rejectButton').prop('disabled', true);
         $('#sendWelcomeLetterButton').prop('disabled', true);
+        $('#sendMailButton').prop('disabled', true);
         $('#closeButton').prop('disabled', true);
       },
 
@@ -224,6 +256,7 @@
         $('#approveButton').prop('disabled', false);
         $('#rejectButton').prop('disabled', false);
         $('#sendWelcomeLetterButton').prop('disabled', false);
+        $('#sendMailButton').prop('disabled', false);
         $('#closeButton').prop('disabled', false);
       }
     }

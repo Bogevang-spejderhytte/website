@@ -29,7 +29,8 @@ namespace Bogevang.Booking.Domain.Bookings.Models
     public string ContactEMail { get; set; }
     public string Comments { get; set; }
     public decimal? RentalPrice { get; set; }
-    public decimal Deposit { get; set; }
+    public decimal? Deposit { get; set; }
+    public bool DepositReceived { get; set; }
     public BookingDataModel.BookingStateType BookingState { get; set; }
     public string BookingStateText { get; set; }
     public bool IsApproved { get; set; }
@@ -37,7 +38,9 @@ namespace Bogevang.Booking.Domain.Bookings.Models
     public bool WelcomeLetterIsSent { get; set; }
     public string TenantSelfServiceToken { get; set; }
     public string CheckoutUrl { get; set; }
-
+    public decimal? ElectricityReadingStart { get; set; }
+    public decimal? ElectricityReadingEnd { get; set; }
+    public decimal? ElectricityPriceUnit { get; set; }
     public List<BookingLogEntry> LogEntries { get; set; }
 
     public List<string> Warnings { get; set; }

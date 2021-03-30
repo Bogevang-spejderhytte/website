@@ -40,6 +40,11 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
         booking.Comments = command.Comments;
         booking.RentalPrice = command.RentalPrice;
         booking.BookingState = command.BookingState;
+        booking.Deposit = command.Deposit;
+        booking.DepositReceived = command.DepositReceived;
+        booking.ElectricityReadingStart = command.ElectricityReadingStart;
+        booking.ElectricityReadingEnd = command.ElectricityReadingEnd;
+        booking.ElectricityPriceUnit = command.ElectricityPriceUnit;
 
         UpdateCustomEntityDraftVersionCommand updateCmd = new UpdateCustomEntityDraftVersionCommand
         {

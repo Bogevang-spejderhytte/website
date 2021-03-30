@@ -133,6 +133,10 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
     public decimal? ElectricityReadingEnd { get; set; }
 
 
+    [Display(Name = "El-pris ved afregning (kr/kWh)")]
+    public decimal? ElectricityPriceUnit { get; set; }
+
+
     public List<BookingLogEntry> LogEntries { get; set; }
 
 

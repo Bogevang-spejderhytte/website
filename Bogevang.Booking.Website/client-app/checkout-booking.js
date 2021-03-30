@@ -18,12 +18,12 @@
         return kwh < 0 ? null : kwh;
       },
 
-      electricityPrice() {
-        return this.kwhUsed * electricityPrice;
+      electricityPriceTotal() {
+        return this.kwhUsed * electricityPriceUnit;
       },
 
       totalPrice() {
-        return this.electricityPrice - this.deposit;
+        return this.electricityPriceTotal - this.deposit;
       }
     },
 

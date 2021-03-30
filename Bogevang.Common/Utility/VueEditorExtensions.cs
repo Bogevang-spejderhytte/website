@@ -17,7 +17,8 @@ namespace Bogevang.Common.Utility
   {
     public static async Task<IHtmlContent> VueEditorRowFor<TModel, TResult>(
       this IHtmlHelper<TModel> helper,
-      Expression<Func<TModel, TResult>> expression)
+      Expression<Func<TModel, TResult>> expression,
+      bool alwaysReadonly = false)
     {
       string html = $@"<div class=""row mb-3"">";
 
@@ -32,7 +33,8 @@ namespace Bogevang.Common.Utility
 
     public static async Task<IHtmlContent> VueEditorColFor<TModel, TResult>(
       this IHtmlHelper<TModel> helper,
-      Expression<Func<TModel, TResult>> expression)
+      Expression<Func<TModel, TResult>> expression,
+      bool alwaysReadonly = false)
     {
       string html = await helper.VueEditorColFor_string(expression);
       return new HtmlString(html);
@@ -41,7 +43,8 @@ namespace Bogevang.Common.Utility
 
     public static async Task<string> VueEditorColFor_string<TModel, TResult>(
       this IHtmlHelper<TModel> helper,
-      Expression<Func<TModel, TResult>> expression)
+      Expression<Func<TModel, TResult>> expression,
+      bool alwaysReadonly = false)
     {
       IModelExpressionProvider expressionProvider = helper.ViewContext.HttpContext.RequestServices.GetRequiredService<IModelExpressionProvider>();
       ModelExpression expr = expressionProvider.CreateModelExpression(helper.ViewData, expression);
@@ -63,7 +66,7 @@ namespace Bogevang.Common.Utility
 
       string html = $@"<div class=""col"">";
 
-      string editor = await helper.VueEditorFor_string(expression, addLabel: true);
+      string editor = await helper.VueEditorFor_string(expression, addLabel: true, alwaysReadonly: alwaysReadonly);
 
       html += editor;
       html += descriptionHtml;
@@ -78,9 +81,10 @@ namespace Bogevang.Common.Utility
 
     public static async Task<IHtmlContent> VueEditorFor<TModel, TResult>(
       this IHtmlHelper<TModel> helper,
-      Expression<Func<TModel, TResult>> expression)
+      Expression<Func<TModel, TResult>> expression,
+      bool alwaysReadonly = false)
     {
-      string html = await helper.VueEditorFor_string(expression, addLabel: false);
+      string html = await helper.VueEditorFor_string(expression, addLabel: false, alwaysReadonly: alwaysReadonly);
       return new HtmlString(html);
     }
 
@@ -88,7 +92,8 @@ namespace Bogevang.Common.Utility
     public static async Task<string> VueEditorFor_string<TModel,TResult>(
       this IHtmlHelper<TModel> helper,
       Expression<Func<TModel, TResult>> expression,
-      bool addLabel)
+      bool addLabel,
+      bool alwaysReadonly = false)
     {
       IModelExpressionProvider expressionProvider = helper.ViewContext.HttpContext.RequestServices.GetRequiredService<IModelExpressionProvider>();
       ModelExpression expr = expressionProvider.CreateModelExpression(helper.ViewData, expression);
@@ -110,6 +115,8 @@ namespace Bogevang.Common.Utility
       bool isDate = modelType.IsAssignableFrom(typeof(DateTime));
       bool isMultiLine = false;
       bool isHtml = false;
+
+      string editableClass = alwaysReadonly ? "" : " editable";
 
       MultiLineTextAttribute matt = null;
 
@@ -146,7 +153,7 @@ namespace Bogevang.Common.Utility
       if (isBool)
       {
         html += $@"
-<input type=""checkbox"" id=""{propName}"" v-model=""{propName}"" class=""form-check-input editable"" v-on:change=""clearValidation"" readonly>";
+<input type=""checkbox"" id=""{propName}"" v-model=""{propName}"" class=""form-check-input{editableClass}"" v-on:change=""clearValidation"" disabled>";
 
         if (addLabel)
           html += $@" <label for=""{propName}"" class=""form-label"">{displayName}</label>";
@@ -165,7 +172,7 @@ namespace Bogevang.Common.Utility
           .ToArray();
 
           html += $@"
-<select id=""{propName}"" v-model=""{propName}"" class=""form-select editable"" v-on:change=""clearValidation"" disabled>";
+<select id=""{propName}"" v-model=""{propName}"" class=""form-select{editableClass}"" v-on:change=""clearValidation"" disabled>";
 
           if (expr.Metadata.IsNullableValueType)
             html += $@"<option value="""">- Vælg -</option>";
@@ -187,7 +194,7 @@ namespace Bogevang.Common.Utility
         else if (customEntities != null)
         {
           html += $@"
-<select id=""{propName}"" v-model=""{propName}"" class=""form-select editable"" v-on:change=""clearValidation"" disabled>";
+<select id=""{propName}"" v-model=""{propName}"" class=""form-select{editableClass}"" v-on:change=""clearValidation"" disabled>";
           if (expr.Metadata.IsNullableValueType)
             html += $@"<option value="""">- Vælg -</option>";
 
@@ -204,7 +211,7 @@ namespace Bogevang.Common.Utility
         else if (isMultiLine)
         {
           html += $@"
-<textarea id=""{propName}"" v-model=""{propName}"" rows=""{matt.Rows}"" class=""form-control editable"" v-on:change=""clearValidation"" readonly></textarea>";
+<textarea id=""{propName}"" v-model=""{propName}"" rows=""{matt.Rows}"" class=""form-control{editableClass}"" v-on:change=""clearValidation"" readonly></textarea>";
         }
         else if (isHtml)
         {
@@ -214,7 +221,7 @@ namespace Bogevang.Common.Utility
         else
         {
           html += $@"
-<input type=""text"" id=""{propName}"" v-model=""{propName}"" class=""form-control editable"" v-on:change=""clearValidation"" readonly>";
+<input type=""text"" id=""{propName}"" v-model=""{propName}"" class=""form-control{editableClass}"" v-on:change=""clearValidation"" readonly>";
         }
       }
 

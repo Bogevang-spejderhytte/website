@@ -67,7 +67,8 @@ namespace Bogevang.Booking.Domain.Bookings
         ContactEMail = model.ContactEMail,
         Comments = model.Comments,
         RentalPrice = model.RentalPrice,
-        Deposit = model.Deposit ?? 0,
+        Deposit = model.Deposit,
+        DepositReceived = model.DepositReceived,
         BookingState = model.BookingState.Value,
         BookingStateText = model.BookingState.GetDescription(),
         IsApproved = model.IsApproved,
@@ -75,6 +76,9 @@ namespace Bogevang.Booking.Domain.Bookings
         WelcomeLetterIsSent = model.WelcomeLetterIsSent,
         TenantSelfServiceToken = model.TenantSelfServiceToken,
         CheckoutUrl = checkoutUrl,
+        ElectricityReadingStart = model.ElectricityReadingStart,
+        ElectricityReadingEnd = model.ElectricityReadingEnd,
+        ElectricityPriceUnit = model.ElectricityPriceUnit,
         LogEntries = model.LogEntries
       };
 

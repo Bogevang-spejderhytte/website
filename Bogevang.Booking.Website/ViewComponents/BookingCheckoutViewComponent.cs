@@ -34,7 +34,7 @@ namespace Bogevang.Booking.Website.ViewComponents
           ArrivalDate = booking.ArrivalDate,
           DepartureDate = booking.DepartureDate,
           ContactName = booking.ContactName,
-          Deposit = booking.Deposit
+          Deposit = booking.Deposit ?? 0
         });
       }
 
