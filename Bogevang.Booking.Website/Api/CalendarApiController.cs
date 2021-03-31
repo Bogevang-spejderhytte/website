@@ -21,7 +21,6 @@ namespace Bogevang.Booking.Website.Api
     public class CalendarEvent
     {
       public DateTime start { get; set; }
-      public DateTime end { get; set; }
       public string title { get; set; }
       public bool allDay => true;
     }
@@ -36,8 +35,7 @@ namespace Bogevang.Booking.Website.Api
 
       var events = expandedBookingDays.Select(b => new CalendarEvent
       {
-        start = b.Date,//.ToString("yyyy-MM-dd"),
-        end = b.Date.AddDays(1),//.ToString("yyyy-MM-dd"),
+        start = b.Date,
         title = "Optaget"
       });
 

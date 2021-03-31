@@ -210,9 +210,9 @@ namespace Bogevang.Common.Utility
         else if (isDate)
         {
           html += $@"
-<v-date-picker v-model=""{propName}"" v-on:change=""clearValidation"" >
+<v-date-picker v-model=""{propName}"" v-on:change=""clearValidation"" mode=""date"" timezone=""UTC"" :model-config=""datePickerConfig"">
   <template v-slot=""{{ inputValue, inputEvents }}"">
-    <input id=""{propName}"" class=""form-control"" :value=""inputValue"" v-on=""inputEvents"" :disabled=""!isEditing""/>
+    <input id=""{propName}"" class=""form-control"" autocomplete=""off"" :value=""inputValue"" v-on=""inputEvents"" :disabled=""!isEditing""/>
   </template>
 </v-date-picker>";
         }

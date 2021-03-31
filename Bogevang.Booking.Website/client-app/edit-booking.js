@@ -181,8 +181,8 @@
 
       saveData: async function () {
         var saveArgs = {
-          arrivalDate: this.truncateHoursFromDate(this.arrivalDate),
-          departureDate: this.truncateHoursFromDate(this.departureDate),
+          arrivalDate: this.arrivalDate,
+          departureDate: this.departureDate,
           onlySelectedWeekdays: this.onlySelectedWeekdays,
           selectedWeekdays: this.selectedWeekdays,
           tenantCategoryId: this.tenantCategoryId,

@@ -51,8 +51,8 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
 
       var booking = new BookingDataModel
       {
-        ArrivalDate = DateTime.SpecifyKind(command.ArrivalDate.Value, DateTimeKind.Utc),
-        DepartureDate = DateTime.SpecifyKind(command.DepartureDate.Value, DateTimeKind.Utc),
+        ArrivalDate = command.ArrivalDate.Value,
+        DepartureDate = command.DepartureDate.Value,
         OnlySelectedWeekdays = command.OnlySelectedWeekdays,
         SelectedWeekdays = command.SelectedWeekdays,
         TenantCategoryId = command.TenantCategoryId.Value,

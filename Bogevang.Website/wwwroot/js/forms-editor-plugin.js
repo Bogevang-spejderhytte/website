@@ -9,6 +9,7 @@
     }
 
     return {
+      datePickerConfig: { timeAdjust: "00:00:00" },
       isWorking: true,
       isEditing: false,
       errors: [],

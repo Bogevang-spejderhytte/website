@@ -51,12 +51,12 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
 
     [Display(Name = "Ankomstdato")]
     [Required]
-    [DateLocal]
+    [Date]
     public DateTime? ArrivalDate { get; set; }
 
     [Display(Name = "Afrejsedato")]
     [Required]
-    [DateLocal]
+    [Date]
     public DateTime? DepartureDate { get; set; }
 
     [Display(Name = "Kun udvalgte ugedage")]
