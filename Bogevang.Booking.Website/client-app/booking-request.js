@@ -8,7 +8,7 @@
       departureDate: null,
       onlySelectedWeekdays: false,
       selectedWeekdays: [],
-      tenantCategoryId: null,
+      tenantCategoryId: '',
       tenantName: null,
       purpose: null,
       contactName: null,
