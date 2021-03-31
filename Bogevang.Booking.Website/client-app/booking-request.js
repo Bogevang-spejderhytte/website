@@ -69,7 +69,7 @@
           contactEMail: this.contactEMail,
           comments: this.comments
         };
-        debugger
+
         return this.postWithErrorHandling(
           "/api/booking-request",
           sendArgs

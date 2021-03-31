@@ -3,6 +3,7 @@ using Bogevang.Booking.Domain.TenantCategories;
 using Cofoundry.Domain;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Bogevang.Booking.Domain.Bookings.Models
@@ -99,8 +100,8 @@ namespace Bogevang.Booking.Domain.Bookings.Models
       if (RentalPrice == null)
         AddNotification(NotificationLevelType.Warning, "Bemærk at der endnu ikke er aftalt nogen pris.");
 
-      // Look up overlap for future bookings (no need to add warning for historic bookings)
-      if (DateTime.Now < ArrivalDate)
+      // Look up overlap for active bookings (no need to add warning for historic bookings)
+      if (BookingState != BookingDataModel.BookingStateType.Closed)
       {
         var overlappingBookings = await bookingProvider.FindBookingsInInterval(new Queries.SearchBookingSummariesQuery
         {
@@ -111,8 +112,10 @@ namespace Bogevang.Booking.Domain.Bookings.Models
         foreach (var booking in overlappingBookings)
         {
           // Do not include self
-          if (booking.Id != Id)
+          if (booking.Id != Id && booking.CollidesWith(this))
+          {
             AddNotification(NotificationLevelType.Warning, $"Denne reservation overlapper med reservation #{booking.Id} den {booking.ArrivalDate.ToShortDateString()} til {booking.DepartureDate.ToShortDateString()}.");
+          }
         }
       }
 
@@ -154,6 +157,17 @@ namespace Bogevang.Booking.Domain.Bookings.Models
             yield return new CalendarBookingDay { Date = date, Booking = this };
         }
       }
+    }
+
+
+    public bool CollidesWith(BookingSummary other)
+    {
+      var myDates = ExpandDays().Select(b => b.Date.Date).ToHashSet();
+      foreach (var otherDate in other.ExpandDays())
+        if (myDates.Contains(otherDate.Date.Date))
+          return true;
+
+      return false;
     }
   }
 }
