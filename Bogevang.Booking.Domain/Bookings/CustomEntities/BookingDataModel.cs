@@ -10,9 +10,34 @@ using System.Threading.Tasks;
 
 namespace Bogevang.Booking.Domain.Bookings.CustomEntities
 {
+  public enum WeekdayType
+  {
+    [Description("Mandag")]
+    Mon = 1,
+
+    [Description("Tirsdag")]
+    Tue = 2,
+
+    [Description("Onsdag")]
+    Wed = 3,
+
+    [Description("Torsdag")]
+    Thu = 4,
+
+    [Description("Fredag")]
+    Fri = 5,
+
+    [Description("Lørdag")]
+    Sat = 6,
+
+    [Description("Søndag")]
+    Sun = 7
+  }
+
+
   public class BookingDataModel : ICustomEntityDataModel
   {
-    public enum BookingStateType { 
+    public enum BookingStateType {
       [Description("Forespørgsel")]
       Requested,
 
@@ -33,6 +58,13 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
     [Required]
     [DateLocal]
     public DateTime? DepartureDate { get; set; }
+
+    [Display(Name = "Kun udvalgte ugedage")]
+    public bool OnlySelectedWeekdays { get; set; }
+
+    [Display(Name = "Valgte ugedage")]
+    [CheckboxList(typeof(WeekdayType))]
+    public ICollection<WeekdayType> SelectedWeekdays { get; set; }
 
 
     [Display(Name = "Lejerkategori")]
@@ -143,6 +175,7 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
 
     public BookingDataModel()
     {
+      SelectedWeekdays = new List<WeekdayType>();
       TenantSelfServiceToken = RandomKeyGenerator.GetRandomString(30);
       AdminSelfServiceToken = RandomKeyGenerator.GetRandomString(30);
       LogEntries = new List<BookingLogEntry>();

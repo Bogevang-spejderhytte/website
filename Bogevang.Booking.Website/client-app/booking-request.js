@@ -10,6 +10,8 @@
       da: vdp_translation_da.js,
       arrivalDate: null,
       departureDate: null,
+      onlySelectedWeekdays: null,
+      selectedWeekdays: [],
       tenantCategoryId: null,
       tenantName: null,
       purpose: null,
@@ -59,6 +61,8 @@
         var sendArgs = {
           arrivalDate: this.truncateHoursFromDate(this.arrivalDate),
           departureDate: this.truncateHoursFromDate(this.departureDate),
+          onlySelectedWeekdays: this.onlySelectedWeekdays,
+          selectedWeekdays: this.selectedWeekdays,
           tenantCategoryId: this.tenantCategoryId,
           tenantName: this.tenantName,
           purpose: this.purpose,
@@ -69,7 +73,7 @@
           contactEMail: this.contactEMail,
           comments: this.comments
         };
-
+        debugger
         return this.postWithErrorHandling(
           "/api/booking-request",
           sendArgs

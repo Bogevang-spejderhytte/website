@@ -12,6 +12,8 @@
       bookingId: location.hash.substr(1),
       arrivalDate: null,
       departureDate: null,
+      onlySelectedWeekdays: null,
+      selectedWeekdays: [],
       tenantCategoryId: null,
       tenantName: null,
       purpose: null,
@@ -153,6 +155,8 @@
           const data = result.data;
           this.arrivalDate = new Date(data.arrivalDate);
           this.departureDate = new Date(data.departureDate);
+          this.onlySelectedWeekdays = data.onlySelectedWeekdays;
+          this.selectedWeekdays = data.selectedWeekdays;
           this.tenantCategoryId = data.tenantCategoryId;
           this.tenantName = data.tenantName;
           this.purpose = data.purpose;
@@ -183,6 +187,8 @@
         var saveArgs = {
           arrivalDate: this.truncateHoursFromDate(this.arrivalDate),
           departureDate: this.truncateHoursFromDate(this.departureDate),
+          onlySelectedWeekdays: this.onlySelectedWeekdays,
+          selectedWeekdays: this.selectedWeekdays,
           tenantCategoryId: this.tenantCategoryId,
           tenantName: this.tenantName,
           purpose: this.purpose,
@@ -200,6 +206,7 @@
           electricityReadingEnd: this.electricityReadingEnd,
           electricityPriceUnit: this.electricityPriceUnit
         };
+
         return await this.postWithErrorHandling(
           "/api/booking?id=" + this.bookingId,
           saveArgs

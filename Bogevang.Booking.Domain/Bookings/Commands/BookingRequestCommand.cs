@@ -1,4 +1,5 @@
-﻿using Bogevang.Booking.Domain.TenantCategories.CustomEntities;
+﻿using Bogevang.Booking.Domain.Bookings.CustomEntities;
+using Bogevang.Booking.Domain.TenantCategories.CustomEntities;
 using Cofoundry.Domain;
 using Cofoundry.Domain.CQS;
 using System;
@@ -16,6 +17,13 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
     [Display(Name = "Afrejsedato")]
     [Required]
     public DateTime? DepartureDate { get; set; }
+
+    [Display(Name = "Kun udvalgte dage")]
+    public bool OnlySelectedWeekdays { get; set; }
+
+    [Display(Name = "Valgte ugedage")]
+    [CheckboxList(typeof(WeekdayType))]
+    public ICollection<WeekdayType> SelectedWeekdays { get; set; }
 
 
     [Display(Name = "Lejers baggrund", Description = "Angiv hvor lejer kommer fra. Oplysningen bruges til statistik, prisberegning og ved Bøgevangs ansøgning om kommunalt tilskud.")]

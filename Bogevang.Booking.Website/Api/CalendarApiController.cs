@@ -20,9 +20,10 @@ namespace Bogevang.Booking.Website.Api
 
     public class CalendarEvent
     {
-      public string start { get; set; }
-      public string end { get; set; }
+      public DateTime start { get; set; }
+      public DateTime end { get; set; }
       public string title { get; set; }
+      public bool allDay => true;
     }
 
     
@@ -30,10 +31,13 @@ namespace Bogevang.Booking.Website.Api
     public async Task<JsonResult> Get([FromQuery] DateTime start, [FromQuery] DateTime end)
     {
       var bookings = await BookingService.FindBookingsInInterval(new SearchBookingSummariesQuery { Start = start, End = end });
-      var events = bookings.Select(b => new CalendarEvent
+
+      var expandedBookingDays = bookings.SelectMany(b => b.ExpandDays());
+
+      var events = expandedBookingDays.Select(b => new CalendarEvent
       {
-        start = b.ArrivalDate.ToString("yyyy-MM-dd"),
-        end = b.DepartureDate.AddDays(1).ToString("yyyy-MM-dd"),
+        start = b.Date,//.ToString("yyyy-MM-dd"),
+        end = b.Date.AddDays(1),//.ToString("yyyy-MM-dd"),
         title = "Optaget"
       });
 

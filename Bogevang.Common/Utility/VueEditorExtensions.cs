@@ -120,8 +120,15 @@ namespace Bogevang.Common.Utility
 
       MultiLineTextAttribute matt = null;
 
+      
       List<KeyValuePair<string, string>> customEntities = null;
+      SelectListItem[] enumCollectionItems = null;
+
       MemberInfo[] memberInfo = expr.Metadata.ContainerType.GetMember(expr.Metadata.PropertyName);
+
+      bool implementICollection = modelType.IsGenericType && modelType.GetGenericTypeDefinition() == typeof(ICollection<>);
+        //modelType.GetInterfaces()
+        //.Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(ICollection<>));
 
       if (modelType == typeof(int))
       {
@@ -134,6 +141,20 @@ namespace Bogevang.Common.Utility
             .AsRenderSummary()
             .MapItem(e => new KeyValuePair<string,string>(e.Title, e.CustomEntityId.ToString()))
             .ExecuteAsync()).ToList();
+        }
+      }
+      else if (implementICollection)
+      {
+        CheckboxListAttribute att = (CheckboxListAttribute)memberInfo[0].GetCustomAttributes(typeof(CheckboxListAttribute), false).FirstOrDefault();
+        if (att != null)
+        {
+          if (att.OptionSource.IsEnum)
+          {
+            Type enumType = Nullable.GetUnderlyingType(att.OptionSource) ?? att.OptionSource;
+            enumCollectionItems = Enum.GetValues(enumType).Cast<Enum>()
+              .Select(e => new SelectListItem(e.GetDescription(), e.ToString()))
+              .ToArray();
+          }
         }
       }
 
@@ -169,7 +190,7 @@ namespace Bogevang.Common.Utility
           Type enumType = Nullable.GetUnderlyingType(expr.Metadata.ModelType) ?? expr.Metadata.ModelType;
           SelectListItem[] items = Enum.GetValues(enumType).Cast<Enum>()
             .Select(e => new SelectListItem(e.GetDescription(), e.ToString()))
-          .ToArray();
+            .ToArray();
 
           html += $@"
 <select id=""{propName}"" v-model=""{propName}"" class=""form-select{editableClass}"" v-on:change=""clearValidation"" disabled>";
@@ -190,6 +211,18 @@ namespace Bogevang.Common.Utility
         {
           html += $@"
 <vuejs-datepicker id=""{propName}"" :bootstrap-styling=""true"" :typeable=""true"" :monday-first=""true"" :language=""da"" v-model=""{propName}"" v-on:change=""clearValidation"" :disabled=""!isEditing"" format=""dd-MM-yyyy""></vuejs-datepicker>";
+        }
+        else if (enumCollectionItems != null)
+        {
+          foreach (var item in enumCollectionItems)
+          {
+            html += $@"
+<div class=""checkboxListItem"">
+<input type=""checkbox"" id=""check{item.Value}"" value=""{item.Value}"" class=""form-check-input{editableClass}"" v-model=""{propName}"" :disabled=""!isEditing""/>
+<label for=""check{item.Value}"">{item.Text}</label>
+</div>
+";
+          }
         }
         else if (customEntities != null)
         {

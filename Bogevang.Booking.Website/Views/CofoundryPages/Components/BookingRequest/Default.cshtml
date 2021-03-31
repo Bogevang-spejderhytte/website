@@ -18,6 +18,13 @@
     </div>
   </div>
 
+  <div class="row mb-3">
+    @await Html.VueEditorColFor(m => m.OnlySelectedWeekdays)
+    <div class="col" v-if="onlySelectedWeekdays">
+      @await Html.VueEditorFor(m => m.SelectedWeekdays)
+    </div>
+  </div>
+
   @await Html.VueEditorRowFor(m => m.TenantCategoryId)
   @await Html.VueEditorRowFor(m => m.TenantName)
   @await Html.VueEditorRowFor(m => m.Purpose)

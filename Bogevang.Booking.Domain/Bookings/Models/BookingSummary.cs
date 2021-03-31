@@ -1,5 +1,6 @@
 ﻿using Bogevang.Booking.Domain.Bookings.CustomEntities;
 using Bogevang.Booking.Domain.TenantCategories;
+using Cofoundry.Domain;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -33,6 +34,9 @@ namespace Bogevang.Booking.Domain.Bookings.Models
     public DateTime CreatedDate { get; set; }
     public DateTime ArrivalDate { get; set; }
     public DateTime DepartureDate { get; set; }
+    public bool OnlySelectedWeekdays { get; set; }
+    [CheckboxList(typeof(WeekdayType))]
+    public ICollection<WeekdayType> SelectedWeekdays { get; set; }
     public int TenantCategoryId { get; set; }
     public string TenantName { get; set; }
     public string Purpose { get; set; }
@@ -131,6 +135,25 @@ namespace Bogevang.Booking.Domain.Bookings.Models
         return "afsluttet";
       else
         return "under behandling";
+    }
+
+
+    public IEnumerable<CalendarBookingDay> ExpandDays()
+    {
+      for (DateTime date = ArrivalDate; date < DepartureDate.AddDays(1); date = date.AddDays(1))
+      {
+        if (!OnlySelectedWeekdays)
+        {
+          yield return new CalendarBookingDay { Date = date, Booking = this };
+        }
+        else if (SelectedWeekdays != null)
+        {
+          // Use %7 to get sunday=0
+          WeekdayType wd = (WeekdayType)((int)date.DayOfWeek % 7);
+          if (SelectedWeekdays.Contains(wd))
+            yield return new CalendarBookingDay { Date = date, Booking = this };
+        }
+      }
     }
   }
 }

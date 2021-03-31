@@ -29,6 +29,8 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
 
         booking.ArrivalDate = command.ArrivalDate.Value;
         booking.DepartureDate = command.DepartureDate.Value;
+        booking.OnlySelectedWeekdays = command.OnlySelectedWeekdays;
+        booking.SelectedWeekdays = command.SelectedWeekdays;
         booking.TenantCategoryId = command.TenantCategoryId;
         booking.TenantName = command.TenantName;
         booking.Purpose = command.Purpose;

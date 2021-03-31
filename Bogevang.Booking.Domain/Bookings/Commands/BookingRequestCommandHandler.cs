@@ -53,6 +53,8 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
       {
         ArrivalDate = DateTime.SpecifyKind(command.ArrivalDate.Value, DateTimeKind.Utc),
         DepartureDate = DateTime.SpecifyKind(command.DepartureDate.Value, DateTimeKind.Utc),
+        OnlySelectedWeekdays = command.OnlySelectedWeekdays,
+        SelectedWeekdays = command.SelectedWeekdays,
         TenantCategoryId = command.TenantCategoryId.Value,
         TenantName = command.TenantName,
         Purpose = command.Purpose,

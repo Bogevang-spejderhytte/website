@@ -56,6 +56,8 @@ namespace Bogevang.Booking.Domain.Bookings
         Id = entity.CustomEntityId,
         CreatedDate = entity.CreateDate,
         ArrivalDate = model.ArrivalDate.Value,
+        OnlySelectedWeekdays = model.OnlySelectedWeekdays,
+        SelectedWeekdays = model.SelectedWeekdays ?? new List<WeekdayType>(),
         DepartureDate = model.DepartureDate.Value,
         Purpose = model.Purpose,
         TenantCategoryId = model.TenantCategoryId.Value,
