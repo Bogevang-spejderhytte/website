@@ -15,6 +15,20 @@ namespace Bogevang.Booking.Domain.Bookings.Models
       Finalize
     }
 
+    public enum NotificationLevelType
+    {
+      Information,
+      Warning,
+      Error
+    }
+
+    public class Notification
+    {
+      public NotificationLevelType Level { get; set; }
+      public string Message { get; set; }
+    }
+
+
     public int Id { get; set; }
     public DateTime CreatedDate { get; set; }
     public DateTime ArrivalDate { get; set; }
@@ -43,7 +57,7 @@ namespace Bogevang.Booking.Domain.Bookings.Models
     public decimal? ElectricityPriceUnit { get; set; }
     public List<BookingLogEntry> LogEntries { get; set; }
 
-    public List<string> Warnings { get; set; }
+    public List<Notification> Notifications { get; set; }
 
     public AlertType? Alert { get; set; }
 
@@ -52,7 +66,12 @@ namespace Bogevang.Booking.Domain.Bookings.Models
     public decimal TotalPrice => (Deposit ?? 0) - ElectricityPrice;
 
 
-  public async Task UpdateCalculatedValues(
+    public void AddNotification(NotificationLevelType level, string message)
+    {
+      Notifications.Add(new Notification { Level = level, Message = message });
+    }
+
+    public async Task UpdateCalculatedValues(
       IBookingProvider bookingProvider,
       ITenantCategoryProvider tenantCategoryProvider)
     {
@@ -64,17 +83,17 @@ namespace Bogevang.Booking.Domain.Bookings.Models
             ? AlertType.Key
             : (AlertType?)null;
 
-      Warnings = new List<string>();
+      Notifications = new List<Notification>();
 
       var tenantCategory = await tenantCategoryProvider.GetTenantCategoryById(TenantCategoryId);
       DateTime lastAllowedArrivalDate = CreatedDate.AddMonths(tenantCategory.AllowedBookingFutureMonths);
 
       if (ArrivalDate >= lastAllowedArrivalDate)
-        Warnings.Add($"Bemærk at ankomstdatoen ligger mere end de tilladte {tenantCategory.AllowedBookingFutureMonths} måneder efter at ansøgningen blev oprettet. " +
+        AddNotification(NotificationLevelType.Warning, $"Bemærk at ankomstdatoen ligger mere end de tilladte {tenantCategory.AllowedBookingFutureMonths} måneder efter at ansøgningen blev oprettet. " +
           $"Datoen er beregnet på baggrund af lejerkategorien.");
 
       if (RentalPrice == null)
-        Warnings.Add("Bemærk at der endnu ikke er aftalt nogen pris.");
+        AddNotification(NotificationLevelType.Warning, "Bemærk at der endnu ikke er aftalt nogen pris.");
 
       // Look up overlap for future bookings (no need to add warning for historic bookings)
       if (DateTime.Now < ArrivalDate)
@@ -89,9 +108,29 @@ namespace Bogevang.Booking.Domain.Bookings.Models
         {
           // Do not include self
           if (booking.Id != Id)
-            Warnings.Add($"Denne reservation overlapper med reservation #{booking.Id} den {booking.ArrivalDate.ToShortDateString()} til {booking.DepartureDate.ToShortDateString()}.");
+            AddNotification(NotificationLevelType.Warning, $"Denne reservation overlapper med reservation #{booking.Id} den {booking.ArrivalDate.ToShortDateString()} til {booking.DepartureDate.ToShortDateString()}.");
         }
       }
+
+      if (BookingState == BookingDataModel.BookingStateType.Closed)
+        AddNotification(NotificationLevelType.Information, $"Denne reservation er afsluttet ({GetSingleWordStateDescription()}).");
+    }
+
+
+    public string GetSingleWordStateDescription()
+    {
+      if (IsRejected)
+        return "afvist";
+      else if (IsApproved)
+        return "godkendt";
+      else if (BookingState == BookingDataModel.BookingStateType.Requested)
+        return "forespørgsel";
+      else if (BookingState == BookingDataModel.BookingStateType.Approved)
+        return "godkendt";
+      else if (BookingState == BookingDataModel.BookingStateType.Closed)
+        return "afsluttet";
+      else
+        return "under behandling";
     }
   }
 }

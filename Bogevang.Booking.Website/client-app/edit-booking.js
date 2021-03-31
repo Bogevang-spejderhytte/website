@@ -107,6 +107,18 @@
       },
 
 
+      async close() {
+        if (!confirm('Afslut denne reservation?'))
+          return;
+
+        var result = await this.doClose();
+        if (result) {
+          this.loadData();
+          window.alert('Reservationen er nu afsluttet.;')
+        }
+      },
+
+
       deleteBooking: async function (url) {
         if (!confirm('Slet denne reservation (uden at informere lejer)?'))
           return;
@@ -130,8 +142,8 @@
       },
 
 
-      close: function (url) {
-        window.location = url;
+      closeWindow: function () {
+        window.location = '/reservationer';
       },
 
 
@@ -155,7 +167,7 @@
           this.isApproved = data.isApproved;
           this.isRejected = data.isRejected;
           this.welcomeLetterIsSent = data.welcomeLetterIsSent;
-          this.warnings = data.warnings;
+          this.notifications = data.notifications;
           this.tenantSelfServiceToken = data.tenantSelfServiceToken;
           this.deposit = data.deposit;
           this.depositReceived = data.depositReceived;
@@ -225,11 +237,30 @@
       },
 
 
+      doClose: async function () {
+        var closeArgs = {}
+
+        return await this.postWithErrorHandling(
+          "/api/close-booking?id=" + this.bookingId,
+          closeArgs
+        );
+      },
+
+
       doDelete: async function () {
         return await this.deletetWithErrorHandling(
           "/api/booking?id=" + this.bookingId);
       },
 
+
+      notificationAlertClass(level) {
+        if (level == 'Information')
+          return 'alert alert-success';
+        else if (level == 'Warning')
+          return 'alert alert-warning';
+        else
+          return 'alert alert-danger';
+      },
 
       startEditing: function (e) {
         this.openEditableInputs();
@@ -242,7 +273,7 @@
         $('#rejectButton').prop('disabled', true);
         $('#sendWelcomeLetterButton').prop('disabled', true);
         $('#sendMailButton').prop('disabled', true);
-        $('#closeButton').prop('disabled', true);
+        $('#closeWindowButton').prop('disabled', true);
       },
 
 
@@ -257,7 +288,7 @@
         $('#rejectButton').prop('disabled', false);
         $('#sendWelcomeLetterButton').prop('disabled', false);
         $('#sendMailButton').prop('disabled', false);
-        $('#closeButton').prop('disabled', false);
+        $('#closeWindowButton').prop('disabled', false);
       }
     }
   });

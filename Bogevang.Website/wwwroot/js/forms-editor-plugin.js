@@ -12,7 +12,7 @@
       isWorking: true,
       isEditing: false,
       errors: [],
-      warnings: []
+      notifications: []
     }
   },
 

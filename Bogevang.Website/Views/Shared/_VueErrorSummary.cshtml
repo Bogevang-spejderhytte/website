@@ -2,6 +2,6 @@
   <div v-for="error in errors" class="alert alert-danger" role="alert">{{ error }}</div>
 </div>
 
-<div v-if="warnings.length" v-cloak>
-  <div v-for="warning in warnings" class="alert alert-warning" role="alert">{{ warning }}</div>
+<div v-if="notifications.length" v-cloak>
+  <div v-for="notification in notifications" :class="notificationAlertClass(notification.level)" role="alert">{{ notification.message }}</div>
 </div>

@@ -20,13 +20,13 @@ namespace Bogevang.Booking.Website.ViewComponents
     public async Task<IViewComponentResult> InvokeAsync()
     {
       if (Request.Query.TryGetValue("id", out var id_s)
-        && int.TryParse(id_s, out int id)
-        && Request.Query.TryGetValue("token", out var token))
+        && int.TryParse(id_s, out int id))
       {
         var booking = await BookingProvider.GetBookingSummaryById(id);
 
+        Request.Query.TryGetValue("token", out var token);
         if (token != booking.TenantSelfServiceToken)
-          throw new AuthenticationFailedException("Ugyldigt eller manglende adgangsnøgle");
+          throw new AuthenticationFailedException("Ugyldig eller manglende adgangsnøgle");
         
         return View(new BookingCheckoutViewModel
         {

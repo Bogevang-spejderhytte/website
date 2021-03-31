@@ -32,6 +32,7 @@
             <li><button id="rejectButton" type="button" class="dropdown-item" v-on:click="reject()">Afvis <i v-if="isRejected" class="menu-status-icon fas fa-check color-ok" title="Reservationen er allerede afvist"></i></button></li>
             <li><button id="sendWelcomeLetterButton" type="button" class="dropdown-item" v-on:click="sendWelcomeLetter()">Send velkomstbrev <i v-if="welcomeLetterIsSent" class="menu-status-icon fas fa-check color-ok" title="Velkomstbrevet er allerede sendt"></i></button></li>
             <li><button id="sendMailButton" type="button" class="dropdown-item" v-on:click="sendMail()">Send mail</button></li>
+            <li><button id="closeButton" type="button" class="dropdown-item" v-on:click="close()">Afslut <i v-if="bookingState == 'closed'" class="menu-status-icon fas fa-check color-ok" title="Reservationen er allerede afsluttet"></i></button></li>
             <li><button id="deleteButton" type="button" class="dropdown-item" v-on:click="deleteBooking('/reservationer')">Slet</button></li>
           </ul>
         </div>
@@ -40,7 +41,7 @@
         <button type="button" id="selfServiceButton" class="btn btn-outline-secondary" v-on:click="openSelfService()" title="Klik for at se lejers selvbetjeningsside.">Selvbetjening</button>
       </div>
       <div class="btn-group" role="group">
-        <button type="button" id="closeButton" class="btn btn-outline-primary" v-on:click="close('/reservationer')">Afslut</button>
+        <button type="button" id="closeWindowButton" class="btn btn-outline-primary" v-on:click="closeWindow">Afslut</button>
       </div>
     </div>
   </nav>

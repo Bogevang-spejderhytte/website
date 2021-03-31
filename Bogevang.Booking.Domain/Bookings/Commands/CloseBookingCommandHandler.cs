@@ -7,17 +7,16 @@ using System.Threading.Tasks;
 
 namespace Bogevang.Booking.Domain.Bookings.Commands
 {
-  public class ApproveBookingCommandHandler
-      : ICommandHandler<ApproveBookingCommand>,
-        IIgnorePermissionCheckHandler  // Depends on custom entity permission checking
-
+  public class CloseBookingCommandHandler
+    : ICommandHandler<CloseBookingCommand>,
+      IIgnorePermissionCheckHandler
   {
     private readonly IAdvancedContentRepository DomainRepository;
     private readonly IBookingProvider BookingProvider;
     private readonly ICurrentUserProvider CurrentUserProvider;
 
 
-    public ApproveBookingCommandHandler(
+    public CloseBookingCommandHandler(
       IAdvancedContentRepository domainRepository,
       IBookingProvider bookingProvider,
       ICurrentUserProvider currentUserProvider)
@@ -28,15 +27,13 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
     }
 
 
-    public async Task ExecuteAsync(ApproveBookingCommand command, IExecutionContext executionContext)
+    public async Task ExecuteAsync(CloseBookingCommand command, IExecutionContext executionContext)
     {
       var booking = await BookingProvider.GetBookingById(command.Id);
 
-      booking.BookingState = BookingDataModel.BookingStateType.Approved;
-      booking.IsApproved = true;
-      booking.IsRejected = false;
+      booking.BookingState = BookingDataModel.BookingStateType.Closed;
 
-      await booking.AddLogEntry(CurrentUserProvider, "Reservationen blev godkendt.");
+      await booking.AddLogEntry(CurrentUserProvider, "Reservationen blev afsluttet.");
 
       UpdateCustomEntityDraftVersionCommand updateCmd = new UpdateCustomEntityDraftVersionCommand
       {

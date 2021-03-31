@@ -5,6 +5,7 @@ using Bogevang.Templates.Domain;
 using Bogevang.Templates.Domain.CustomEntities;
 using Cofoundry.Core;
 using Cofoundry.Core.Mail;
+using Cofoundry.Core.Validation;
 using Cofoundry.Domain;
 using Cofoundry.Domain.CQS;
 using System;
@@ -49,6 +50,11 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
 
       if (command.Token != booking.TenantSelfServiceToken)
         throw new AuthenticationFailedException("Ugyldigt eller manglende adgangsnøgle");
+
+      if (booking.BookingState == BookingDataModel.BookingStateType.Requested)
+        throw new ValidationErrorException("Det er ikke muligt at indberette slutafregning, da reservationen endnu ikke er godkendt.");
+      else if (booking.BookingState == BookingDataModel.BookingStateType.Closed)
+        throw new ValidationErrorException("Det er ikke muligt at indberette slutafregning, da reservationen allerede er afsluttet.");
 
       booking.IsCheckedOut = true;
       booking.ElectricityReadingStart = command.StartReading;
