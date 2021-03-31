@@ -3,16 +3,12 @@
 
   var bookingApp = new Vue({
     el: '#bookingApp',
-    components: {
-      vuejsDatepicker
-    },
 
     data: {
-      da: vdp_translation_da.js,
       bookingId: location.hash.substr(1),
       arrivalDate: null,
       departureDate: null,
-      onlySelectedWeekdays: null,
+      onlySelectedWeekdays: false,
       selectedWeekdays: [],
       tenantCategoryId: null,
       tenantName: null,

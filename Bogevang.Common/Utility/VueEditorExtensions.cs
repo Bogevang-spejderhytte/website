@@ -210,7 +210,11 @@ namespace Bogevang.Common.Utility
         else if (isDate)
         {
           html += $@"
-<vuejs-datepicker id=""{propName}"" :bootstrap-styling=""true"" :typeable=""true"" :monday-first=""true"" :language=""da"" v-model=""{propName}"" v-on:change=""clearValidation"" :disabled=""!isEditing"" format=""dd-MM-yyyy""></vuejs-datepicker>";
+<v-date-picker v-model=""{propName}"" v-on:change=""clearValidation"" >
+  <template v-slot=""{{ inputValue, inputEvents }}"">
+    <input id=""{propName}"" class=""form-control"" :value=""inputValue"" v-on=""inputEvents"" :disabled=""!isEditing""/>
+  </template>
+</v-date-picker>";
         }
         else if (enumCollectionItems != null)
         {
