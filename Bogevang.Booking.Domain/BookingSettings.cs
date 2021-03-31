@@ -12,6 +12,8 @@ namespace Bogevang.Booking.Domain
 
     public string BankAccount { get; set; }
 
+    public string AdminEmail { get; set; }
+
     public string CheckoutUrlPath { get; set; }
   }
 }

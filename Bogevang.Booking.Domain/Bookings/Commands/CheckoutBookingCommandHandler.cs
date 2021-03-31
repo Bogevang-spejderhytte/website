@@ -1,4 +1,5 @@
 ﻿using Bogevang.Booking.Domain.Bookings.CustomEntities;
+using Bogevang.Booking.Domain.Bookings.Models;
 using Bogevang.Common.Utility;
 using Bogevang.Templates.Domain;
 using Bogevang.Templates.Domain.CustomEntities;
@@ -43,7 +44,8 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
 
     public async Task ExecuteAsync(CheckoutBookingCommand command, IExecutionContext executionContext)
     {
-      var booking = await BookingProvider.GetBookingById(command.Id);
+      BookingDataModel booking = await BookingProvider.GetBookingById(command.Id);
+      BookingSummary bookingSummary = await BookingProvider.GetBookingSummaryById(command.Id);
 
       if (command.Token != booking.TenantSelfServiceToken)
         throw new AuthenticationFailedException("Ugyldigt eller manglende adgangsnøgle");
@@ -58,9 +60,10 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
 
       await booking.AddLogEntry(CurrentUserProvider, "Elforbrug blev indmeldt af lejer.");
 
-      // FIXME: Do more stuff here
-      // - Send summary letter to tenant
-      // - Send notification to admin
+      // FIXME: Error handler and transactions
+      await SendCheckoutConfirmationMail(bookingSummary);
+
+      await SendAdminNotificationMail(bookingSummary);
 
       UpdateCustomEntityDraftVersionCommand updateCmd = new UpdateCustomEntityDraftVersionCommand
       {
@@ -72,24 +75,39 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
       };
 
       await DomainRepository.WithElevatedPermissions().CustomEntities().Versions().UpdateDraftAsync(updateCmd);
-
-      // FIXME: Error handler and transactions
-      await SendCheckoutConfirmationMail(booking);
     }
 
 
-    private async Task SendCheckoutConfirmationMail(BookingDataModel booking)
+    private async Task SendCheckoutConfirmationMail(BookingSummary booking)
     {
       TemplateDataModel template = await TemplateProvider.GetTemplateByName("slutafregningskvittering");
 
-      string confirmationMailText = TemplateProvider.MergeText(template.Text, booking);
+      string mailText = TemplateProvider.MergeText(template.Text, booking);
 
       MailAddress to = new MailAddress(booking.ContactEMail, booking.ContactName);
       MailMessage message = new MailMessage
       {
         To = to,
-        Subject = "Kvittering for slutafregning på Bøgevang",
-        HtmlBody = confirmationMailText
+        Subject = template.Subject,
+        HtmlBody = mailText
+      };
+
+      await MailDispatchService.DispatchAsync(message);
+    }
+
+
+    private async Task SendAdminNotificationMail(BookingSummary booking)
+    {
+      TemplateDataModel template = await TemplateProvider.GetTemplateByName("slutafregningsnotifikation");
+
+      string mailText = TemplateProvider.MergeText(template.Text, booking);
+
+      MailAddress to = new MailAddress(BookingSettings.AdminEmail);
+      MailMessage message = new MailMessage
+      {
+        To = to,
+        Subject = template.Subject,
+        HtmlBody = mailText
       };
 
       await MailDispatchService.DispatchAsync(message);

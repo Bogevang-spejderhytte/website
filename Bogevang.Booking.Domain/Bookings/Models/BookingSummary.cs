@@ -47,8 +47,12 @@ namespace Bogevang.Booking.Domain.Bookings.Models
 
     public AlertType? Alert { get; set; }
 
+    public decimal ElectricityPrice => ((ElectricityReadingEnd ?? 0) - (ElectricityReadingStart ?? 0)) * (ElectricityPriceUnit ?? 0);
 
-    public async Task UpdateCalculatedValues(
+    public decimal TotalPrice => (Deposit ?? 0) - ElectricityPrice;
+
+
+  public async Task UpdateCalculatedValues(
       IBookingProvider bookingProvider,
       ITenantCategoryProvider tenantCategoryProvider)
     {

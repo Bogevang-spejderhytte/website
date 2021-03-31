@@ -1,4 +1,5 @@
-﻿using Bogevang.Booking.Domain.TenantCategories.CustomEntities;
+﻿using Bogevang.Booking.Domain.Bookings.Models;
+using Bogevang.Booking.Domain.TenantCategories.CustomEntities;
 using Bogevang.Common.Utility;
 using Cofoundry.Domain;
 using System;
@@ -146,6 +147,7 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
       AdminSelfServiceToken = RandomKeyGenerator.GetRandomString(30);
       LogEntries = new List<BookingLogEntry>();
     }
+
 
     public string MakeTitle()
     {
