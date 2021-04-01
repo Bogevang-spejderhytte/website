@@ -47,51 +47,58 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
 
     public async Task ExecuteAsync(BookingRequestCommand command, IExecutionContext executionContext)
     {
-      var tenantCategory = await TenantCategoryProvider.GetTenantCategoryById(command.TenantCategoryId.Value);
-
-      DateTime lastAllowedArrivalDate = DateTime.Now.AddMonths(tenantCategory.AllowedBookingFutureMonths);
-      if (command.ArrivalDate.Value >= lastAllowedArrivalDate)
-        throw new ValidationErrorException(new ValidationError($"Den valgte lejertype kan ikke reservere mere end {tenantCategory.AllowedBookingFutureMonths} måneder ud i fremtiden. Dvs. senest {lastAllowedArrivalDate.ToShortDateString()}.", nameof(command.ArrivalDate)));
-
-      int bookingNumber = await SequenceNumberGenerator.NextNumber("BookingNumber");
-
-      var booking = new BookingDataModel
+      using (var scope = DomainRepository.Transactions().CreateScope())
       {
-        BookingNumber = bookingNumber,
-        ArrivalDate = command.ArrivalDate.Value,
-        DepartureDate = command.DepartureDate.Value,
-        OnlySelectedWeekdays = command.OnlySelectedWeekdays,
-        SelectedWeekdays = command.SelectedWeekdays,
-        TenantCategoryId = command.TenantCategoryId.Value,
-        TenantName = command.TenantName,
-        Purpose = command.Purpose,
-        ContactName = command.ContactName,
-        ContactPhone = command.ContactPhone,
-        ContactAddress = command.ContactAddress,
-        ContactCity = command.ContactCity,
-        ContactEMail = command.ContactEMail,
-        Comments = command.Comments,
-        RentalPrice = null, // To be set later
-        Deposit = BookingSettings.StandardDeposit,
-        BookingState = BookingDataModel.BookingStateType.Requested
-      };
+        var tenantCategory = await TenantCategoryProvider.GetTenantCategoryById(command.TenantCategoryId.Value);
 
-      await booking.AddLogEntry(CurrentUserProvider, "Reservationen blev indsendt af lejer.");
+        DateTime lastAllowedArrivalDate = DateTime.Now.AddMonths(tenantCategory.AllowedBookingFutureMonths);
+        if (command.ArrivalDate.Value >= lastAllowedArrivalDate)
+          throw new ValidationErrorException(new ValidationError($"Den valgte lejertype kan ikke reservere mere end {tenantCategory.AllowedBookingFutureMonths} måneder ud i fremtiden. Dvs. senest {lastAllowedArrivalDate.ToShortDateString()}.", nameof(command.ArrivalDate)));
 
-      var addCommand = new AddCustomEntityCommand
-      {
-        CustomEntityDefinitionCode = BookingCustomEntityDefinition.DefinitionCode,
-        Model = booking,
-        Title = booking.MakeTitle(),
-        Publish = true,
+        int bookingNumber = await SequenceNumberGenerator.NextNumber("BookingNumber");
 
-      };
+        var booking = new BookingDataModel
+        {
+          BookingNumber = bookingNumber,
+          ArrivalDate = command.ArrivalDate.Value,
+          DepartureDate = command.DepartureDate.Value,
+          OnlySelectedWeekdays = command.OnlySelectedWeekdays,
+          SelectedWeekdays = command.SelectedWeekdays,
+          TenantCategoryId = command.TenantCategoryId.Value,
+          TenantName = command.TenantName,
+          Purpose = command.Purpose,
+          ContactName = command.ContactName,
+          ContactPhone = command.ContactPhone,
+          ContactAddress = command.ContactAddress,
+          ContactCity = command.ContactCity,
+          ContactEMail = command.ContactEMail,
+          Comments = command.Comments,
+          RentalPrice = null, // To be set later
+          Deposit = BookingSettings.StandardDeposit,
+          BookingState = BookingDataModel.BookingStateType.Requested
+        };
 
-      await DomainRepository.WithElevatedPermissions().CustomEntities().AddAsync(addCommand);
+        await booking.AddLogEntry(CurrentUserProvider, "Reservationen blev indsendt af lejer.");
 
-      // FIXME: Error handler and transactions
-      await SendConfirmationMail(booking);
-      await SendNotificationMail(booking);
+        var addCommand = new AddCustomEntityCommand
+        {
+          CustomEntityDefinitionCode = BookingCustomEntityDefinition.DefinitionCode,
+          Model = booking,
+          Title = booking.MakeTitle(),
+          Publish = true,
+
+        };
+
+        await DomainRepository.WithElevatedPermissions().CustomEntities().AddAsync(addCommand);
+
+        scope.QueueCompletionTask(async () =>
+        {
+          await SendConfirmationMail(booking);
+          await SendNotificationMail(booking);
+        });
+
+        await scope.CompleteAsync();
+      }
     }
 
 
