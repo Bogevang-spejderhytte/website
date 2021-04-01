@@ -9,6 +9,7 @@
       stateFilter: ["Requested", "Approved"],
       selectableYears: [],
       selectedYear: "all",
+      bookingNumber: null,
       bookings: []
     },
 
@@ -38,6 +39,27 @@
             b.departureDate = new Date(b.departureDate).toLocaleDateString();
             b.createdDate = new Date(b.createdDate).toLocaleDateString();
           });
+        }
+      },
+
+      async gotoBooking() {
+        if (!this.bookingNumber)
+          return;
+
+        searchArgs = {
+          bookingNumber: this.bookingNumber
+        };
+
+        // 
+        //this.bookingNumber = null;
+
+        result = await this.postWithErrorHandling("/api/bookings", searchArgs);
+        if (result && result.data && result.data.length > 0) {
+          const url = '/reservationer/edit#' + result.data[0].id;
+          window.location = url;
+        }
+        else {
+          window.alert('Ukendt aftalenummer');
         }
       },
 

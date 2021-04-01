@@ -4,25 +4,33 @@
 <form id="bookingsApp">
   @Html.AntiForgeryToken()
 
-  <div class="btn-toolbar form-check align-items-center">
-    <div class="form-check form-check-inline">
-      <input type="checkbox" id="filterRequested" class="form-check-input" value="Requested" v-model="stateFilter" />
-      <label class="form-check-label" for="filterRequested">Forespørgsel</label>
-    </div>
-    <div class="form-check form-check-inline">
-      <input type="checkbox" id="filterApproved" class="form-check-input" value="Approved" v-model="stateFilter" />
-      <label class="form-check-label" for="filterApproved">Godkendt</label>
-    </div>
-    <div class="form-check form-check-inline">
-      <input type="checkbox" id="filterClosed" class="form-check-input" value="Closed" v-model="stateFilter" />
-      <label class="form-check-label" for="filterClosed">Afsluttet</label>
+  <div class="btn-toolbar form-check align-items-center justify-content-between">
+    <div class="btn-group">
+      <div class="form-check form-check-inline">
+        <input type="checkbox" id="filterRequested" class="form-check-input" value="Requested" v-model="stateFilter" />
+        <label class="form-check-label" for="filterRequested">Forespørgsel</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input type="checkbox" id="filterApproved" class="form-check-input" value="Approved" v-model="stateFilter" />
+        <label class="form-check-label" for="filterApproved">Godkendt</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input type="checkbox" id="filterClosed" class="form-check-input" value="Closed" v-model="stateFilter" />
+        <label class="form-check-label" for="filterClosed">Afsluttet</label>
+      </div>
+
+      <select id="selectedYear" class="form-select" style="width: 6em" v-model="selectedYear">
+        <option v-for="year in selectableYears" :value="year.value">{{year.title}}</option>
+      </select>
+
+      <button type="button" class="btn btn-outline-secondary" v-on:click="search">Søg</button>
     </div>
 
-    <select id="selectedYear" class="form-select" style="width: 6em" v-model="selectedYear">
-      <option v-for="year in selectableYears" :value="year.value">{{year.title}}</option>
-    </select>
-
-    <button type="button" class="btn btn-outline-secondary" v-on:click="search">Søg</button>
+    <div class="btn-group">
+      <label for="bookingNumber" class="col-form-label">Aftalenummer:</label>&nbsp;
+      <input type="text" id="bookingNumber" class="form-control" v-model="bookingNumber" />
+      <button type="button" class="btn btn-outline-secondary" v-on:click="gotoBooking">Åbn</button>
+    </div>
   </div>
 
   <table id="bookings" class="table" v-cloak>

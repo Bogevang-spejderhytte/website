@@ -174,6 +174,9 @@
 
 
     cofoundryErrorHandler: function (result) {
+      if (!result || !result.errors)
+        return;
+
       result.errors.forEach(error => {
         this.errors.push(error.message);
         error.properties.forEach(property => {

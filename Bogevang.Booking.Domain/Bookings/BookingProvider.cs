@@ -140,6 +140,14 @@ namespace Bogevang.Booking.Domain.Bookings
     {
       await EnsureCacheLoaded();
 
+      if (int.TryParse(query.BookingNumber, out int bookingNumber))
+      {
+        var booking = Cache.FirstOrDefault(b => b.DataModel.BookingNumber == bookingNumber);
+        if (booking == null)
+          return null;
+        return new List<BookingSummary> { booking.Summary };
+      }
+
       DateTime startValue = query?.Start ?? new DateTime(2000, 1, 1);
       DateTime endValue = query?.End ?? new DateTime(3000, 1, 1);
 
