@@ -14,6 +14,7 @@ namespace Bogevang.Booking.Domain.Bookings.Models
     {
       New,
       Key,
+      AwaitingCheckout,
       Finalize
     }
 
@@ -56,6 +57,7 @@ namespace Bogevang.Booking.Domain.Bookings.Models
     public bool IsApproved { get; set; }
     public bool IsRejected { get; set; }
     public bool WelcomeLetterIsSent { get; set; }
+    public bool IsCheckedOut { get; set; }
     public string TenantSelfServiceToken { get; set; }
     public string CheckoutUrl { get; set; }
     public decimal? ElectricityReadingStart { get; set; }
@@ -66,6 +68,7 @@ namespace Bogevang.Booking.Domain.Bookings.Models
     public List<Notification> Notifications { get; set; }
 
     public AlertType? Alert { get; set; }
+    public string AlertMessage { get; set; }
 
     public decimal ElectricityPrice => ((ElectricityReadingEnd ?? 0) - (ElectricityReadingStart ?? 0)) * (ElectricityPriceUnit ?? 0);
 
@@ -79,15 +82,37 @@ namespace Bogevang.Booking.Domain.Bookings.Models
 
     public async Task UpdateCalculatedValues(
       IBookingProvider bookingProvider,
-      ITenantCategoryProvider tenantCategoryProvider)
+      ITenantCategoryProvider tenantCategoryProvider, 
+      BookingSettings settings)
     {
-      Alert = BookingState == BookingDataModel.BookingStateType.Requested
-        ? AlertType.New
-        : BookingState == BookingDataModel.BookingStateType.Approved && DateTime.Now > DepartureDate
-          ? AlertType.Finalize
-          : BookingState == BookingDataModel.BookingStateType.Approved && DateTime.Now > ArrivalDate - TimeSpan.FromDays(10)
-            ? AlertType.Key
-            : (AlertType?)null;
+      Alert = null;
+
+      if (BookingState == BookingDataModel.BookingStateType.Requested)
+      {
+        Alert = AlertType.New;
+        AlertMessage = "Ny reservation.";
+      }
+      else if (BookingState == BookingDataModel.BookingStateType.Approved)
+      {
+        if (!WelcomeLetterIsSent && DateTime.Now > ArrivalDate - TimeSpan.FromDays(settings.DaysBeforeArrivalForWelcomeLetter))
+        {
+          Alert = AlertType.Key;
+          AlertMessage = "Velkomstbrev skal udsendes.";
+        }
+        else if (DateTime.Now > DepartureDate)
+        {
+          if (!IsCheckedOut)
+          {
+            Alert = AlertType.AwaitingCheckout;
+            AlertMessage = "Afventer slutafregning fra lejer.";
+          }
+          else
+          {
+            Alert = AlertType.Finalize;
+            AlertMessage = "Lejemålet er overstået og skal afsluttes.";
+          }
+        }
+      }
 
       Notifications = new List<Notification>();
 

@@ -187,7 +187,7 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
 
     public string MakeTitle()
     {
-      return $"Reservation {ArrivalDate.Value.ToShortDateString()} - {DepartureDate.Value.ToShortDateString()} ({BookingState.GetDescription()})";
+      return $"Reservation nr. {BookingNumber} {ArrivalDate.Value.ToShortDateString()} - {DepartureDate.Value.ToShortDateString()} ({BookingState.GetDescription()})";
     }
 
 

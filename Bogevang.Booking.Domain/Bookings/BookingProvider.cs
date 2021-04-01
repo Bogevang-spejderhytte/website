@@ -77,6 +77,7 @@ namespace Bogevang.Booking.Domain.Bookings
         IsApproved = model.IsApproved,
         IsRejected = model.IsRejected,
         WelcomeLetterIsSent = model.WelcomeLetterIsSent,
+        IsCheckedOut = model.IsCheckedOut,
         TenantSelfServiceToken = model.TenantSelfServiceToken,
         CheckoutUrl = checkoutUrl,
         ElectricityReadingStart = model.ElectricityReadingStart,
@@ -97,7 +98,7 @@ namespace Bogevang.Booking.Domain.Bookings
     protected override async Task PostProcessCache()
     {
       foreach (var entry in Cache)
-        await entry.Summary.UpdateCalculatedValues(this, TenantCategoryProvider);
+        await entry.Summary.UpdateCalculatedValues(this, TenantCategoryProvider, BookingSettings);
       Cache.Sort(CompareBookingByArrivalDate);
     }
 

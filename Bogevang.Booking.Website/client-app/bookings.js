@@ -83,7 +83,9 @@
         if (a == 'New')
           return 'fas fa-star color-new';
         else if (a == 'Key')
-          return 'fas fa-key color-warning';
+          return 'fas fa-envelope color-warning';
+        else if (a == 'AwaitingCheckout')
+          return 'fas fa-balance-scale color-warning';
         else if (a == 'Finalize')
           return 'fas fa-money-bill-alt color-warning';
         else

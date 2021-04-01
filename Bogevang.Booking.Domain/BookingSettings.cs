@@ -14,6 +14,8 @@ namespace Bogevang.Booking.Domain
 
     public string AdminEmail { get; set; }
 
+    public int DaysBeforeArrivalForWelcomeLetter { get; set; }
+
     public string CheckoutUrlPath { get; set; }
   }
 }
