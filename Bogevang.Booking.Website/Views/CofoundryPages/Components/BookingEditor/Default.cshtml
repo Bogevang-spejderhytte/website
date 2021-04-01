@@ -75,7 +75,11 @@
     </div>
 
     <div class="tab-pane fade" id="financeTabArea" role="tabpanel" aria-labelledby="finance-tab">
-      @await Html.VueEditorRowFor(m => m.RentalPrice)
+      <div class="row mb-3">
+        @await Html.VueEditorColFor(m => m.RentalPrice)
+        @await Html.VueEditorColFor(m => m.Deposit)
+      </div>
+      @await Html.VueEditorRowFor(m => m.DepositReceived)
       <div class="row mb-3">
         @await Html.VueEditorColFor(m => m.ElectricityReadingStart)
         @await Html.VueEditorColFor(m => m.ElectricityReadingEnd)
@@ -94,10 +98,6 @@
           <label for="electricityPriceTotal" class="form-label">El-omkostning (kr)</label>
           <input type="text" class="form-control" id="electricityPriceTotal" v-model="electricityPriceTotal" readonly>
         </div>
-      </div>
-      <div class="row mb-3">
-        @await Html.VueEditorColFor(m => m.DepositReceived)
-        @await Html.VueEditorColFor(m => m.Deposit)
       </div>
       <div class="row mb-3">
         <div class="col">

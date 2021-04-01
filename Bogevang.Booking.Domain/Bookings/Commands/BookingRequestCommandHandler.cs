@@ -91,6 +91,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
 
       // FIXME: Error handler and transactions
       await SendConfirmationMail(booking);
+      await SendNotificationMail(booking);
     }
 
 
@@ -98,14 +99,32 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
     {
       TemplateDataModel template = await TemplateProvider.GetTemplateByName("reservationskvittering");
 
-      string confirmationMailText = TemplateProvider.MergeText(template.Text, booking);
+      string mailText = TemplateProvider.MergeText(template.Text, booking);
 
       MailAddress to = new MailAddress(booking.ContactEMail, booking.ContactName);
       MailMessage message = new MailMessage
       {
         To = to,
-        Subject = "Kvittering for forespørgsel på Bøgevang",
-        HtmlBody = confirmationMailText
+        Subject = template.Subject,
+        HtmlBody = mailText
+      };
+
+      await MailDispatchService.DispatchAsync(message);
+    }
+
+
+    private async Task SendNotificationMail(BookingDataModel booking)
+    {
+      TemplateDataModel template = await TemplateProvider.GetTemplateByName("reservationsnotifikation");
+
+      string mailText = TemplateProvider.MergeText(template.Text, booking);
+
+      MailAddress to = new MailAddress(BookingSettings.AdminEmail);
+      MailMessage message = new MailMessage
+      {
+        To = to,
+        Subject = template.Subject,
+        HtmlBody = mailText
       };
 
       await MailDispatchService.DispatchAsync(message);
