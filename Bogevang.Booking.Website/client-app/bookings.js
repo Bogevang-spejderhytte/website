@@ -6,7 +6,7 @@
     data: {
       orderBy: 'ArrivalDate',
       sortDirection: 'Asc',
-      bookingState: null,
+      stateFilter: ["Requested", "Approved"],
       bookings: []
     },
     async mounted() {
@@ -17,15 +17,13 @@
     methods:
     {
       search: async function () {
-        query = new URLSearchParams({
+        searchArgs = {
           orderBy: this.orderBy,
-          sortDirection: this.sortDirection
-        });
+          sortDirection: this.sortDirection,
+          bookingState: this.stateFilter
+        };
 
-        if (this.bookingState)
-          query.append('bookingState', this.bookingState);
-
-        result = await this.getWithErrorHandling("/api/bookings?" + query.toString());
+        result = await this.postWithErrorHandling("/api/bookings", searchArgs);
         if (result) {
           this.bookings = result.data;
           this.bookings.forEach(b => {

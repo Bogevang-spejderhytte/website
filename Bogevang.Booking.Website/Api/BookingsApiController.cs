@@ -27,9 +27,9 @@ namespace Bogevang.Booking.Website.Api
     }
 
 
-    [HttpGet("")]
+    [HttpPost("")]
     //[AuthorizeUserArea(MemberUserArea.MemberUserAreaCode)]
-    public async Task<JsonResult> Get([FromQuery] SearchBookingSummariesQuery query)
+    public async Task<JsonResult> Get([FromBody] SearchBookingSummariesQuery query)
     {
       if (query == null) 
         query = new SearchBookingSummariesQuery();

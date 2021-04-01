@@ -149,7 +149,7 @@ namespace Bogevang.Booking.Domain.Bookings
 
       if (query?.BookingState != null)
         filtered = filtered
-          .Where(b => b.DataModel.BookingState == query.BookingState);
+          .Where(b => query.BookingState.Contains(b.DataModel.BookingState.Value));
 
       if (query?.OrderBy == SearchBookingSummariesQuery.OrderByType.ArrivalDate)
       {
