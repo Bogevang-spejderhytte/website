@@ -22,7 +22,7 @@ namespace Bogevang.Common.Utility
     {
       string html = $@"<div class=""row mb-3"">";
 
-      string innerHtml = await helper.VueEditorColFor_string(expression);
+      string innerHtml = await helper.VueEditorColFor_string(expression, alwaysReadonly: alwaysReadonly);
 
       html += innerHtml + @"
 </div>";
@@ -36,7 +36,7 @@ namespace Bogevang.Common.Utility
       Expression<Func<TModel, TResult>> expression,
       bool alwaysReadonly = false)
     {
-      string html = await helper.VueEditorColFor_string(expression);
+      string html = await helper.VueEditorColFor_string(expression, alwaysReadonly: alwaysReadonly);
       return new HtmlString(html);
     }
 

@@ -16,7 +16,7 @@
     <thead>
       <tr>
         <th scope="col"></th>
-        <th scope="col">#</th>
+        <th scope="col">Nr.</th>
         <th scope="col" class="clickable" v-on:click="orderByArrival()">Ankomst <two-state-icon one="fas fa-sort-down" two="fas fa-sort-up" v-bind:state="arrivalIconState()"></two-state-icon></th>
         <th scope="col">Afrejse</th>
         <th scope="col">Formål</th>
@@ -30,7 +30,7 @@
     <tbody>
       <tr class="grid-row" v-for="booking in bookings" v-bind:model="booking" v-bind:key="booking.id">
         <td><i :class="alertClass(booking.alert)"></i></td>
-        <td><a :href="'/reservationer/edit#' + booking.id" title="Vis reservation">{{booking.id}}</a></td>
+        <td><a :href="'/reservationer/edit#' + booking.id" title="Vis reservation">{{booking.bookingNumber}}</a></td>
         <td class="date">{{booking.arrivalDate}}</td>
         <td class="date">{{booking.departureDate}}</td>
         <td>{{booking.purpose}}</td>

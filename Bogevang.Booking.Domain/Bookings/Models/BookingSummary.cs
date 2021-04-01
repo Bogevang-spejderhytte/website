@@ -32,6 +32,7 @@ namespace Bogevang.Booking.Domain.Bookings.Models
 
 
     public int Id { get; set; }
+    public int BookingNumber { get; set; }
     public DateTime CreatedDate { get; set; }
     public DateTime ArrivalDate { get; set; }
     public DateTime DepartureDate { get; set; }
@@ -114,7 +115,7 @@ namespace Bogevang.Booking.Domain.Bookings.Models
           // Do not include self
           if (booking.Id != Id && booking.CollidesWith(this))
           {
-            AddNotification(NotificationLevelType.Warning, $"Denne reservation overlapper med reservation #{booking.Id} den {booking.ArrivalDate.ToShortDateString()} til {booking.DepartureDate.ToShortDateString()}.");
+            AddNotification(NotificationLevelType.Warning, $"Denne reservation overlapper med reservation nr. {booking.BookingNumber} den {booking.ArrivalDate.ToShortDateString()} til {booking.DepartureDate.ToShortDateString()}.");
           }
         }
       }

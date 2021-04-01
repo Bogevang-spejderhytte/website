@@ -6,6 +6,7 @@
 
     data: {
       bookingId: location.hash.substr(1),
+      bookingNumber: null,
       arrivalDate: null,
       departureDate: null,
       onlySelectedWeekdays: false,
@@ -149,6 +150,7 @@
         result = await this.getWithErrorHandling("/api/booking?id=" + this.bookingId);
         if (result) {
           const data = result.data;
+          this.bookingNumber = data.bookingNumber;
           this.arrivalDate = new Date(data.arrivalDate);
           this.departureDate = new Date(data.departureDate);
           this.onlySelectedWeekdays = data.onlySelectedWeekdays;

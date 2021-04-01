@@ -48,6 +48,9 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
       Closed
     }
 
+    [Display(Name = "Aftalenummer")]
+    public int BookingNumber { get; set; }
+
 
     [Display(Name = "Ankomstdato")]
     [Required]

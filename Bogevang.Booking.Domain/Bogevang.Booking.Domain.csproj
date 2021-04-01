@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Bogevang.Common\Bogevang.Common.csproj" />
+    <ProjectReference Include="..\Bogevang.SequenceGenerator.Domain\Bogevang.SequenceGenerator.Domain.csproj" />
     <ProjectReference Include="..\Bogevang.Templates.Domain\Bogevang.Templates.Domain.csproj" />
   </ItemGroup>
 

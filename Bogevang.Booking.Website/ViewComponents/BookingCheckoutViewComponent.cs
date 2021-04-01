@@ -31,6 +31,7 @@ namespace Bogevang.Booking.Website.ViewComponents
         return View(new BookingCheckoutViewModel
         {
           BookingId = booking.Id,
+          BookingNumber = booking.BookingNumber,
           ArrivalDate = booking.ArrivalDate,
           DepartureDate = booking.DepartureDate,
           ContactName = booking.ContactName,

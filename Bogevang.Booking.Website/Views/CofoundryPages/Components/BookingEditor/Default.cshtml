@@ -53,6 +53,7 @@
       <div class="row mb-3">
         @await Html.VueEditorColFor(m => m.ArrivalDate)
         @await Html.VueEditorColFor(m => m.DepartureDate)
+        @await Html.VueEditorColFor(m => m.BookingNumber, alwaysReadonly: true)
       </div>
       <div class="row mb-3">
         @await Html.VueEditorColFor(m => m.OnlySelectedWeekdays)

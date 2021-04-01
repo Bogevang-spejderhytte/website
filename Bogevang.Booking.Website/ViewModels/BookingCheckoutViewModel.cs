@@ -6,8 +6,10 @@ namespace Bogevang.Booking.Website.ViewModels
 {
   public class BookingCheckoutViewModel
   {
-    [Display(Name = "Aftalenr.")]
     public int BookingId { get; set; }
+
+    [Display(Name = "Aftalenr.")]
+    public int BookingNumber { get; set; }
 
     public DateTime ArrivalDate { get; set; }
     public DateTime DepartureDate { get; set; }

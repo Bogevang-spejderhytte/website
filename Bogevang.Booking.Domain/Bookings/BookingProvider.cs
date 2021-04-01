@@ -54,6 +54,7 @@ namespace Bogevang.Booking.Domain.Bookings
       var summary = new BookingSummary
       {
         Id = entity.CustomEntityId,
+        BookingNumber = model.BookingNumber,
         CreatedDate = entity.CreateDate,
         ArrivalDate = model.ArrivalDate.Value,
         OnlySelectedWeekdays = model.OnlySelectedWeekdays,

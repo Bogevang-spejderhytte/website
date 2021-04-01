@@ -1,4 +1,6 @@
 ﻿using Bogevang.Booking.Domain.Bookings.CustomEntities;
+using Bogevang.SequenceGenerator.Domain;
+using Bogevang.SequenceGenerator.Domain.Commands;
 using Cofoundry.Domain;
 using Cofoundry.Domain.CQS;
 using System.Threading.Tasks;
@@ -13,7 +15,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
 
 
     public UpdateBookingCommandHandler(
-        IAdvancedContentRepository domainRepository)
+      IAdvancedContentRepository domainRepository)
     {
       DomainRepository = domainRepository;
     }

@@ -1,6 +1,7 @@
 ﻿using Bogevang.Booking.Domain.Bookings.CustomEntities;
 using Bogevang.Booking.Domain.TenantCategories;
 using Bogevang.Common.Utility;
+using Bogevang.SequenceGenerator.Domain;
 using Bogevang.Templates.Domain;
 using Bogevang.Templates.Domain.CustomEntities;
 using Cofoundry.Core.Mail;
@@ -17,6 +18,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
       IIgnorePermissionCheckHandler
   {
     private readonly IAdvancedContentRepository DomainRepository;
+    private readonly ISequenceNumberGenerator SequenceNumberGenerator;
     private readonly ITemplateProvider TemplateProvider;
     private readonly ITenantCategoryProvider TenantCategoryProvider;
     private readonly IMailDispatchService MailDispatchService;
@@ -26,6 +28,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
 
     public BookingRequestCommandHandler(
       IAdvancedContentRepository domainRepository,
+      ISequenceNumberGenerator sequenceNumberGenerator,
       ITemplateProvider templateProvider,
       ITenantCategoryProvider tenantCategoryProvider,
       IMailDispatchService mailDispatchService,
@@ -33,6 +36,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
       ICurrentUserProvider currentUserProvider)
     {
       DomainRepository = domainRepository;
+      SequenceNumberGenerator = sequenceNumberGenerator;
       TemplateProvider = templateProvider;
       TenantCategoryProvider = tenantCategoryProvider;
       MailDispatchService = mailDispatchService;
@@ -49,8 +53,11 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
       if (command.ArrivalDate.Value >= lastAllowedArrivalDate)
         throw new ValidationErrorException(new ValidationError($"Den valgte lejertype kan ikke reservere mere end {tenantCategory.AllowedBookingFutureMonths} måneder ud i fremtiden. Dvs. senest {lastAllowedArrivalDate.ToShortDateString()}.", nameof(command.ArrivalDate)));
 
+      int bookingNumber = await SequenceNumberGenerator.NextNumber("BookingNumber");
+
       var booking = new BookingDataModel
       {
+        BookingNumber = bookingNumber,
         ArrivalDate = command.ArrivalDate.Value,
         DepartureDate = command.DepartureDate.Value,
         OnlySelectedWeekdays = command.OnlySelectedWeekdays,
