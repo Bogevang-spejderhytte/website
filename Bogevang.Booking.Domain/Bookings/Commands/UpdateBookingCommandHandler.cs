@@ -1,6 +1,5 @@
 ﻿using Bogevang.Booking.Domain.Bookings.CustomEntities;
-using Bogevang.SequenceGenerator.Domain;
-using Bogevang.SequenceGenerator.Domain.Commands;
+using Bogevang.Booking.Domain.TenantCategories;
 using Cofoundry.Domain;
 using Cofoundry.Domain.CQS;
 using System.Threading.Tasks;
@@ -12,12 +11,18 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
       IIgnorePermissionCheckHandler // FIXME
   {
     private readonly IAdvancedContentRepository DomainRepository;
+    private readonly IBookingProvider BookingProvider;
+    private readonly ITenantCategoryProvider TenantCategoryProvider;
 
 
     public UpdateBookingCommandHandler(
-      IAdvancedContentRepository domainRepository)
+      IAdvancedContentRepository domainRepository,
+      IBookingProvider bookingProvider,
+      ITenantCategoryProvider tenantCategoryProvider)
     {
       DomainRepository = domainRepository;
+      BookingProvider = bookingProvider;
+      TenantCategoryProvider = tenantCategoryProvider;
     }
 
 
@@ -25,9 +30,10 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
     {
       using (var scope = DomainRepository.Transactions().CreateScope())
       {
-        var entity = await DomainRepository.CustomEntities().GetById(command.BookingId).AsDetails().ExecuteAsync();
-        // FIXME: check for custom entity type being a "Booking"
-        BookingDataModel booking = (BookingDataModel)entity.LatestVersion.Model;
+        // Verify teneant category
+        await TenantCategoryProvider.GetTenantCategoryById(command.TenantCategoryId.Value);
+
+        BookingDataModel booking = await BookingProvider.GetBookingById(command.BookingId);
 
         booking.ArrivalDate = command.ArrivalDate.Value;
         booking.DepartureDate = command.DepartureDate.Value;
