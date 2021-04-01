@@ -31,6 +31,7 @@ namespace Bogevang.Booking.Domain.Bookings.Queries
 
     public DateTime? Start { get; set; }
     public DateTime? End { get; set; }
+    public string Year { get; set; }
     public OrderByType OrderBy { get; set; }
     public SortDirectionType SortDirection { get; set; }
     public ICollection<BookingDataModel.BookingStateType> BookingState { get; set; }

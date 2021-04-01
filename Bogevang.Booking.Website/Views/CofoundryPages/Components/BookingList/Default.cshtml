@@ -4,7 +4,7 @@
 <form id="bookingsApp">
   @Html.AntiForgeryToken()
 
-  <div class="btn-toolbar form-check">
+  <div class="btn-toolbar form-check align-items-center">
     <div class="form-check form-check-inline">
       <input type="checkbox" id="filterRequested" class="form-check-input" value="Requested" v-model="stateFilter" />
       <label class="form-check-label" for="filterRequested">Forespørgsel</label>
@@ -17,6 +17,10 @@
       <input type="checkbox" id="filterClosed" class="form-check-input" value="Closed" v-model="stateFilter" />
       <label class="form-check-label" for="filterClosed">Afsluttet</label>
     </div>
+
+    <select id="selectedYear" class="form-select" style="width: 6em" v-model="selectedYear">
+      <option v-for="year in selectableYears" :value="year.value">{{year.title}}</option>
+    </select>
 
     <button type="button" class="btn btn-outline-secondary" v-on:click="search">Søg</button>
   </div>

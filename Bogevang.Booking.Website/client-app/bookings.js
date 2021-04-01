@@ -7,9 +7,15 @@
       orderBy: 'ArrivalDate',
       sortDirection: 'Asc',
       stateFilter: ["Requested", "Approved"],
+      selectableYears: [],
+      selectedYear: "all",
       bookings: []
     },
+
     async mounted() {
+      this.selectableYears = [{ title: "Alle år", value: "all"}];
+      for (var year = new Date().getFullYear(); year > 2000; --year)
+        this.selectableYears.push({ title: year, value: year });
       await this.search();
       this.openEditableInputs();
     },
@@ -20,7 +26,8 @@
         searchArgs = {
           orderBy: this.orderBy,
           sortDirection: this.sortDirection,
-          bookingState: this.stateFilter
+          bookingState: this.stateFilter,
+          year: this.selectedYear
         };
 
         result = await this.postWithErrorHandling("/api/bookings", searchArgs);

@@ -143,6 +143,15 @@ namespace Bogevang.Booking.Domain.Bookings
       DateTime startValue = query?.Start ?? new DateTime(2000, 1, 1);
       DateTime endValue = query?.End ?? new DateTime(3000, 1, 1);
 
+      if (query.Year != null && query.Start == null && query.End == null)
+      {
+        if (int.TryParse(query.Year, out int year))
+        {
+          startValue = new DateTime(year, 1, 1);
+          endValue = new DateTime(year + 1, 1, 1);
+        }
+      }
+
       var filtered = Cache
         // Calculate interval overlap
         .Where(b => b.DataModel.ArrivalDate <= endValue && b.DataModel.DepartureDate >= startValue);
