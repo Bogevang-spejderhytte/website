@@ -9,7 +9,14 @@
   <nav class="navbar navbar-light bg-light">
     <div class="container-fluid">
       <div class="btn-group" role="group">
-        <button type="button" id="sendButton" class="btn btn-primary" v-on:click="send">Send</button>
+        @if (!string.IsNullOrEmpty(Model.To.Address))
+        {
+          <button type="button" id="sendButton" class="btn btn-primary" v-on:click="send">Send</button>
+        }
+        else
+        { 
+          <button type="button" id="sendButton" class="btn btn-primary" disabled>Send</button> <span>Modtageradresse mangler.</span>
+        }
       </div>
       <div class="btn-group" role="group">
         <button type="button" id="cancelButton" class="btn btn-outline-secondary" v-on:click="cancel">Afbryd</button>
