@@ -46,6 +46,7 @@ namespace Bogevang.Common.Utility
         if (Cache == null)
         {
           var allEntities = await ContentRepository
+            .WithElevatedPermissions()
             .CustomEntities()
             .GetByDefinitionCode(CustomEntityDefinitionCode)
             .AsRenderSummary()

@@ -83,6 +83,7 @@ namespace Bogevang.Booking.Domain.Bookings
         ElectricityReadingStart = model.ElectricityReadingStart,
         ElectricityReadingEnd = model.ElectricityReadingEnd,
         ElectricityPriceUnit = model.ElectricityPriceUnit,
+        Documents = model.Documents,
         LogEntries = model.LogEntries
       };
 
@@ -119,9 +120,7 @@ namespace Bogevang.Booking.Domain.Bookings
       await EnsureCacheLoaded();
 
       var result = Cache.FirstOrDefault(b => b.Entity.CustomEntityId == bookingId);
-      if (result == null)
-        throw new EntityNotFoundException($"No booking with ID {bookingId}.");
-      return result.DataModel;
+      return result?.DataModel;
     }
 
 
@@ -130,9 +129,7 @@ namespace Bogevang.Booking.Domain.Bookings
       await EnsureCacheLoaded();
 
       var result = Cache.FirstOrDefault(b => b.Entity.CustomEntityId == bookingId);
-      if (result == null)
-        throw new EntityNotFoundException($"No booking with ID {bookingId}.");
-      return result.Summary;
+      return result?.Summary;
     }
 
 

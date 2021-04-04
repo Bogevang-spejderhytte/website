@@ -1,5 +1,6 @@
 ﻿using Bogevang.Booking.Domain.Bookings.CustomEntities;
 using Bogevang.Booking.Domain.Bookings.Models;
+using Bogevang.Booking.Domain.Documents.Commands;
 using Bogevang.Common.Utility;
 using Bogevang.Templates.Domain;
 using Bogevang.Templates.Domain.CustomEntities;
@@ -22,6 +23,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
     private readonly IBookingProvider BookingProvider;
     private readonly ITemplateProvider TemplateProvider;
     private readonly IMailDispatchService MailDispatchService;
+    private readonly ICommandExecutor CommandExecutor;
     private readonly BookingSettings BookingSettings;
     private readonly ICurrentUserProvider CurrentUserProvider;
 
@@ -31,6 +33,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
       IBookingProvider bookingProvider,
       ITemplateProvider templateProvider,
       IMailDispatchService mailDispatchService,
+      ICommandExecutor commandExecutor,
       BookingSettings bookingSettings,
       ICurrentUserProvider currentUserProvider)
     {
@@ -38,6 +41,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
       BookingProvider = bookingProvider;
       TemplateProvider = templateProvider;
       MailDispatchService = mailDispatchService;
+      CommandExecutor = commandExecutor;
       BookingSettings = bookingSettings;
       CurrentUserProvider = currentUserProvider;
     }
@@ -45,52 +49,55 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
 
     public async Task ExecuteAsync(CheckoutBookingCommand command, IExecutionContext executionContext)
     {
-      BookingDataModel booking = await BookingProvider.GetBookingById(command.Id);
-      BookingSummary bookingSummary = await BookingProvider.GetBookingSummaryById(command.Id);
-
-      if (command.Token != booking.TenantSelfServiceToken)
-        throw new AuthenticationFailedException("Ugyldigt eller manglende adgangsnøgle");
-
-      if (booking.BookingState == BookingDataModel.BookingStateType.Requested)
-        throw new ValidationErrorException("Det er ikke muligt at indberette slutafregning, da reservationen endnu ikke er godkendt.");
-      else if (booking.BookingState == BookingDataModel.BookingStateType.Closed)
-        throw new ValidationErrorException("Det er ikke muligt at indberette slutafregning, da reservationen allerede er afsluttet.");
-
-      booking.IsCheckedOut = true;
-      booking.ElectricityReadingStart = command.StartReading;
-      booking.ElectricityReadingEnd = command.EndReading;
-      booking.ElectricityPriceUnit = BookingSettings.ElectricityPrice;
-
-      if (!string.IsNullOrEmpty(command.Comments))
-        booking.Comments += $"\n\n=== Kommentarer til slutregnskab [{DateTime.Now}] ===\n{command.Comments}";
-
-      await booking.AddLogEntry(CurrentUserProvider, "Elforbrug blev indmeldt af lejer.");
-
-      // FIXME: Error handler and transactions
-      await SendCheckoutConfirmationMail(bookingSummary);
-
-      await SendAdminNotificationMail(bookingSummary);
-
-      UpdateCustomEntityDraftVersionCommand updateCmd = new UpdateCustomEntityDraftVersionCommand
+      using (var scope = DomainRepository.Transactions().CreateScope())
       {
-        CustomEntityDefinitionCode = BookingCustomEntityDefinition.DefinitionCode,
-        CustomEntityId = command.Id,
-        Title = booking.MakeTitle(),
-        Publish = true,
-        Model = booking
-      };
+        BookingDataModel booking = await BookingProvider.GetBookingById(command.Id);
+        BookingSummary bookingSummary = await BookingProvider.GetBookingSummaryById(command.Id);
 
-      await DomainRepository.WithElevatedPermissions().CustomEntities().Versions().UpdateDraftAsync(updateCmd);
+        if (command.Token != booking.TenantSelfServiceToken)
+          throw new AuthenticationFailedException("Ugyldigt eller manglende adgangsnøgle");
+
+        if (booking.BookingState == BookingDataModel.BookingStateType.Requested)
+          throw new ValidationErrorException("Det er ikke muligt at indberette slutafregning, da reservationen endnu ikke er godkendt.");
+        else if (booking.BookingState == BookingDataModel.BookingStateType.Closed)
+          throw new ValidationErrorException("Det er ikke muligt at indberette slutafregning, da reservationen allerede er afsluttet.");
+
+        booking.IsCheckedOut = true;
+        booking.ElectricityReadingStart = command.StartReading;
+        booking.ElectricityReadingEnd = command.EndReading;
+        booking.ElectricityPriceUnit = BookingSettings.ElectricityPrice;
+
+        if (!string.IsNullOrEmpty(command.Comments))
+          booking.Comments += $"\n\n=== Kommentarer til slutregnskab [{DateTime.Now}] ===\n{command.Comments}";
+
+        await booking.AddLogEntry(CurrentUserProvider, "Elforbrug blev indmeldt af lejer.");
+
+        await SendCheckoutConfirmationMail(bookingSummary, booking);
+        await SendAdminNotificationMail(bookingSummary);
+
+        UpdateCustomEntityDraftVersionCommand updateCmd = new UpdateCustomEntityDraftVersionCommand
+        {
+          CustomEntityDefinitionCode = BookingCustomEntityDefinition.DefinitionCode,
+          CustomEntityId = command.Id,
+          Title = booking.MakeTitle(),
+          Publish = true,
+          Model = booking
+        };
+
+        await DomainRepository.WithElevatedPermissions().CustomEntities().Versions().UpdateDraftAsync(updateCmd);
+
+        await scope.CompleteAsync();
+      }
     }
 
 
-    private async Task SendCheckoutConfirmationMail(BookingSummary booking)
+    private async Task SendCheckoutConfirmationMail(BookingSummary summary, BookingDataModel booking)
     {
       TemplateDataModel template = await TemplateProvider.GetTemplateByName("slutafregningskvittering");
 
-      string mailText = TemplateProvider.MergeText(template.Text, booking);
+      string mailText = TemplateProvider.MergeText(template.Text, summary);
 
-      MailAddress to = new MailAddress(booking.ContactEMail, booking.ContactName);
+      MailAddress to = new MailAddress(summary.ContactEMail, summary.ContactName);
       MailMessage message = new MailMessage
       {
         To = to,
@@ -99,6 +106,17 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
       };
 
       await MailDispatchService.DispatchAsync(message);
+
+      byte[] mailBody = System.Text.Encoding.UTF8.GetBytes(message.HtmlBody);
+      var addDcoumentCommand = new AddDocumentCommand
+      {
+        Title = message.Subject,
+        MimeType = "text/html",
+        Body = mailBody
+      };
+
+      await CommandExecutor.ExecuteAsync(addDcoumentCommand);
+      booking.AddDocument(message.Subject, addDcoumentCommand.OutputDocumentId);
     }
 
 

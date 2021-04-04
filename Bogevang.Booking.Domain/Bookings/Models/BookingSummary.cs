@@ -64,6 +64,7 @@ namespace Bogevang.Booking.Domain.Bookings.Models
     public decimal? ElectricityReadingEnd { get; set; }
     public decimal? ElectricityPriceUnit { get; set; }
     public List<BookingLogEntry> LogEntries { get; set; }
+    public List<BookingDocumentEntry> Documents { get; set; }
 
     public List<Notification> Notifications { get; set; }
 

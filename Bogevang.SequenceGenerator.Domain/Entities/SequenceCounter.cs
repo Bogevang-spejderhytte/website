@@ -3,7 +3,7 @@
   public class SequenceCounter
   {
     /// <summary>
-    /// Counter name.
+    /// Counter name - and database primary key.
     /// </summary>
     public string Name { get; set; }
 

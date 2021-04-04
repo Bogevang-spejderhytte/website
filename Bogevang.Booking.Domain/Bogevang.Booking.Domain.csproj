@@ -9,6 +9,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Documents\Install\Db\Schema\0001.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Documents\Install\Db\Schema\0001.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Cofoundry.Domain" Version="0.9.1" />
     <PackageReference Include="Cofoundry.Plugins.Mail.MailKit" Version="0.9.1" />
   </ItemGroup>

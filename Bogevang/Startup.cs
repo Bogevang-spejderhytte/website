@@ -35,6 +35,14 @@ namespace Bogevang.Website
 
       app.UseHttpsRedirection();
       app.UseCofoundry();
+
+      app.UseEndpoints(endpoints =>
+      {
+        endpoints.MapControllerRoute(
+          name: "bookingDocuments",
+          pattern: "booking-documents/{documentId}",
+          defaults: new { controller = "BookingDocument", action = "Document" });
+          });
     }
   }
 }

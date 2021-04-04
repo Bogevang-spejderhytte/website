@@ -13,6 +13,9 @@
       <button class="nav-link" id="finance-tab" data-bs-toggle="tab" data-bs-target="#financeTabArea" type="button" role="tab" aria-controls="financeTabArea" aria-selected="false">Økonomi</button>
     </li>
     <li class="nav-item" role="presentation">
+      <button class="nav-link" id="documents-tab" data-bs-toggle="tab" data-bs-target="#documentsTabArea" type="button" role="tab" aria-controls="documentsTabArea" aria-selected="false">Dokumenter</button>
+    </li>
+    <li class="nav-item" role="presentation">
       <button class="nav-link" id="history-tab" data-bs-toggle="tab" data-bs-target="#historyTabArea" type="button" role="tab" aria-controls="historyTabArea" aria-selected="false">Historik</button>
     </li>
   </ul>
@@ -32,8 +35,8 @@
             <li><button id="rejectButton" type="button" class="dropdown-item" v-on:click="reject()">Afvis <i v-if="isRejected" class="menu-status-icon fas fa-check color-ok" title="Reservationen er allerede afvist"></i></button></li>
             <li><button id="sendWelcomeLetterButton" type="button" class="dropdown-item" v-on:click="sendWelcomeLetter()">Send velkomstbrev <i v-if="welcomeLetterIsSent" class="menu-status-icon fas fa-check color-ok" title="Velkomstbrevet er allerede sendt"></i></button></li>
             <li><button id="sendMailButton" type="button" class="dropdown-item" v-on:click="sendMail()">Send mail</button></li>
-            <li><button id="closeButton" type="button" class="dropdown-item" v-on:click="close()">Afslut <i v-if="bookingState == 'closed'" class="menu-status-icon fas fa-check color-ok" title="Reservationen er allerede afsluttet"></i></button></li>
-            <li><button id="deleteButton" type="button" class="dropdown-item" v-on:click="deleteBooking('/reservationer')">Slet</button></li>
+            <li><button id="closeButton" type="button" class="dropdown-item" v-on:click="close()">Afslut reservation <i v-if="bookingState == 'closed'" class="menu-status-icon fas fa-check color-ok" title="Reservationen er allerede afsluttet"></i></button></li>
+            <li><button id="deleteButton" type="button" class="dropdown-item" v-on:click="deleteBooking('/reservationer')">Slet reservation</button></li>
           </ul>
         </div>
       </div>
@@ -107,6 +110,15 @@
           <input type="text" class="form-control" id="totalPrice" v-model="totalPrice" readonly>
         </div>
       </div>
+    </div>
+
+    <div class="tab-pane fade" id="documentsTabArea" role="tabpanel" aria-labelledby="documents-tab">
+      <ul>
+        <li v-for="document in documents">
+          <a :href="'/booking-documents/'+document.documentId" target="bogevang-secondary">{{document.title}}</a>
+          ({{datestr2localTimestamp(document.createdDate)}})
+        </li>
+      </ul>
     </div>
 
     <div class="tab-pane fade" id="historyTabArea" role="tabpanel" aria-labelledby="history-tab">

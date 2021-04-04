@@ -48,6 +48,7 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
       Closed
     }
 
+
     [Display(Name = "Aftalenummer")]
     public int BookingNumber { get; set; }
 
@@ -175,6 +176,8 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
 
     public List<BookingLogEntry> LogEntries { get; set; }
 
+    public List<BookingDocumentEntry> Documents { get; set; }
+
 
     public BookingDataModel()
     {
@@ -182,6 +185,7 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
       TenantSelfServiceToken = RandomKeyGenerator.GetRandomString(30);
       AdminSelfServiceToken = RandomKeyGenerator.GetRandomString(30);
       LogEntries = new List<BookingLogEntry>();
+      Documents = new List<BookingDocumentEntry>();
     }
 
 
@@ -209,6 +213,17 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
         LogEntries = new List<BookingLogEntry>();
 
       LogEntries.Add(entry);
+    }
+
+
+    public void AddDocument(string title, int documentId)
+    {
+      Documents.Add(new BookingDocumentEntry 
+      { 
+        CreatedDate = DateTime.Now,
+        Title = title, 
+        DocumentId = documentId
+      });
     }
   }
 }

@@ -1,4 +1,5 @@
 ﻿using Bogevang.Booking.Domain.Bookings.CustomEntities;
+using Bogevang.Booking.Domain.Documents.Commands;
 using Bogevang.Booking.Domain.TenantCategories;
 using Bogevang.Common.Utility;
 using Bogevang.SequenceGenerator.Domain;
@@ -22,6 +23,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
     private readonly ITemplateProvider TemplateProvider;
     private readonly ITenantCategoryProvider TenantCategoryProvider;
     private readonly IMailDispatchService MailDispatchService;
+    private readonly ICommandExecutor CommandExecutor;
     private readonly BookingSettings BookingSettings;
     private readonly ICurrentUserProvider CurrentUserProvider;
 
@@ -32,6 +34,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
       ITemplateProvider templateProvider,
       ITenantCategoryProvider tenantCategoryProvider,
       IMailDispatchService mailDispatchService,
+      ICommandExecutor commandExecutor,
       BookingSettings bookingSettings,
       ICurrentUserProvider currentUserProvider)
     {
@@ -40,6 +43,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
       TemplateProvider = templateProvider;
       TenantCategoryProvider = tenantCategoryProvider;
       MailDispatchService = mailDispatchService;
+      CommandExecutor = commandExecutor;
       BookingSettings = bookingSettings;
       CurrentUserProvider = currentUserProvider;
     }
@@ -80,6 +84,9 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
 
         await booking.AddLogEntry(CurrentUserProvider, "Reservationen blev indsendt af lejer.");
 
+        await SendConfirmationMail(booking);
+        await SendNotificationMail(booking);
+
         var addCommand = new AddCustomEntityCommand
         {
           CustomEntityDefinitionCode = BookingCustomEntityDefinition.DefinitionCode,
@@ -90,12 +97,6 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
         };
 
         await DomainRepository.WithElevatedPermissions().CustomEntities().AddAsync(addCommand);
-
-        scope.QueueCompletionTask(async () =>
-        {
-          await SendConfirmationMail(booking);
-          await SendNotificationMail(booking);
-        });
 
         await scope.CompleteAsync();
       }
@@ -117,6 +118,17 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
       };
 
       await MailDispatchService.DispatchAsync(message);
+
+      byte[] mailBody = System.Text.Encoding.UTF8.GetBytes(message.HtmlBody);
+      var addDcoumentCommand = new AddDocumentCommand
+      {
+        Title = message.Subject,
+        MimeType = "text/html",
+        Body = mailBody
+      };
+
+      await CommandExecutor.ExecuteAsync(addDcoumentCommand);
+      booking.AddDocument(message.Subject, addDcoumentCommand.OutputDocumentId);
     }
 
 

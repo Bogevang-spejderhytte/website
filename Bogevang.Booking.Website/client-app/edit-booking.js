@@ -31,6 +31,7 @@
       electricityReadingStart: null,
       electricityReadingEnd: null,
       electricityPriceUnit: null,
+      documents: [],
       logEntries: []
     },
 
@@ -176,6 +177,7 @@
           this.electricityReadingStart = data.electricityReadingStart;
           this.electricityReadingEnd = data.electricityReadingEnd;
           this.electricityPriceUnit = data.electricityPriceUnit;
+          this.documents = data.documents,
           this.logEntries = data.logEntries;
         }
       },
