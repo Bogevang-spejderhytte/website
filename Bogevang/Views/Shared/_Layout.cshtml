@@ -46,20 +46,7 @@
         <p class="header-title">@themeSettings.SiteSubTitle</p>
       </div>
       <div class="header-nav" role="navigation">
-        <ul class="nav">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Active</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-          </li>
-        </ul>
+        @await Component.InvokeAsync("NestedMenu", "Hovedmenu")
       </div>
     </div>
 
