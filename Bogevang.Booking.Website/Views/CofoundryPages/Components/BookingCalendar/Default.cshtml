@@ -1,11 +1,11 @@
 ﻿
-<div id='calendar'>
+<div id="calendar">
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
       initialView: 'dayGridMonth',
-      aspectRatio: 2,
+      height: "auto",
       locale: 'da',
       firstDay: 1,
       events: '/api/calendar'

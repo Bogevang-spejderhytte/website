@@ -4,11 +4,18 @@
 @Cofoundry.Template.UseDescription("A template for simple pages with flexible module content")
 
 <h1>@Model.PageTitle</h1>
-<div>
-    @(await Cofoundry.Template.Region("Body")
+
+<div class="row">
+  <div class="col">
+    @(await Cofoundry.Template.Region("Body-Left")
                 .AllowMultipleBlocks()
-                //.AllowBlockType<ContentSectionDataModel>()
                 .EmptyContentMinHeight(500)
                 .InvokeAsync())
-
+  </div>
+  <div class="col">
+    @(await Cofoundry.Template.Region("Body-Right")
+                .AllowMultipleBlocks()
+                .EmptyContentMinHeight(500)
+                .InvokeAsync())
+  </div>
 </div>

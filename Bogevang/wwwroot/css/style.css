@@ -69,6 +69,11 @@ td.date {
   float: right;
 }
 
+a.fc-col-header-cell-cushion,
+a.fc-daygrid-day-number {
+  text-decoration: none;
+}
+
 /* SPINNER */
 .loader {
   position: relative;
