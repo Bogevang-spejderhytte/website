@@ -26,6 +26,9 @@ namespace Bogevang.Booking.Domain.Bookings
     public async Task<BookingMail> CreateBookingMail(int bookingId, string templateName)
     {
       var booking = await BookingProvider.GetBookingSummaryById(bookingId);
+      if (booking == null)
+        return null;
+
       TemplateDataModel template = await TemplateProvider.GetTemplateByName(templateName);
 
       booking.ArrivalDate = booking.ArrivalDate.ToLocalTime();

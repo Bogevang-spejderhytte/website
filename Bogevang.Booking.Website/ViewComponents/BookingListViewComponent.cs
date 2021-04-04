@@ -1,13 +1,29 @@
-﻿using Bogevang.Booking.Domain.Bookings.Queries;
+﻿using Bogevang.Booking.Domain.Bookings.CustomEntities;
+using Bogevang.Booking.Domain.Bookings.Queries;
+using Cofoundry.Domain;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Bogevang.Booking.Website.ViewComponents
 {
   public class BookingListViewComponent : ViewComponent
   {
-    public IViewComponentResult Invoke()
+    private readonly IPermissionValidationService PermissionValidationService;
+
+
+    public BookingListViewComponent(
+      IPermissionValidationService permissionValidationService)
     {
-      return View(new SearchBookingSummariesQuery());
+      PermissionValidationService = permissionValidationService;
+    }
+
+
+    public async Task<IViewComponentResult> InvokeAsync()
+    {
+      if (await PermissionValidationService.HasCustomEntityPermissionAsync<CustomEntityReadPermission>(BookingCustomEntityDefinition.DefinitionCode))
+        return View(new SearchBookingSummariesQuery());
+      else
+        return View("Blocked");
     }
   }
 }

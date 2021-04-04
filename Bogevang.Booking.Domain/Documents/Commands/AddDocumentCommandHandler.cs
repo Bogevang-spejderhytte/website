@@ -16,17 +16,14 @@ namespace Bogevang.Booking.Domain.Documents.Commands
   {
     private readonly DocumentDbContext DbContext;
     private readonly ITransactionScopeManager TransactionScopeFactory;
-    private readonly ICustomEntityDefinitionRepository CustomEntityDefinitionRepository;
 
 
     public AddDocumentCommandHandler(
         DocumentDbContext dbContext,
-        ITransactionScopeManager transactionScopeFactory,
-        ICustomEntityDefinitionRepository customEntityDefinitionRepository)
+        ITransactionScopeManager transactionScopeFactory)
     {
       DbContext = dbContext;
       TransactionScopeFactory = transactionScopeFactory;
-      CustomEntityDefinitionRepository = customEntityDefinitionRepository;
     }
 
 

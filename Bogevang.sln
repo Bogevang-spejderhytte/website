@@ -18,7 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Other", "Other", "{0B16B268
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bogevang.Templates.Domain", "Bogevang.Templates.Domain\Bogevang.Templates.Domain.csproj", "{0FFDC3CB-5044-4E63-B7B5-0B584A7E13D6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bogevang.SequenceGenerator.Domain", "Bogevang.SequenceGenerator.Domain\Bogevang.SequenceGenerator.Domain.csproj", "{1EC86503-08D7-4AE4-B0F3-66C12551DEEB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bogevang.SequenceGenerator.Domain", "Bogevang.SequenceGenerator.Domain\Bogevang.SequenceGenerator.Domain.csproj", "{1EC86503-08D7-4AE4-B0F3-66C12551DEEB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

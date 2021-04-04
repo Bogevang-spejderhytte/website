@@ -1,13 +1,13 @@
 ﻿using Bogevang.Booking.Domain.Bookings.CustomEntities;
+using Bogevang.Booking.Domain.Bookings.Models;
+using Cofoundry.Domain.CQS;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 
 namespace Bogevang.Booking.Domain.Bookings.Queries
 {
-  public class SearchBookingSummariesQuery
+  public class SearchBookingSummariesQuery : IQuery<IList<BookingSummary>>
   {
     public enum OrderByType
     {

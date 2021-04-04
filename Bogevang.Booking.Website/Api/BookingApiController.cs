@@ -1,7 +1,9 @@
 ﻿using Bogevang.Booking.Domain.Bookings;
 using Bogevang.Booking.Domain.Bookings.Commands;
 using Bogevang.Booking.Domain.Bookings.CustomEntities;
+using Bogevang.Booking.Domain.Bookings.Models;
 using Cofoundry.Domain;
+using Cofoundry.Domain.CQS;
 using Cofoundry.Web;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -15,14 +17,20 @@ namespace Bogevang.Booking.Website.Api
   public class BookingApiController : ControllerBase
   {
     private readonly IBookingProvider BookingProvider;
+    private readonly IPermissionValidationService PermissionValidationService;
+    private readonly IExecutionContextFactory ExecutionContextFactory;
     private readonly IApiResponseHelper ApiResponseHelper;
 
 
     public BookingApiController(
-        IBookingProvider bBookingProvider,
-        IApiResponseHelper apiResponseHelper)
+      IBookingProvider bookingProvider,
+      IPermissionValidationService permissionValidationService,
+      IExecutionContextFactory executionContextFactory,
+      IApiResponseHelper apiResponseHelper)
     {
-      BookingProvider = bBookingProvider;
+      BookingProvider = bookingProvider;
+      PermissionValidationService = permissionValidationService;
+      ExecutionContextFactory = executionContextFactory;
       ApiResponseHelper = apiResponseHelper;
     }
 
@@ -30,7 +38,10 @@ namespace Bogevang.Booking.Website.Api
     [HttpGet]
     public async Task<JsonResult> Get([FromQuery] int id)
     {
-      var booking = await BookingProvider.GetBookingSummaryById(id);
+      IExecutionContext executionContext = await ExecutionContextFactory.CreateAsync();
+      PermissionValidationService.EnforceCustomEntityPermission<CustomEntityReadPermission>(BookingCustomEntityDefinition.DefinitionCode, executionContext.UserContext);
+
+      BookingSummary booking = await BookingProvider.GetBookingSummaryById(id);
       return ApiResponseHelper.SimpleQueryResponse(booking);
     }
 

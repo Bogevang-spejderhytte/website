@@ -17,9 +17,12 @@
     <None Remove="test.html" />
     <None Remove="Views\CofoundryPages\Components\BookingCalendar\Default.cshtml" />
     <None Remove="Views\CofoundryPages\Components\BookingCheckout\Default.cshtml" />
+    <None Remove="Views\CofoundryPages\Components\BookingEditor\Blocked.cshtml" />
     <None Remove="Views\CofoundryPages\Components\BookingEditor\Default.cshtml" />
+    <None Remove="Views\CofoundryPages\Components\BookingList\Blocked.cshtml" />
     <None Remove="Views\CofoundryPages\Components\BookingList\Default.cshtml" />
     <None Remove="Views\CofoundryPages\Components\BookingRequest\Default.cshtml" />
+    <None Remove="Views\CofoundryPages\Components\SendBookingMail\Blocked.cshtml" />
     <None Remove="Views\CofoundryPages\Components\SendBookingMail\Default.cshtml" />
     <None Remove="Views\PageTemplates\_Booking.cshtml" />
     <None Remove="Views\PageTemplates\_BookingCheckout.cshtml" />
@@ -47,15 +50,18 @@
     <EmbeddedResource Include="PageBlockTypes\BookingCalendar\BookingCalendar.cshtml" />
     <EmbeddedResource Include="Views\CofoundryPages\Components\BookingCalendar\Default.cshtml" />
     <EmbeddedResource Include="Views\CofoundryPages\Components\BookingCheckout\Default.cshtml" />
+    <EmbeddedResource Include="Views\CofoundryPages\Components\BookingEditor\Blocked.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Views\CofoundryPages\Components\BookingEditor\Default.cshtml" />
+    <EmbeddedResource Include="Views\CofoundryPages\Components\BookingList\Blocked.cshtml" />
     <EmbeddedResource Include="Views\CofoundryPages\Components\BookingList\Default.cshtml" />
     <EmbeddedResource Include="Views\CofoundryPages\Components\BookingRequest\Default.cshtml">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\CofoundryPages\Components\SendBookingMail\Blocked.cshtml" />
     <EmbeddedResource Include="Views\CofoundryPages\Components\SendBookingMail\Default.cshtml" />
     <EmbeddedResource Include="Views\PageTemplates\_Booking.cshtml">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>

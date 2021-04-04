@@ -24,10 +24,6 @@ namespace Bogevang.Website.Api
     public Task<JsonResult> Post([FromBody] BookingRequestCommand command)
     {
       return ApiResponseHelper.RunCommandAsync(command);
-
-      //using (var scope = DomainRepository.Transactions().CreateScope())
-      //{
-      //}
     }
   }
 }

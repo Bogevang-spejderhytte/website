@@ -14,7 +14,7 @@ namespace Bogevang.Booking.Website.Api
 
 
     public SendWelcomeLetterApiController(
-        IApiResponseHelper apiResponseHelper)
+      IApiResponseHelper apiResponseHelper)
     {
       ApiResponseHelper = apiResponseHelper;
     }

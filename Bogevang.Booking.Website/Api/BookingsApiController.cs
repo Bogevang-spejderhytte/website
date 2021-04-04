@@ -1,7 +1,6 @@
-﻿using Bogevang.Booking.Domain.Bookings;
-using Bogevang.Booking.Domain.Bookings.Models;
+﻿using Bogevang.Booking.Domain.Bookings.Models;
 using Bogevang.Booking.Domain.Bookings.Queries;
-using Cofoundry.Domain;
+using Cofoundry.Domain.CQS;
 using Cofoundry.Web;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -13,29 +12,23 @@ namespace Bogevang.Booking.Website.Api
   [AutoValidateAntiforgeryToken]
   public class BookingsApiController : ControllerBase
   {
-    private readonly IBookingProvider BookingProvider;
+    private readonly IQueryExecutor QueryExecutor;
     private readonly IApiResponseHelper ApiResponseHelper;
 
 
     public BookingsApiController(
-        IBookingProvider bookingProvider,
-        IApiResponseHelper apiResponseHelper
-        )
+      IQueryExecutor queryExecutor,
+      IApiResponseHelper apiResponseHelper)
     {
-      BookingProvider = bookingProvider;
+      QueryExecutor = queryExecutor;
       ApiResponseHelper = apiResponseHelper;
     }
 
 
     [HttpPost("")]
-    //[AuthorizeUserArea(MemberUserArea.MemberUserAreaCode)]
     public async Task<JsonResult> Get([FromBody] SearchBookingSummariesQuery query)
     {
-      if (query == null) 
-        query = new SearchBookingSummariesQuery();
-
-      IEnumerable<BookingSummary> bookings = await BookingProvider.FindBookingsInInterval(query);
-
+      IList<BookingSummary> bookings = await QueryExecutor.ExecuteAsync(query);
       return ApiResponseHelper.SimpleQueryResponse(bookings);
     }
   }
