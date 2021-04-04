@@ -6,28 +6,33 @@ using System.Threading.Tasks;
 
 namespace Bogevang.Booking.Domain.Bookings.Commands
 {
-  public class UpdateBookingCommandHandler
-    : ICommandHandler<UpdateBookingCommand>,
-      IIgnorePermissionCheckHandler // FIXME
+  public class UpdateBookingCommandHandler :
+    ICommandHandler<UpdateBookingCommand>,
+    IIgnorePermissionCheckHandler // Permission enforced in code
   {
     private readonly IAdvancedContentRepository DomainRepository;
     private readonly IBookingProvider BookingProvider;
     private readonly ITenantCategoryProvider TenantCategoryProvider;
+    private readonly IPermissionValidationService PermissionValidationService;
 
 
     public UpdateBookingCommandHandler(
       IAdvancedContentRepository domainRepository,
       IBookingProvider bookingProvider,
+      IPermissionValidationService permissionValidationService,
       ITenantCategoryProvider tenantCategoryProvider)
     {
       DomainRepository = domainRepository;
       BookingProvider = bookingProvider;
+      PermissionValidationService = permissionValidationService;
       TenantCategoryProvider = tenantCategoryProvider;
     }
 
 
     public async Task ExecuteAsync(UpdateBookingCommand command, IExecutionContext executionContext)
     {
+      PermissionValidationService.EnforceCustomEntityPermission<CustomEntityUpdatePermission>(BookingCustomEntityDefinition.DefinitionCode, executionContext.UserContext);
+
       using (var scope = DomainRepository.Transactions().CreateScope())
       {
         // Verify teneant category

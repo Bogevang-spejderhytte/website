@@ -17,7 +17,6 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
   public class CheckoutBookingCommandHandler
       : ICommandHandler<CheckoutBookingCommand>,
         IIgnorePermissionCheckHandler  // Depends on token checking
-
   {
     private readonly IAdvancedContentRepository DomainRepository;
     private readonly IBookingProvider BookingProvider;

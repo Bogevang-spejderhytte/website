@@ -1,29 +1,28 @@
 ﻿using Bogevang.Booking.Domain.Documents.Data;
-using Bogevang.Booking.Domain.Documents.Entities;
-using Cofoundry.Core;
 using Cofoundry.Core.Data;
 using Cofoundry.Domain;
 using Cofoundry.Domain.CQS;
-using System;
 using System.Threading.Tasks;
 
 namespace Bogevang.Booking.Domain.Documents.Commands
 {
-  public class DeleteDocumentCommandHandler 
-    : ICommandHandler<DeleteDocumentCommand>,
-      IIgnorePermissionCheckHandler // FIXME
+  public class DeleteDocumentCommandHandler :
+    ICommandHandler<DeleteDocumentCommand>,
+    IIgnorePermissionCheckHandler // Permission must be enforced by calling code (document handling is always executed from bookings)
   {
     private readonly DocumentDbContext DbContext;
     private readonly ITransactionScopeManager TransactionScopeFactory;
+    private readonly ICustomEntityDefinitionRepository CustomEntityDefinitionRepository;
 
 
     public DeleteDocumentCommandHandler(
         DocumentDbContext dbContext,
-        ITransactionScopeManager transactionScopeFactory
-        )
+        ITransactionScopeManager transactionScopeFactory,
+        ICustomEntityDefinitionRepository customEntityDefinitionRepository)
     {
       DbContext = dbContext;
       TransactionScopeFactory = transactionScopeFactory;
+      CustomEntityDefinitionRepository = customEntityDefinitionRepository;
     }
 
 

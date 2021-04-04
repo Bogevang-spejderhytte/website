@@ -7,44 +7,53 @@ using System.Threading.Tasks;
 
 namespace Bogevang.Booking.Domain.Bookings.Commands
 {
-  public class CloseBookingCommandHandler
-    : ICommandHandler<CloseBookingCommand>,
-      IIgnorePermissionCheckHandler
+  public class CloseBookingCommandHandler :
+    ICommandHandler<CloseBookingCommand>,
+    IIgnorePermissionCheckHandler // Permission enforced in code
   {
     private readonly IAdvancedContentRepository DomainRepository;
     private readonly IBookingProvider BookingProvider;
+    private readonly IPermissionValidationService PermissionValidationService;
     private readonly ICurrentUserProvider CurrentUserProvider;
 
 
     public CloseBookingCommandHandler(
       IAdvancedContentRepository domainRepository,
       IBookingProvider bookingProvider,
+      IPermissionValidationService permissionValidationService,
       ICurrentUserProvider currentUserProvider)
     {
       DomainRepository = domainRepository;
       BookingProvider = bookingProvider;
+      PermissionValidationService = permissionValidationService;
       CurrentUserProvider = currentUserProvider;
     }
 
 
     public async Task ExecuteAsync(CloseBookingCommand command, IExecutionContext executionContext)
     {
-      var booking = await BookingProvider.GetBookingById(command.Id);
+      PermissionValidationService.EnforceCustomEntityPermission<CustomEntityUpdatePermission>(BookingCustomEntityDefinition.DefinitionCode, executionContext.UserContext);
 
-      booking.BookingState = BookingDataModel.BookingStateType.Closed;
-
-      await booking.AddLogEntry(CurrentUserProvider, "Reservationen blev afsluttet.");
-
-      UpdateCustomEntityDraftVersionCommand updateCmd = new UpdateCustomEntityDraftVersionCommand
+      using (var scope = DomainRepository.Transactions().CreateScope())
       {
-        CustomEntityDefinitionCode = BookingCustomEntityDefinition.DefinitionCode,
-        CustomEntityId = command.Id,
-        Title = booking.MakeTitle(),
-        Publish = true,
-        Model = booking
-      };
+        var booking = await BookingProvider.GetBookingById(command.Id);
 
-      await DomainRepository.CustomEntities().Versions().UpdateDraftAsync(updateCmd);
+        booking.BookingState = BookingDataModel.BookingStateType.Closed;
+
+        await booking.AddLogEntry(CurrentUserProvider, "Reservationen blev afsluttet.");
+
+        UpdateCustomEntityDraftVersionCommand updateCmd = new UpdateCustomEntityDraftVersionCommand
+        {
+          CustomEntityDefinitionCode = BookingCustomEntityDefinition.DefinitionCode,
+          CustomEntityId = command.Id,
+          Title = booking.MakeTitle(),
+          Publish = true,
+          Model = booking
+        };
+
+        await DomainRepository.CustomEntities().Versions().UpdateDraftAsync(updateCmd);
+        await scope.CompleteAsync();
+      }
     }
   }
 }

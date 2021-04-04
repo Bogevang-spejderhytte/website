@@ -17,6 +17,7 @@ namespace Bogevang.Booking.Domain.Bookings
     CachedCustomEntityProvider<BookingDataModel, BookingSummary>, 
     IBookingProvider
   {
+    private readonly IPermissionValidationService PermissionValidationService;
     private readonly ITenantCategoryProvider TenantCategoryProvider;
     private readonly IContentRouteLibrary ContentRouteLibrary;
     private readonly BookingSettings BookingSettings;
@@ -24,11 +25,13 @@ namespace Bogevang.Booking.Domain.Bookings
 
     public BookingProvider(
       IAdvancedContentRepository contentRepository,
+      IPermissionValidationService permissionValidationService,
       ITenantCategoryProvider tenantCategoryProvider,
       IContentRouteLibrary contentRouteLibrary,
       BookingSettings bookingSettings)
       : base(contentRepository)
     {
+      PermissionValidationService = permissionValidationService;
       TenantCategoryProvider = tenantCategoryProvider;
       ContentRouteLibrary = contentRouteLibrary;
       BookingSettings = bookingSettings;

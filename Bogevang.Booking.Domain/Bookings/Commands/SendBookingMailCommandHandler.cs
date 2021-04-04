@@ -1,25 +1,22 @@
 ﻿using Bogevang.Booking.Domain.Bookings.CustomEntities;
 using Bogevang.Booking.Domain.Documents.Commands;
 using Bogevang.Common.Utility;
-using Bogevang.Templates.Domain;
-using Cofoundry.Core.Data;
 using Cofoundry.Core.Mail;
 using Cofoundry.Domain;
 using Cofoundry.Domain.CQS;
-using System;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace Bogevang.Booking.Domain.Bookings.Commands
 {
   public class SendBookingMailCommandHandler : 
     ICommandHandler<SendBookingMailCommand>,
-    IIgnorePermissionCheckHandler  // FIXME!!!!
+    IIgnorePermissionCheckHandler // Permission enforced in code
   {
     private readonly IAdvancedContentRepository DomainRepository;
     private readonly IBookingProvider BookingProvider;
     private readonly IMailDispatchService MailDispatchService;
     private readonly ICommandExecutor CommandExecutor;
+    private readonly IPermissionValidationService PermissionValidationService;
     private readonly ICurrentUserProvider CurrentUserProvider;
 
     public SendBookingMailCommandHandler(
@@ -27,21 +24,49 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
       IBookingProvider bookingProvider,
       IMailDispatchService mailDispatchService,
       ICommandExecutor commandExecutor,
+      IPermissionValidationService permissionValidationService,
       ICurrentUserProvider currentUserProvider)
     {
       DomainRepository = domainRepository;
       BookingProvider = bookingProvider;
       MailDispatchService = mailDispatchService;
       CommandExecutor = commandExecutor;
+      PermissionValidationService = permissionValidationService;
       CurrentUserProvider = currentUserProvider;
     }
 
 
     public async Task ExecuteAsync(SendBookingMailCommand command, IExecutionContext executionContext)
     {
+      PermissionValidationService.EnforceCustomEntityPermission<CustomEntityUpdatePermission>(BookingCustomEntityDefinition.DefinitionCode, executionContext.UserContext);
+
       using (var scope = DomainRepository.Transactions().CreateScope())
       {
         BookingDataModel booking = await BookingProvider.GetBookingById(command.BookingId);
+
+        await booking.AddLogEntry(CurrentUserProvider, $"Sendt: {command.Subject}.");
+
+        byte[] mailBody = System.Text.Encoding.UTF8.GetBytes(command.Message);
+        var addDcoumentCommand = new AddDocumentCommand
+        {
+          Title = command.Subject,
+          MimeType = "text/html",
+          Body = mailBody
+        };
+
+        await CommandExecutor.ExecuteAsync(addDcoumentCommand);
+        booking.AddDocument(command.Subject, addDcoumentCommand.OutputDocumentId);
+
+        UpdateCustomEntityDraftVersionCommand updateCmd = new UpdateCustomEntityDraftVersionCommand
+        {
+          CustomEntityDefinitionCode = BookingCustomEntityDefinition.DefinitionCode,
+          CustomEntityId = command.BookingId,
+          Title = booking.MakeTitle(),
+          Publish = true,
+          Model = booking
+        };
+
+        await DomainRepository.CustomEntities().Versions().UpdateDraftAsync(updateCmd);
 
         MailAddress to = new MailAddress(booking.ContactEMail, booking.ContactName);
         MailMessage message = new MailMessage
@@ -57,30 +82,6 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
         // (and, yes, sending mails may fail much later with an "unknown recipient" or similar)
 
         await MailDispatchService.DispatchAsync(message);
-
-        await booking.AddLogEntry(CurrentUserProvider, $"Sendt: {command.Subject}.");
-
-        byte[] mailBody = System.Text.Encoding.UTF8.GetBytes(message.HtmlBody);
-        var addDcoumentCommand = new AddDocumentCommand
-        {
-          Title = message.Subject,
-          MimeType = "text/html",
-          Body = mailBody
-        };
-
-        await CommandExecutor.ExecuteAsync(addDcoumentCommand);
-        booking.AddDocument(message.Subject, addDcoumentCommand.OutputDocumentId);
-
-        UpdateCustomEntityDraftVersionCommand updateCmd = new UpdateCustomEntityDraftVersionCommand
-        {
-          CustomEntityDefinitionCode = BookingCustomEntityDefinition.DefinitionCode,
-          CustomEntityId = command.BookingId,
-          Title = booking.MakeTitle(),
-          Publish = true,
-          Model = booking
-        };
-
-        await DomainRepository.CustomEntities().Versions().UpdateDraftAsync(updateCmd);
 
         await scope.CompleteAsync();
       }

@@ -16,7 +16,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
 {
   public class BookingRequestCommandHandler
     : ICommandHandler<BookingRequestCommand>, 
-      IIgnorePermissionCheckHandler
+      IIgnorePermissionCheckHandler // Anyone can add a booking request
   {
     private readonly IAdvancedContentRepository DomainRepository;
     private readonly ISequenceNumberGenerator SequenceNumberGenerator;
