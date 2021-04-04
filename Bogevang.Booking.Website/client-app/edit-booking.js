@@ -114,7 +114,7 @@
         var result = await this.doClose();
         if (result) {
           this.loadData();
-          window.alert('Reservationen er nu afsluttet.;')
+          window.alert('Reservationen er nu afsluttet.')
         }
       },
 

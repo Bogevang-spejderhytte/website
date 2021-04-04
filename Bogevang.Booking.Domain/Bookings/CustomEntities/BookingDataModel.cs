@@ -174,6 +174,11 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
     public decimal? ElectricityPriceUnit { get; set; }
 
 
+    public decimal ElectricityPrice => ((ElectricityReadingEnd ?? 0) - (ElectricityReadingStart ?? 0)) * (ElectricityPriceUnit ?? 0);
+
+    public decimal TotalPrice => (Deposit ?? 0) - ElectricityPrice;
+
+
     public List<BookingLogEntry> LogEntries { get; set; }
 
     public List<BookingDocumentEntry> Documents { get; set; }

@@ -63,6 +63,9 @@ namespace Bogevang.Booking.Domain.Bookings.Models
     public decimal? ElectricityReadingStart { get; set; }
     public decimal? ElectricityReadingEnd { get; set; }
     public decimal? ElectricityPriceUnit { get; set; }
+    public decimal ElectricityPrice { get; set; }
+    public decimal TotalPrice { get; set; }
+
     public List<BookingLogEntry> LogEntries { get; set; }
     public List<BookingDocumentEntry> Documents { get; set; }
 
@@ -70,10 +73,6 @@ namespace Bogevang.Booking.Domain.Bookings.Models
 
     public AlertType? Alert { get; set; }
     public string AlertMessage { get; set; }
-
-    public decimal ElectricityPrice => ((ElectricityReadingEnd ?? 0) - (ElectricityReadingStart ?? 0)) * (ElectricityPriceUnit ?? 0);
-
-    public decimal TotalPrice => (Deposit ?? 0) - ElectricityPrice;
 
 
     public void AddNotification(NotificationLevelType level, string message)

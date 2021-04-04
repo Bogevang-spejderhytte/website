@@ -51,7 +51,6 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
       using (var scope = DomainRepository.Transactions().CreateScope())
       {
         BookingDataModel booking = await BookingProvider.GetBookingById(command.Id);
-        BookingSummary bookingSummary = await BookingProvider.GetBookingSummaryById(command.Id);
 
         if (command.Token != booking.TenantSelfServiceToken)
           throw new AuthenticationFailedException("Ugyldigt eller manglende adgangsnøgle");
@@ -71,8 +70,10 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
 
         await booking.AddLogEntry(CurrentUserProvider, "Elforbrug blev indmeldt af lejer.");
 
-        await SendCheckoutConfirmationMail(bookingSummary, booking);
-        await SendAdminNotificationMail(bookingSummary);
+        // Do not use BookingSummary for mails as it will be the old version of the booking, from before readings were updated.
+        // Also make sure mails are sent before updating the entity, as sent mail will be refered by the model.
+        await SendCheckoutConfirmationMail(booking);
+        await SendAdminNotificationMail(booking);
 
         UpdateCustomEntityDraftVersionCommand updateCmd = new UpdateCustomEntityDraftVersionCommand
         {
@@ -90,13 +91,13 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
     }
 
 
-    private async Task SendCheckoutConfirmationMail(BookingSummary summary, BookingDataModel booking)
+    private async Task SendCheckoutConfirmationMail(BookingDataModel booking)
     {
       TemplateDataModel template = await TemplateProvider.GetTemplateByName("slutafregningskvittering");
 
-      string mailText = TemplateProvider.MergeText(template.Text, summary);
+      string mailText = TemplateProvider.MergeText(template.Text, booking);
 
-      MailAddress to = new MailAddress(summary.ContactEMail, summary.ContactName);
+      MailAddress to = new MailAddress(booking.ContactEMail, booking.ContactName);
       MailMessage message = new MailMessage
       {
         To = to,
@@ -119,7 +120,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
     }
 
 
-    private async Task SendAdminNotificationMail(BookingSummary booking)
+    private async Task SendAdminNotificationMail(BookingDataModel booking)
     {
       TemplateDataModel template = await TemplateProvider.GetTemplateByName("slutafregningsnotifikation");
 
