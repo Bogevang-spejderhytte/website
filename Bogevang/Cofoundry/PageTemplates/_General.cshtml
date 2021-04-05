@@ -7,7 +7,6 @@
 <div>
     @(await Cofoundry.Template.Region("Body")
                 .AllowMultipleBlocks()
-                //.AllowBlockType<ContentSectionDataModel>()
                 .EmptyContentMinHeight(500)
                 .InvokeAsync())
 

@@ -1,21 +1,24 @@
 ﻿using Cofoundry.Domain;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace Bogevang.Menus.CustomEntities
+namespace Bogevang.Snippets.CustomEntities
 {
-  public class NestedMenuCustomEntityDefinition :
-    ICustomEntityDefinition<NestedMenuDataModel>,
+  public class SnippetCustomEntityDefinition :
+    ICustomEntityDefinition<SnippetDataModel>,
     ICustomizedTermCustomEntityDefinition
   {
-    public const string DefinitionCode = "MNUNST";
+    public const string DefinitionCode = "SNIPET";
 
     public string CustomEntityDefinitionCode => DefinitionCode;
 
-    public string Name => "Menuer";
+    public string Name => "Tekst";
 
-    public string NamePlural => "Menuer";
+    public string NamePlural => "Tekster";
 
-    public string Description => "En to-niveau menu";
+    public string Description => "En stump tekst som kan indsættes på hjemmesiden";
 
     public bool ForceUrlSlugUniqueness => true;
 
