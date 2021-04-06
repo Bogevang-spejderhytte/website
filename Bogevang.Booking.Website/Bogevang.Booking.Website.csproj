@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <MvcRazorExcludeViewFilesFromPublish>false</MvcRazorExcludeViewFilesFromPublish>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -34,18 +35,12 @@
 
   <ItemGroup>
     <EmbeddedResource Include="client-app\booking-request.js" />
-    <EmbeddedResource Include="client-app\bookings.js">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </EmbeddedResource>
+    <EmbeddedResource Include="client-app\bookings.js"/>
     <EmbeddedResource Include="client-app\checkout-booking.js" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="client-app\edit-booking.js">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </EmbeddedResource>
+    <EmbeddedResource Include="client-app\edit-booking.js"/>
     <EmbeddedResource Include="client-app\send-booking-mail.js" />
     <EmbeddedResource Include="PageBlockTypes\BookingCalendar\BookingCalendar.cshtml" />
     <EmbeddedResource Include="Views\CofoundryPages\Components\BookingCalendar\Default.cshtml" />
@@ -57,30 +52,15 @@
     <EmbeddedResource Include="Views\CofoundryPages\Components\BookingEditor\Default.cshtml" />
     <EmbeddedResource Include="Views\CofoundryPages\Components\BookingList\Blocked.cshtml" />
     <EmbeddedResource Include="Views\CofoundryPages\Components\BookingList\Default.cshtml" />
-    <EmbeddedResource Include="Views\CofoundryPages\Components\BookingRequest\Default.cshtml">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Views\CofoundryPages\Components\BookingRequest\Default.cshtml"/>
     <EmbeddedResource Include="Views\CofoundryPages\Components\SendBookingMail\Blocked.cshtml" />
     <EmbeddedResource Include="Views\CofoundryPages\Components\SendBookingMail\Default.cshtml" />
-    <EmbeddedResource Include="Views\PageTemplates\_Booking.cshtml">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Views\PageTemplates\_Booking.cshtml"/>
     <EmbeddedResource Include="Views\PageTemplates\_BookingCheckout.cshtml" />
-    <EmbeddedResource Include="Views\PageTemplates\_BookingList.cshtml">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\PageTemplates\_BookingRequest.cshtml">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Views\PageTemplates\_BookingList.cshtml"/>
+    <EmbeddedResource Include="Views\PageTemplates\_BookingRequest.cshtml"/>
     <EmbeddedResource Include="Views\PageTemplates\_SendBookingMail.cshtml" />
-    <EmbeddedResource Include="Views\_ViewImports.cshtml">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Views\_ViewImports.cshtml"/>
   </ItemGroup>
 
   <ItemGroup>
