@@ -24,4 +24,10 @@
     <ProjectReference Include="..\Bogevang.Templates.Domain\Bogevang.Templates.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Cofoundry\Admin\Dashboard\Dashboard.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
