@@ -1,0 +1,15 @@
+﻿<h2>Import reservationer fra gammelt booking system</h2>
+
+<form enctype="multipart/form-data" method="post" action="import">
+  <input id="documentInput" name="document" type="file"/>
+  <input type="submit" />
+</form>
+
+<hr/>
+
+<h2>Slet alle reservationer i hele systemet</h2>
+<form enctype="application/x-www-form-urlencoded" method="post" action="deleteall">
+  <label for="confirm">Skriv "Slet alt" her:</label>
+  <input type="text" name="confirm" id="confirm"/>
+  <input type="submit" value="Slet alt!"/>
+</form>

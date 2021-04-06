@@ -42,6 +42,11 @@ namespace Bogevang.Website
           name: "bookingDocuments",
           pattern: "booking-documents/{documentId}",
           defaults: new { controller = "BookingDocument", action = "Document" });
+        
+        endpoints.MapControllerRoute(
+          name: "adminBookings",
+          pattern: "admin-bookings/{action}",
+          defaults: new { controller = "AdminBookings" });
       });
     }
   }

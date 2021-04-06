@@ -15,23 +15,28 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
 {
   public class ImportBookingsCommandHandler : 
     ICommandHandler<ImportBookingsCommand>,
-    IIgnorePermissionCheckHandler
+    IIgnorePermissionCheckHandler // Permission enforced in code
   {
     private readonly IAdvancedContentRepository DomainRepository;
     private readonly ITenantCategoryProvider TenantCategoryProvider;
+    private readonly IPermissionValidationService PermissionValidationService;
 
 
     public ImportBookingsCommandHandler(
       IAdvancedContentRepository domainRepository,
-      ITenantCategoryProvider tenantCategoryProvider)
+      ITenantCategoryProvider tenantCategoryProvider,
+      IPermissionValidationService permissionValidationService)
     {
       DomainRepository = domainRepository;
       TenantCategoryProvider = tenantCategoryProvider;
+      PermissionValidationService = permissionValidationService;
     }
 
 
     public async Task ExecuteAsync(ImportBookingsCommand command, IExecutionContext executionContext)
     {
+      PermissionValidationService.EnforceCustomEntityPermission<CustomEntityUpdatePermission>(BookingCustomEntityDefinition.DefinitionCode, executionContext.UserContext);
+
       DataSet bookings = new DataSet();
       bookings.ReadXml(command.ReadyToReadInput);
 
@@ -95,7 +100,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
 
           await DomainRepository.WithElevatedPermissions().CustomEntities().AddAsync(addCommand);
 
-          if (++count >= 6)
+          if (++count >= 100)
             break;
         }
         catch (ValidationException ex)

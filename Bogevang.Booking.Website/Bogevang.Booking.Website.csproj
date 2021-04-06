@@ -25,8 +25,8 @@
     <None Remove="Views\CofoundryPages\Components\BookingRequest\Default.cshtml" />
     <None Remove="Views\CofoundryPages\Components\SendBookingMail\Blocked.cshtml" />
     <None Remove="Views\CofoundryPages\Components\SendBookingMail\Default.cshtml" />
-    <None Remove="Views\ImportBookings\Done.cshtml" />
-    <None Remove="Views\ImportBookings\Import.cshtml" />
+    <None Remove="Views\AdminBookings\Done.cshtml" />
+    <None Remove="Views\AdminBookings\Start.cshtml" />
     <None Remove="Views\PageTemplates\_Booking.cshtml" />
     <None Remove="Views\PageTemplates\_BookingCheckout.cshtml" />
     <None Remove="Views\PageTemplates\_BookingList.cshtml" />
@@ -57,8 +57,8 @@
     <EmbeddedResource Include="Views\CofoundryPages\Components\BookingRequest\Default.cshtml" />
     <EmbeddedResource Include="Views\CofoundryPages\Components\SendBookingMail\Blocked.cshtml" />
     <EmbeddedResource Include="Views\CofoundryPages\Components\SendBookingMail\Default.cshtml" />
-    <EmbeddedResource Include="Views\ImportBookings\Done.cshtml" />
-    <EmbeddedResource Include="Views\ImportBookings\Import.cshtml" />
+    <EmbeddedResource Include="Views\AdminBookings\Done.cshtml" />
+    <EmbeddedResource Include="Views\AdminBookings\Start.cshtml" />
     <EmbeddedResource Include="Views\PageTemplates\_Booking.cshtml" />
     <EmbeddedResource Include="Views\PageTemplates\_BookingCheckout.cshtml" />
     <EmbeddedResource Include="Views\PageTemplates\_BookingList.cshtml" />
