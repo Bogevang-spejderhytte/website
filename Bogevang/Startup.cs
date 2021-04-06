@@ -42,7 +42,7 @@ namespace Bogevang.Website
           name: "bookingDocuments",
           pattern: "booking-documents/{documentId}",
           defaults: new { controller = "BookingDocument", action = "Document" });
-          });
+      });
     }
   }
 }

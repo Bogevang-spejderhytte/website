@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -25,6 +25,8 @@
     <None Remove="Views\CofoundryPages\Components\BookingRequest\Default.cshtml" />
     <None Remove="Views\CofoundryPages\Components\SendBookingMail\Blocked.cshtml" />
     <None Remove="Views\CofoundryPages\Components\SendBookingMail\Default.cshtml" />
+    <None Remove="Views\ImportBookings\Done.cshtml" />
+    <None Remove="Views\ImportBookings\Import.cshtml" />
     <None Remove="Views\PageTemplates\_Booking.cshtml" />
     <None Remove="Views\PageTemplates\_BookingCheckout.cshtml" />
     <None Remove="Views\PageTemplates\_BookingList.cshtml" />
@@ -35,12 +37,12 @@
 
   <ItemGroup>
     <EmbeddedResource Include="client-app\booking-request.js" />
-    <EmbeddedResource Include="client-app\bookings.js"/>
+    <EmbeddedResource Include="client-app\bookings.js" />
     <EmbeddedResource Include="client-app\checkout-booking.js" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="client-app\edit-booking.js"/>
+    <EmbeddedResource Include="client-app\edit-booking.js" />
     <EmbeddedResource Include="client-app\send-booking-mail.js" />
     <EmbeddedResource Include="PageBlockTypes\BookingCalendar\BookingCalendar.cshtml" />
     <EmbeddedResource Include="Views\CofoundryPages\Components\BookingCalendar\Default.cshtml" />
@@ -52,15 +54,17 @@
     <EmbeddedResource Include="Views\CofoundryPages\Components\BookingEditor\Default.cshtml" />
     <EmbeddedResource Include="Views\CofoundryPages\Components\BookingList\Blocked.cshtml" />
     <EmbeddedResource Include="Views\CofoundryPages\Components\BookingList\Default.cshtml" />
-    <EmbeddedResource Include="Views\CofoundryPages\Components\BookingRequest\Default.cshtml"/>
+    <EmbeddedResource Include="Views\CofoundryPages\Components\BookingRequest\Default.cshtml" />
     <EmbeddedResource Include="Views\CofoundryPages\Components\SendBookingMail\Blocked.cshtml" />
     <EmbeddedResource Include="Views\CofoundryPages\Components\SendBookingMail\Default.cshtml" />
-    <EmbeddedResource Include="Views\PageTemplates\_Booking.cshtml"/>
+    <EmbeddedResource Include="Views\ImportBookings\Done.cshtml" />
+    <EmbeddedResource Include="Views\ImportBookings\Import.cshtml" />
+    <EmbeddedResource Include="Views\PageTemplates\_Booking.cshtml" />
     <EmbeddedResource Include="Views\PageTemplates\_BookingCheckout.cshtml" />
-    <EmbeddedResource Include="Views\PageTemplates\_BookingList.cshtml"/>
-    <EmbeddedResource Include="Views\PageTemplates\_BookingRequest.cshtml"/>
+    <EmbeddedResource Include="Views\PageTemplates\_BookingList.cshtml" />
+    <EmbeddedResource Include="Views\PageTemplates\_BookingRequest.cshtml" />
     <EmbeddedResource Include="Views\PageTemplates\_SendBookingMail.cshtml" />
-    <EmbeddedResource Include="Views\_ViewImports.cshtml"/>
+    <EmbeddedResource Include="Views\_ViewImports.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
