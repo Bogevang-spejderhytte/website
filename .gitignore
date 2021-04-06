@@ -9,6 +9,7 @@ Bogevang/App_Data/
 
 
 appsettings.Development.json
+appsettings.Production.json
 
 # User-specific files
 *.rsuser
