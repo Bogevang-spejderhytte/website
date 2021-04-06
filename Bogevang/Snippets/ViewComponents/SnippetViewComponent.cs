@@ -22,17 +22,15 @@ namespace Bogevang.Snippets.ViewComponents
     public async Task<IViewComponentResult> InvokeAsync(string name)
     {
       var snippetEntity = await GetSnippetByIdAsync(name);
+      var viewModel = new SnippetViewModel { SnippetName = name };
 
       // If not exists, return empty model
       if (snippetEntity == null)
-        return View(new SnippetViewModel());
+        return View(viewModel);
 
       var snippetModel = (SnippetDataModel)snippetEntity.Model;
 
-      var viewModel = new SnippetViewModel
-      {
-        Content = new HtmlString(snippetModel.Content)
-      };
+      viewModel.Content = new HtmlString(snippetModel.Content);
 
       return View(viewModel);
     }

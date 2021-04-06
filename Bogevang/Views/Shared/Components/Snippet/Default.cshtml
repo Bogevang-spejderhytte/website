@@ -1,4 +1,11 @@
 ﻿@using Bogevang.Snippets.ViewComponents
 @model SnippetViewModel
 
+@if (Model.Content == null)
+{
+  <p>Kan ikke finde teksten ved navn "@Model.SnippetName".</p>
+}
+else
+{ 
 @Model.Content
+}
