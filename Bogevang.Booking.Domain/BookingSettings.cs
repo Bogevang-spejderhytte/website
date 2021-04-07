@@ -1,4 +1,5 @@
 ﻿using Cofoundry.Core.Configuration;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Bogevang.Booking.Domain
@@ -17,5 +18,7 @@ namespace Bogevang.Booking.Domain
     public int DaysBeforeArrivalForWelcomeLetter { get; set; }
 
     public string CheckoutUrlPath { get; set; }
+
+    public Dictionary<string, int> TenantImportCategories { get; set; }
   }
 }

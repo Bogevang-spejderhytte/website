@@ -142,6 +142,10 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
     public bool IsCheckedOut { get; set; }
 
 
+    [Display(Name = "Reservationen er arkiveret og anonymiseret")]
+    public bool IsArchived { get; set; }
+
+
     [Display(Name = "Depositum modtaget")]
     public bool DepositReceived { get; set; }
 

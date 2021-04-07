@@ -20,16 +20,19 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
     private readonly IAdvancedContentRepository DomainRepository;
     private readonly ITenantCategoryProvider TenantCategoryProvider;
     private readonly IPermissionValidationService PermissionValidationService;
+    private readonly BookingSettings BookingSettings;
 
 
     public ImportBookingsCommandHandler(
       IAdvancedContentRepository domainRepository,
       ITenantCategoryProvider tenantCategoryProvider,
-      IPermissionValidationService permissionValidationService)
+      IPermissionValidationService permissionValidationService,
+      BookingSettings bookingSettings)
     {
       DomainRepository = domainRepository;
       TenantCategoryProvider = tenantCategoryProvider;
       PermissionValidationService = permissionValidationService;
+      BookingSettings = bookingSettings;
     }
 
 
@@ -68,7 +71,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
           string comments = row["Bem"].ToString();
           decimal.TryParse(row["AftaltLeje"].ToString(), out decimal rentalPrice);
 
-          int tenantCategoryId = await GetTenantCategory(origin1);
+          int tenantCategoryId = GetTenantCategory(origin1);
 
           BookingDataModel booking = new BookingDataModel
           {
@@ -149,26 +152,24 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
     }
 
 
-    private async Task<int> GetTenantCategory(string name)
+    private int GetTenantCategory(string name)
     {
-      await Task.Delay(1);
-
       if (name == "Spejdergruppe i Allerød")
-        return 6;
+        return BookingSettings.TenantImportCategories["SpejderAllerod"];
       else if (name == "Spejdergruppe uden for Allerød")
-        return 1100;
+        return BookingSettings.TenantImportCategories["SpejderIkkeAllerod"];
       else if (name == "Forening i Allerød kommune"
         || name == "Forening i Allerýmmune")
-        return 7;
+        return BookingSettings.TenantImportCategories["ForeningAllerod"];
       else if (name == "Forældre til spejder i 1. Lillerød eller Palnatoke Gruppe"
         || name == "Forældre til spejder i 1. Lillerød eller Palnetoke Gruppe")
-        return 1099;
+        return BookingSettings.TenantImportCategories["Foreldre"];
       else if (name == "Leder i 1. Lillerød eller Palnatoke gruppe")
-        return 1101;
+        return BookingSettings.TenantImportCategories["Leder"];
       else if (name == "Medlemmer af Bøgevang vejforening")
-        return 1102;
+        return BookingSettings.TenantImportCategories["Vejforening"];
       else if (name == "Andre")
-        return 1103;
+        return BookingSettings.TenantImportCategories["Andre"];
       else
         throw new Exception($"Unknown tenant category: '{name}'.");
     }
