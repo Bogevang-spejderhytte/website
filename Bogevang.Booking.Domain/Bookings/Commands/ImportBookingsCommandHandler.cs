@@ -58,6 +58,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
           DateTime departureDate = DateTime.SpecifyKind(DateTime.Parse(endStr), DateTimeKind.Utc);
 
           DataRow row = bookingGroup.First();
+          string status = row["Status"].ToString();
           string origin1 = row["HvorDuFra"].ToString();
           string origin2 = row["Fra"].ToString();
           string purpose = row["Formaal"].ToString();
@@ -87,8 +88,36 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
             Comments = "Importeret i 2021 fra gammelt bookingsystem\n\n" + comments,
             RentalPrice = Math.Abs(rentalPrice),
             Deposit = 0,
-            BookingState = BookingDataModel.BookingStateType.Closed
+            BookingState = BookingDataModel.BookingStateType.Closed,
+            IsApproved = true,
+            IsCheckedOut = true,
+            WelcomeLetterIsSent = true
           };
+
+          if (booking.ArrivalDate.Value.Year >= 2021)
+          {
+            if (status == "Forespørgsel")
+            {
+              booking.BookingState = BookingDataModel.BookingStateType.Requested;
+              booking.IsApproved = false;
+              booking.WelcomeLetterIsSent = false;
+              booking.IsCheckedOut = false;
+            }
+            else if (status == "Bekræftet")
+            {
+              booking.BookingState = BookingDataModel.BookingStateType.Approved;
+              booking.IsApproved = true;
+              booking.WelcomeLetterIsSent = false;
+              booking.IsCheckedOut = false;
+            }
+            else if (status == "Nøgle sendt")
+            {
+              booking.BookingState = BookingDataModel.BookingStateType.Approved;
+              booking.IsApproved = true;
+              booking.WelcomeLetterIsSent = true;
+              booking.IsCheckedOut = false;
+            }
+          }
 
           var addCommand = new AddCustomEntityCommand
           {
@@ -100,7 +129,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
 
           await DomainRepository.WithElevatedPermissions().CustomEntities().AddAsync(addCommand);
 
-          if (++count >= 100)
+          if (++count >= 10000)
             break;
         }
         catch (ValidationException ex)
