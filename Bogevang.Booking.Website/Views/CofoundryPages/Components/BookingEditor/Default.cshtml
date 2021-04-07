@@ -74,7 +74,17 @@
       @await Html.VueEditorRowFor(m => m.ContactCity)
       @await Html.VueEditorRowFor(m => m.ContactEMail)
       @await Html.VueEditorRowFor(m => m.Comments)
-      @await Html.VueEditorRowFor(m => m.BookingState)
+
+      <div class="row">
+        @await Html.VueEditorColFor(m => m.BookingState)
+        <div class="col">
+          @await Html.VueEditorRowFor(m => m.IsApproved)
+          @await Html.VueEditorRowFor(m => m.WelcomeLetterIsSent)
+          @await Html.VueEditorRowFor(m => m.IsCheckedOut)
+          @await Html.VueEditorRowFor(m => m.IsArchived)
+          @await Html.VueEditorRowFor(m => m.IsRejected)
+        </div>
+      </div>
     </div>
 
     <div class="tab-pane fade" id="financeTabArea" role="tabpanel" aria-labelledby="finance-tab">

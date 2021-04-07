@@ -58,6 +58,7 @@ namespace Bogevang.Booking.Domain.Bookings.Models
     public bool IsRejected { get; set; }
     public bool WelcomeLetterIsSent { get; set; }
     public bool IsCheckedOut { get; set; }
+    public bool IsArchived { get; set; }
     public string TenantSelfServiceToken { get; set; }
     public string CheckoutUrl { get; set; }
     public decimal? ElectricityReadingStart { get; set; }

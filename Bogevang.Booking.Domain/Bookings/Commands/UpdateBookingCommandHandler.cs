@@ -55,6 +55,11 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
         booking.Comments = command.Comments;
         booking.RentalPrice = command.RentalPrice;
         booking.BookingState = command.BookingState;
+        booking.IsApproved = command.IsApproved;
+        booking.IsRejected = command.IsRejected;
+        booking.IsCheckedOut = command.IsCheckedOut;
+        booking.IsArchived = command.IsArchived;
+        booking.WelcomeLetterIsSent = command.WelcomeLetterIsSent;
         booking.Deposit = command.Deposit;
         booking.DepositReceived = command.DepositReceived;
         booking.ElectricityReadingStart = command.ElectricityReadingStart;

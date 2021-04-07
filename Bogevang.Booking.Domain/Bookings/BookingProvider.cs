@@ -81,6 +81,7 @@ namespace Bogevang.Booking.Domain.Bookings
         IsRejected = model.IsRejected,
         WelcomeLetterIsSent = model.WelcomeLetterIsSent,
         IsCheckedOut = model.IsCheckedOut,
+        IsArchived = model.IsArchived,
         TenantSelfServiceToken = model.TenantSelfServiceToken,
         CheckoutUrl = checkoutUrl,
         ElectricityReadingStart = model.ElectricityReadingStart,

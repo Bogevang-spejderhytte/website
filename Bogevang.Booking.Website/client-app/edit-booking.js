@@ -24,6 +24,8 @@
       bookingState: null,
       isApproved: false,
       isRejected: false,
+      isCheckedOut: false,
+      isArchived: false,
       welcomeLetterIsSent: false,
       tenantSelfServiceToken: null,
       deposit: null,
@@ -169,6 +171,8 @@
           this.bookingState = data.bookingState;
           this.isApproved = data.isApproved;
           this.isRejected = data.isRejected;
+          this.isCheckedOut = data.isCheckedOut;
+          this.isArchived = data.isArchived;
           this.welcomeLetterIsSent = data.welcomeLetterIsSent;
           this.notifications = data.notifications;
           this.tenantSelfServiceToken = data.tenantSelfServiceToken;
@@ -200,6 +204,11 @@
           comments: this.comments,
           rentalPrice: this.rentalPrice,
           bookingState: this.bookingState,
+          isApproved: this.isApproved,
+          isRejected: this.isRejected,
+          isCheckedOut: this.isCheckedOut,
+          isArchived: this.isArchived,
+          welcomeLetterIsSent: this.welcomeLetterIsSent,
           deposit: this.deposit,
           depositReceived: this.depositReceived,
           electricityReadingStart: this.electricityReadingStart,
@@ -280,6 +289,7 @@
         $('#rejectButton').prop('disabled', true);
         $('#sendWelcomeLetterButton').prop('disabled', true);
         $('#sendMailButton').prop('disabled', true);
+        $('#closeButton').prop('disabled', true);
         $('#closeWindowButton').prop('disabled', true);
       },
 
@@ -295,6 +305,7 @@
         $('#rejectButton').prop('disabled', false);
         $('#sendWelcomeLetterButton').prop('disabled', false);
         $('#sendMailButton').prop('disabled', false);
+        $('#closeButton').prop('disabled', false);
         $('#closeWindowButton').prop('disabled', false);
       }
     }

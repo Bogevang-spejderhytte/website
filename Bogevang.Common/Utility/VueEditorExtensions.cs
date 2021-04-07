@@ -66,7 +66,11 @@ namespace Bogevang.Common.Utility
 
       string html = $@"<div class=""col"">";
 
-      string editor = await helper.VueEditorFor_string(expression, addLabel: true, alwaysReadonly: alwaysReadonly);
+      string editor = await helper.VueEditorFor_string(
+        expression, 
+        addLabel: true, 
+        alwaysReadonly: alwaysReadonly,
+        describedBy: describedBy);
 
       html += editor;
       html += descriptionHtml;
@@ -93,7 +97,8 @@ namespace Bogevang.Common.Utility
       this IHtmlHelper<TModel> helper,
       Expression<Func<TModel, TResult>> expression,
       bool addLabel,
-      bool alwaysReadonly = false)
+      bool alwaysReadonly = false,
+      string describedBy = null)
     {
       IModelExpressionProvider expressionProvider = helper.ViewContext.HttpContext.RequestServices.GetRequiredService<IModelExpressionProvider>();
       ModelExpression expr = expressionProvider.CreateModelExpression(helper.ViewData, expression);
@@ -121,14 +126,12 @@ namespace Bogevang.Common.Utility
       MultiLineTextAttribute matt = null;
 
       
-      List<KeyValuePair<string, string>> customEntities = null;
+      List<CustomEntityRenderSummary> customEntities = null;
       SelectListItem[] enumCollectionItems = null;
 
       MemberInfo[] memberInfo = expr.Metadata.ContainerType.GetMember(expr.Metadata.PropertyName);
 
       bool implementICollection = modelType.IsGenericType && modelType.GetGenericTypeDefinition() == typeof(ICollection<>);
-        //modelType.GetInterfaces()
-        //.Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(ICollection<>));
 
       if (modelType == typeof(int))
       {
@@ -139,8 +142,9 @@ namespace Bogevang.Common.Utility
             .CustomEntities()
             .GetByDefinitionCode(att.CustomEntityDefinitionCode)
             .AsRenderSummary()
-            .MapItem(e => new KeyValuePair<string,string>(e.Title, e.CustomEntityId.ToString()))
-            .ExecuteAsync()).ToList();
+            .ExecuteAsync())
+            .OrderBy(e => e.Ordering)
+            .ToList();
         }
       }
       else if (implementICollection)
@@ -174,7 +178,7 @@ namespace Bogevang.Common.Utility
       if (isBool)
       {
         html += $@"
-<input type=""checkbox"" id=""{propName}"" v-model=""{propName}"" class=""form-check-input{editableClass}"" v-on:change=""clearValidation"" disabled>";
+<input type=""checkbox"" id=""{propName}"" v-model=""{propName}"" class=""form-check-input{editableClass}"" v-on:change=""clearValidation"" disabled{describedBy}> ";
 
         if (addLabel)
           html += $@" <label for=""{propName}"" class=""form-label"">{displayName}</label>";
@@ -193,7 +197,7 @@ namespace Bogevang.Common.Utility
             .ToArray();
 
           html += $@"
-<select id=""{propName}"" v-model=""{propName}"" class=""form-select{editableClass}"" v-on:change=""clearValidation"" disabled>";
+<select id=""{propName}"" v-model=""{propName}"" class=""form-select{editableClass}"" v-on:change=""clearValidation"" disabled{describedBy}>";
 
           if (expr.Metadata.IsNullableValueType)
             html += $@"<option value="""">- Vælg -</option>";
@@ -231,14 +235,14 @@ namespace Bogevang.Common.Utility
         else if (customEntities != null)
         {
           html += $@"
-<select id=""{propName}"" v-model=""{propName}"" class=""form-select{editableClass}"" v-on:change=""clearValidation"" disabled>";
+<select id=""{propName}"" v-model=""{propName}"" class=""form-select{editableClass}"" v-on:change=""clearValidation"" disabled{describedBy}>";
           if (expr.Metadata.IsNullableValueType)
             html += $@"<option value="""">- Vælg -</option>";
 
           foreach (var item in customEntities)
           {
             html += $@"
-<option value=""{item.Value}"">{WebUtility.HtmlEncode(item.Key)}</option>";
+<option value=""{item.CustomEntityId}"">{WebUtility.HtmlEncode(item.Title)}</option>";
           }
 
           html += @"
@@ -248,7 +252,7 @@ namespace Bogevang.Common.Utility
         else if (isMultiLine)
         {
           html += $@"
-<textarea id=""{propName}"" v-model=""{propName}"" rows=""{matt.Rows}"" class=""form-control{editableClass}"" v-on:change=""clearValidation"" readonly></textarea>";
+<textarea id=""{propName}"" v-model=""{propName}"" rows=""{matt.Rows}"" class=""form-control{editableClass}"" v-on:change=""clearValidation"" readonly{describedBy}></textarea>";
         }
         else if (isHtml)
         {
@@ -258,7 +262,7 @@ namespace Bogevang.Common.Utility
         else
         {
           html += $@"
-<input type=""text"" id=""{propName}"" v-model=""{propName}"" class=""form-control{editableClass}"" v-on:change=""clearValidation"" readonly>";
+<input type=""text"" id=""{propName}"" v-model=""{propName}"" class=""form-control{editableClass}"" v-on:change=""clearValidation"" readonly{describedBy}>";
         }
       }
 
