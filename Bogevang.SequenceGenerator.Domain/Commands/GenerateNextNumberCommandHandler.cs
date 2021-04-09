@@ -45,11 +45,11 @@ namespace Bogevang.SequenceGenerator.Domain.Commands
         else
         {
           counter.Counter++;
-          await DbContext.SaveChangesAsync();
         }
 
         command.OutputValue = counter.Counter;
 
+        await DbContext.SaveChangesAsync();
         await scope.CompleteAsync();
       }
     }
