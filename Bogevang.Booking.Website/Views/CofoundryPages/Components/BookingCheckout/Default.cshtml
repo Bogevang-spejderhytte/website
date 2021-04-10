@@ -43,8 +43,8 @@
     </div>
 
     <div class="row mb-3">
-      @await Html.VueEditorColFor(m => m.StartReading)
-      @await Html.VueEditorColFor(m => m.EndReading)
+      @await Html.VueEditorColFor(m => m.StartReading, cssClass: "number")
+      @await Html.VueEditorColFor(m => m.EndReading, cssClass: "number")
     </div>
 
     <div class="row mb-3">
