@@ -18,12 +18,24 @@
         return kwh < 0 ? null : kwh;
       },
 
+      kwhUsedDisplay() {
+        return this.kwhUsed.toFixed(2);
+      },
+
       electricityPriceTotal() {
         return this.kwhUsed * electricityPriceUnit;
       },
 
+      electricityPriceTotalDisplay() {
+        return this.electricityPriceTotal.toFixed(2);
+      },
+
       totalPrice() {
         return this.electricityPriceTotal - this.deposit;
+      },
+
+      totalPriceDisplay() {
+        return this.totalPrice.toFixed(2);
       }
     },
 
@@ -31,7 +43,7 @@
       const urlParams = new URLSearchParams(window.location.search);
       this.bookingId = urlParams.get('id');
       this.bookingToken = urlParams.get('token');
-      this.deposit = bookingDeposit; // Global variable in html code
+      this.deposit = bookingDeposit.toFixed(2); // Global variable in html code
       this.startEditing();
     },
 

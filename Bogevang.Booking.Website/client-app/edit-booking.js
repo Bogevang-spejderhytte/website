@@ -43,12 +43,24 @@
         return kwh < 0 ? null : kwh;
       },
 
+      kwhUsedDisplay() {
+        return this.kwhUsed.toFixed(2);
+      },
+
       electricityPriceTotal() {
         return this.kwhUsed * this.electricityPriceUnit;
       },
 
+      electricityPriceTotalDisplay() {
+        return this.electricityPriceTotal.toFixed(2);
+      },
+
       totalPrice() {
         return this.electricityPriceTotal - this.deposit;
+      },
+
+      totalPriceDisplay() {
+        return this.totalPrice.toFixed(2);
       }
     },
 

@@ -52,18 +52,18 @@
       </div>
       <div class="col">
         <label for="electricityPrice" class="form-label">Pris pr. kWh (kr)</label>
-        <input type="text" class="form-control" id="electricityPrice" value="@bookingSettings.ElectricityPrice.ToString()" readonly>
+        <input type="text" class="form-control number" id="electricityPrice" value="@bookingSettings.ElectricityPrice.ToString("0.00")" readonly>
       </div>
     </div>
 
     <div class="row mb-3">
       <div class="col">
         <label for="kwhUsed" class="form-label">Forbrug (kWh)</label>
-        <input type="text" class="form-control" id="kwhUsed" v-model="kwhUsed" readonly>
+        <input type="text" class="form-control number" id="kwhUsed" v-model="kwhUsedDisplay" readonly>
       </div>
       <div class="col">
         <label for="electricityPriceTotal" class="form-label">El-omkostning (kr)</label>
-        <input type="text" class="form-control" id="electricityPriceTotal" v-model="electricityPriceTotal" readonly>
+        <input type="text" class="form-control number" id="electricityPriceTotal" v-model="electricityPriceTotalDisplay" readonly>
       </div>
     </div>
 
@@ -72,7 +72,7 @@
       </div>
       <div class="col">
         <label for="deposit" class="form-label">Depositum (kr)</label>
-        <input type="text" class="form-control" id="deposit" v-model="deposit" readonly>
+        <input type="text" class="form-control number" id="deposit" v-model="deposit" readonly>
       </div>
     </div>
 
@@ -81,7 +81,7 @@
       </div>
       <div class="col">
         <label for="totalPrice" class="form-label">At betale (kr)</label>
-        <input type="text" class="form-control" id="totalPrice" v-model="totalPrice" readonly>
+        <input type="text" class="form-control number" id="totalPrice" v-model="totalPriceDisplay" readonly>
         <div id="totalPrice_descr" class="form-text">
           Et negativt beløb betyder at du skal have penge tilbage.
         </div>

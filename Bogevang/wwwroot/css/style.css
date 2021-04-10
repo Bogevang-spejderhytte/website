@@ -45,6 +45,10 @@ td.date {
   white-space: nowrap;
 }
 
+.number {
+  text-align: right;
+}
+
 .color-new
 {
   color: yellow;

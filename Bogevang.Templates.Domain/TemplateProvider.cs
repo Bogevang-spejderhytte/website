@@ -40,6 +40,7 @@ namespace Bogevang.Templates.Domain
     {
       Template template = new Template(text, '$', '$');
       template.Group.RegisterRenderer(typeof(DateTime), new DateRenderer());
+      template.Group.RegisterRenderer(typeof(Decimal), new DecimalRenderer());
 
       foreach (var property in mergeData.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
       {

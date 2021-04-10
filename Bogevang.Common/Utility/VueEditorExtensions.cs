@@ -18,11 +18,12 @@ namespace Bogevang.Common.Utility
     public static async Task<IHtmlContent> VueEditorRowFor<TModel, TResult>(
       this IHtmlHelper<TModel> helper,
       Expression<Func<TModel, TResult>> expression,
-      bool alwaysReadonly = false)
+      bool alwaysReadonly = false,
+      string cssClass = null)
     {
       string html = $@"<div class=""row mb-3"">";
 
-      string innerHtml = await helper.VueEditorColFor_string(expression, alwaysReadonly: alwaysReadonly);
+      string innerHtml = await helper.VueEditorColFor_string(expression, alwaysReadonly: alwaysReadonly, cssClass: cssClass);
 
       html += innerHtml + @"
 </div>";
@@ -34,9 +35,10 @@ namespace Bogevang.Common.Utility
     public static async Task<IHtmlContent> VueEditorColFor<TModel, TResult>(
       this IHtmlHelper<TModel> helper,
       Expression<Func<TModel, TResult>> expression,
-      bool alwaysReadonly = false)
+      bool alwaysReadonly = false,
+      string cssClass = null)
     {
-      string html = await helper.VueEditorColFor_string(expression, alwaysReadonly: alwaysReadonly);
+      string html = await helper.VueEditorColFor_string(expression, alwaysReadonly: alwaysReadonly, cssClass: cssClass);
       return new HtmlString(html);
     }
 
@@ -44,7 +46,8 @@ namespace Bogevang.Common.Utility
     public static async Task<string> VueEditorColFor_string<TModel, TResult>(
       this IHtmlHelper<TModel> helper,
       Expression<Func<TModel, TResult>> expression,
-      bool alwaysReadonly = false)
+      bool alwaysReadonly = false,
+      string cssClass = null)
     {
       IModelExpressionProvider expressionProvider = helper.ViewContext.HttpContext.RequestServices.GetRequiredService<IModelExpressionProvider>();
       ModelExpression expr = expressionProvider.CreateModelExpression(helper.ViewData, expression);
@@ -70,7 +73,8 @@ namespace Bogevang.Common.Utility
         expression, 
         addLabel: true, 
         alwaysReadonly: alwaysReadonly,
-        describedBy: describedBy);
+        describedBy: describedBy,
+        cssClass: cssClass);
 
       html += editor;
       html += descriptionHtml;
@@ -86,9 +90,10 @@ namespace Bogevang.Common.Utility
     public static async Task<IHtmlContent> VueEditorFor<TModel, TResult>(
       this IHtmlHelper<TModel> helper,
       Expression<Func<TModel, TResult>> expression,
-      bool alwaysReadonly = false)
+      bool alwaysReadonly = false,
+      string cssClass = null)
     {
-      string html = await helper.VueEditorFor_string(expression, addLabel: false, alwaysReadonly: alwaysReadonly);
+      string html = await helper.VueEditorFor_string(expression, addLabel: false, alwaysReadonly: alwaysReadonly, cssClass: cssClass);
       return new HtmlString(html);
     }
 
@@ -98,7 +103,8 @@ namespace Bogevang.Common.Utility
       Expression<Func<TModel, TResult>> expression,
       bool addLabel,
       bool alwaysReadonly = false,
-      string describedBy = null)
+      string describedBy = null,
+      string cssClass = null)
     {
       IModelExpressionProvider expressionProvider = helper.ViewContext.HttpContext.RequestServices.GetRequiredService<IModelExpressionProvider>();
       ModelExpression expr = expressionProvider.CreateModelExpression(helper.ViewData, expression);
@@ -173,12 +179,15 @@ namespace Bogevang.Common.Utility
           isMultiLine = true;
       }
 
+      if (!string.IsNullOrEmpty(cssClass))
+        cssClass = " " + cssClass;
+
       string html = "";
 
       if (isBool)
       {
         html += $@"
-<input type=""checkbox"" id=""{propName}"" v-model=""{propName}"" class=""form-check-input{editableClass}"" v-on:change=""clearValidation"" disabled{describedBy}> ";
+<input type=""checkbox"" id=""{propName}"" v-model=""{propName}"" class=""form-check-input{editableClass}{cssClass}"" v-on:change=""clearValidation"" disabled{describedBy}> ";
 
         if (addLabel)
           html += $@" <label for=""{propName}"" class=""form-label"">{displayName}</label>";
@@ -197,7 +206,7 @@ namespace Bogevang.Common.Utility
             .ToArray();
 
           html += $@"
-<select id=""{propName}"" v-model=""{propName}"" class=""form-select{editableClass}"" v-on:change=""clearValidation"" disabled{describedBy}>";
+<select id=""{propName}"" v-model=""{propName}"" class=""form-select{editableClass}{cssClass}"" v-on:change=""clearValidation"" disabled{describedBy}>";
 
           if (expr.Metadata.IsNullableValueType)
             html += $@"<option value="""">- Vælg -</option>";
@@ -226,7 +235,7 @@ namespace Bogevang.Common.Utility
           {
             html += $@"
 <div class=""checkboxListItem"">
-<input type=""checkbox"" id=""check{item.Value}"" value=""{item.Value}"" class=""form-check-input{editableClass}"" v-model=""{propName}"" :disabled=""!isEditing""/>
+<input type=""checkbox"" id=""check{item.Value}"" value=""{item.Value}"" class=""form-check-input{editableClass}{cssClass}"" v-model=""{propName}"" :disabled=""!isEditing""/>
 <label for=""check{item.Value}"">{item.Text}</label>
 </div>
 ";
@@ -235,7 +244,7 @@ namespace Bogevang.Common.Utility
         else if (customEntities != null)
         {
           html += $@"
-<select id=""{propName}"" v-model=""{propName}"" class=""form-select{editableClass}"" v-on:change=""clearValidation"" disabled{describedBy}>";
+<select id=""{propName}"" v-model=""{propName}"" class=""form-select{editableClass}{cssClass}"" v-on:change=""clearValidation"" disabled{describedBy}>";
           if (expr.Metadata.IsNullableValueType)
             html += $@"<option value="""">- Vælg -</option>";
 
@@ -252,7 +261,7 @@ namespace Bogevang.Common.Utility
         else if (isMultiLine)
         {
           html += $@"
-<textarea id=""{propName}"" v-model=""{propName}"" rows=""{matt.Rows}"" class=""form-control{editableClass}"" v-on:change=""clearValidation"" readonly{describedBy}></textarea>";
+<textarea id=""{propName}"" v-model=""{propName}"" rows=""{matt.Rows}"" class=""form-control{editableClass}{cssClass}"" v-on:change=""clearValidation"" readonly{describedBy}></textarea>";
         }
         else if (isHtml)
         {
@@ -262,7 +271,7 @@ namespace Bogevang.Common.Utility
         else
         {
           html += $@"
-<input type=""text"" id=""{propName}"" v-model=""{propName}"" class=""form-control{editableClass}"" v-on:change=""clearValidation"" readonly{describedBy}>";
+<input type=""text"" id=""{propName}"" v-model=""{propName}"" class=""form-control{editableClass}{cssClass}"" v-on:change=""clearValidation"" readonly{describedBy}>";
         }
       }
 
