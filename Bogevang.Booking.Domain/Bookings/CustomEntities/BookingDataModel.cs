@@ -77,7 +77,7 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
     public int? TenantCategoryId { get; set; }
 
 
-    [Display(Name = "Lejers navn")]
+    [Display(Name = "Lejers navn (organisation)")]
     public string TenantName { get; set; }
 
 

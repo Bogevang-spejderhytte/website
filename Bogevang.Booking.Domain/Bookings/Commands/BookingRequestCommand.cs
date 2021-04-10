@@ -32,7 +32,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
     public int? TenantCategoryId { get; set; }
 
 
-    [Display(Name = "Lejers navn", Description = "Angiv navn på den organisation som ønsker at leje Bøgevang. Det behøver ikke at være en formel organisation, men kan også bare være \"Privat\".")]
+    [Display(Name = "Lejers navn (organisation)", Description = "Angiv navn på den organisation som ønsker at leje Bøgevang. Det behøver ikke at være en formel organisation, men kan også bare være \"Privat\".")]
     [MaxLength(100)]
     public string TenantName { get; set; }
 
