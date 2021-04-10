@@ -226,6 +226,7 @@ Vue.component('html-editor', {
     this.text = this.getSlotValue();
     tinymce.init({
       selector: '#' + this.id,
+      relative_urls: false,
       height: this.height
     });
   },
