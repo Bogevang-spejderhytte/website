@@ -1,29 +1,26 @@
-﻿.header
-{
-    height: 200px;
-    padding-top: 200px;
-    margin-bottom: 5px;
-    background-image: url(../media/banner-background.jpg);
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
+﻿.header {
+  height: 150px;
+  margin-bottom: 5px;
+  background-image: url(../media/banner-background.jpg);
+  background-position: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  color: white;
+}
+
+nav.navbar {
+  background-color: #2F8200;
+  margin-bottom: 5px;
+}
+
+nav.navbar a {
+  color: white;
+}
+
+  nav.navbar a.navbar-brand {
     color: white;
-}
-
-.header-intro
-{
-    padding: 0px 0px 10px 10px;
-}
-
-.header-nav
-{
-    padding: 0px 0px 10px 10px;
-}
-
-.header-nav a.nav-link
-{
-    color: white;
-}
+  }
 
 footer
 {

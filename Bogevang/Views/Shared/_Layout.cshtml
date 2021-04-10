@@ -40,14 +40,13 @@
 <body>
 
   <div class="container">
-    <div class="header">
-      <div class="header-intro">
-        <h2 class="header-title">@themeSettings.SiteTitle</h2>
-        <p class="header-title">@themeSettings.SiteSubTitle</p>
-      </div>
-      <div class="header-nav" role="navigation">
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/">@themeSettings.SiteTitle</a>
         @await Component.InvokeAsync("NestedMenu", "Hovedmenu")
       </div>
+    </nav>
+    <div class="header">
     </div>
 
     <main>

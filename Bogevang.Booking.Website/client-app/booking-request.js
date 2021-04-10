@@ -25,16 +25,6 @@
     },
 
     methods: {
-      showRates() {
-        window.open('/reservationer/priser', 'bogevang-secondary');
-      },
-
-
-      showCalendar() {
-        window.open('/reservationer/kalender', 'bogevang-secondary');
-      },
-
-
       send: async function (e) {
         var result = await this.sendData();
         if (result) {
