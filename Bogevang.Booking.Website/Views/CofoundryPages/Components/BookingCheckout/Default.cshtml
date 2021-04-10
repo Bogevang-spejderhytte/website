@@ -28,9 +28,9 @@
       <label for="arrivalDate" class="col-3 col-form-label">Periode:</label>
       <div class="col">
         <div class="input-group">
-          <input type="text" class="form-control" id="arrivalDate" value="@Model.ArrivalDate.ToShortDateString()" readonly>
+          <input type="text" class="form-control" id="arrivalDate" value="@Model.ArrivalDate.ToString("dd.MM.yyyy")" readonly>
           &nbsp;-&nbsp;
-          <input type="text" class="form-control" id="arrivalDate" value="@Model.DepartureDate.ToShortDateString()" readonly>
+          <input type="text" class="form-control" id="arrivalDate" value="@Model.DepartureDate.ToString("dd.MM.yyyy")" readonly>
         </div>
       </div>
     </div>

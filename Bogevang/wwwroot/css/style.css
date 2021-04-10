@@ -9,18 +9,20 @@
   color: white;
 }
 
-nav.navbar {
-  background-color: #2F8200;
+nav.navbar 
+{
   margin-bottom: 5px;
 }
 
-nav.navbar a {
-  color: white;
+nav.navbar a 
+{
+  color: #2F8200;
 }
 
-  nav.navbar a.navbar-brand {
-    color: white;
-  }
+nav.navbar a.navbar-brand 
+{
+  color: #2F8200;
+}
 
 footer
 {
