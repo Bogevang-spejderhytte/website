@@ -227,6 +227,8 @@ Vue.component('html-editor', {
     tinymce.init({
       selector: '#' + this.id,
       relative_urls: false,
+      remove_script_host: false,
+      document_base_url: "http://bogevanghytten.dk/",
       height: this.height
     });
   },
