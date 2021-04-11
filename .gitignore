@@ -6,6 +6,7 @@
 TMP-SimpleHouseTheme/
 Bogevang.Website.Booking/
 Bogevang/App_Data/
+Bogevang/Keys/
 
 
 appsettings.Development.json
