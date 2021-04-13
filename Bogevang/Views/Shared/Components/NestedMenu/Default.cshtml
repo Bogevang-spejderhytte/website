@@ -7,14 +7,14 @@
 }
 else
 {
-  <ul class="nav nav-pills">
+  <ul class="navbar-nav">
     @foreach (var item in Model.Items)
     {
       @if (item.ChildItems.Any())
       {
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle"
-             data-toggle="dropdown"
+             data-bs-toggle="dropdown"
              href="@item.PageRoute.FullPath"
              role="button"
              aria-haspopup="true"
@@ -25,7 +25,7 @@ else
           <div class="dropdown-menu">
             @foreach (var childItem in item.ChildItems)
             {
-              <a class="dropdown-item" href="@childItem.PageRoute.FullPath" th-active-link>@childItem.Title</a>
+              <a class="dropdown-item" href="@childItem.PageRoute.FullPath">@childItem.Title</a>
             }
           </div>
         </li>
@@ -33,7 +33,7 @@ else
       else
       {
         <li class="nav-item">
-          <a class="nav-link" href="@item.PageRoute.FullPath" th-active-link>@item.Title</a>
+          <a class="nav-link" href="@item.PageRoute.FullPath">@item.Title</a>
         </li>
       }
     }
