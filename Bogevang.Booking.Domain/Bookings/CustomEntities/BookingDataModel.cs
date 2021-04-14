@@ -180,7 +180,7 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
 
     public decimal ElectricityPrice => ((ElectricityReadingEnd ?? 0) - (ElectricityReadingStart ?? 0)) * (ElectricityPriceUnit ?? 0);
 
-    public decimal TotalPrice => (Deposit ?? 0) - ElectricityPrice;
+    public decimal TotalPrice => ElectricityPrice - (Deposit ?? 0);
 
 
     public List<BookingLogEntry> LogEntries { get; set; }
