@@ -4,8 +4,11 @@
   var bookingApp = new Vue({
     el: '#requestApp',
     data: {
-      arrivalDate: null,
-      departureDate: null,
+      period:
+      {
+        start: null,
+        end: null
+      },
       onlySelectedWeekdays: false,
       selectedWeekdays: [],
       tenantCategoryId: '',
@@ -45,8 +48,8 @@
         }
 
         var sendArgs = {
-          arrivalDate: this.arrivalDate,
-          departureDate: this.departureDate,
+          arrivalDate: this.period.start,
+          departureDate: this.period.end,
           onlySelectedWeekdays: this.onlySelectedWeekdays,
           selectedWeekdays: this.selectedWeekdays,
           tenantCategoryId: this.tenantCategoryId,

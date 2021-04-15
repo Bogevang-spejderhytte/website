@@ -15,7 +15,7 @@ namespace Bogevang.Menus.CustomEntities
     public int PageId { get; set; }
 
     [Display(Name = "Undermenuer")]
-    [NestedDataModelCollection]
+    [NestedDataModelCollection(IsOrderable = true)]
     public ICollection<NestedMenuChildItemDataModel> ChildItems { get; set; }
   }
 }
