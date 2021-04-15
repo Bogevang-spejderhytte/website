@@ -8,14 +8,18 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Bogevang.Booking.Domain.Bookings.Commands
 {
+  // We should use resources for localization, instead of repeating "Feltet '{0}' skal udfyldes." all over the place.
+  // But I could not make it work.
+  // For a starter see https://docs.microsoft.com/en-us/aspnet/core/fundamentals/localization?view=aspnetcore-2.1#dataannotations-localization
+
   public class BookingRequestCommand : ICommand, IValidatableObject, IIgnorePermissionCheckHandler
   {
     [Display(Name = "Ankomstdato")]
-    [Required]
+    [Required(ErrorMessage = "Feltet '{0}' skal udfyldes.")]
     public DateTime? ArrivalDate { get; set; }
 
     [Display(Name = "Afrejsedato")]
-    [Required]
+    [Required(ErrorMessage = "Feltet '{0}' skal udfyldes.")]
     public DateTime? DepartureDate { get; set; }
 
     [Display(Name = "Kun udvalgte dage")]
@@ -28,7 +32,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
 
     [Display(Name = "Lejers baggrund", Description = "Angiv hvor lejer kommer fra. Oplysningen bruges til statistik, prisberegning og ved Bøgevangs ansøgning om kommunalt tilskud.")]
     [CustomEntity(TenantCategoryCustomEntityDefinition.DefinitionCode)]
-    [Required]
+    [Required(ErrorMessage = "Feltet '{0}' skal udfyldes.")]
     public int? TenantCategoryId { get; set; }
 
 
@@ -43,32 +47,32 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
 
 
     [Display(Name = "Kontaktpersons navn")]
-    [Required]
+    [Required(ErrorMessage = "Feltet '{0}' skal udfyldes.")]
     [MaxLength(100)]
     public string ContactName { get; set; }
 
 
     [Display(Name = "Kontaktpersons telefonnummer")]
-    [Required]
+    [Required(ErrorMessage = "Feltet '{0}' skal udfyldes.")]
     [MaxLength(50)]
     public string ContactPhone { get; set; }
 
 
     [Display(Name = "Kontaktpersons adresse")]
-    [Required]
+    [Required(ErrorMessage = "Feltet '{0}' skal udfyldes.")]
     [MaxLength(100)]
     public string ContactAddress { get; set; }
 
 
     [Display(Name = "Kontaktpersons postnummer og by")]
-    [Required]
+    [Required(ErrorMessage = "Feltet '{0}' skal udfyldes.")]
     [MaxLength(100)]
     public string ContactCity { get; set; }
 
 
     [Display(Name = "Kontaktpersons e-mailadresse")]
     [EmailAddress]
-    [Required]
+    [Required(ErrorMessage = "Feltet '{0}' skal udfyldes.")]
     [MaxLength(100)]
     public string ContactEMail { get; set; }
 
