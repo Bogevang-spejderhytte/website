@@ -7,9 +7,9 @@
 
   <partial name="_VueErrorSummary" />
 
-  <div class="row align-items-start mb-3">
+  <div class="row align-items-start justify-content-start">
 
-    <div class="col-lg-4">
+    <div class="col-lg-4 mb-3">
       <div><label for="period" class="form-label">Udlejningsperiode (klik start og slut)</label></div>
       <v-date-picker v-model="period" is-range v-on:change="clearValidation" mode="date" timezone="UTC" :model-config="datePickerConfig">
       </v-date-picker>
@@ -17,17 +17,15 @@
       <div id="departureDate_feedback" class="invalid-feedback"></div>
     </div>
 
-    <div class="col-lg-4">
+    <div class="col-lg-6">
       @await Html.VueEditorRowFor(m => m.OnlySelectedWeekdays)
-      <div class="row">
+      <div class="row mb-3">
         <div class="col" v-if="onlySelectedWeekdays">
+          <p>Vælg hvilke dage i perioden du ønsker at bruge hytten (det kan fx være alle tirsdage i en måned).</p>
           @await Html.VueEditorFor(m => m.SelectedWeekdays)
         </div>
       </div>
     </div>
-  </div>
-
-  <div class="row mb-3">
   </div>
 
   @await Html.VueEditorRowFor(m => m.TenantCategoryId)
