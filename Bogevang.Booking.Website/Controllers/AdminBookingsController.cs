@@ -3,6 +3,7 @@ using Bogevang.Booking.Website.ViewModels;
 using Cofoundry.Domain.CQS;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
@@ -28,21 +29,30 @@ namespace Bogevang.Booking.Website.Controllers
 
 
     [HttpPost]
-    public async Task<ActionResult> Import(IFormFile document)
+    public async Task<ActionResult> Anonymize()
     {
-      await CommandExecutor.ExecuteAsync(new ImportBookingsCommand { ReadyToReadInput = document.OpenReadStream() });
-      return View("Done", new AdminResultViewModel { Message = "alle reservationer er importeret." });
+      var cmd = new AnonymizeBookingsCommand();
+      await CommandExecutor.ExecuteAsync(cmd);
+      return View("Done", new AdminResultViewModel { Message = $"{cmd.AnonymizedCount} reservationer blev anonymiseret." });
     }
 
 
-    [HttpPost]
-    public async Task<ActionResult> DeleteAll(string confirm)
-    {
-      if (confirm != "Slet alt")
-        throw new ValidationException("Der står ikke 'Slet alt'");
+    //[HttpPost]
+    //public async Task<ActionResult> Import(IFormFile document)
+    //{
+    //  await CommandExecutor.ExecuteAsync(new ImportBookingsCommand { ReadyToReadInput = document.OpenReadStream() });
+    //  return View("Done", new AdminResultViewModel { Message = "alle reservationer er importeret." });
+    //}
 
-      await CommandExecutor.ExecuteAsync(new DeleteAllBookingsCommand());
-      return View("Done", new AdminResultViewModel { Message = "alle reservationer er slettet." });
-    }
+
+    //[HttpPost]
+    //public async Task<ActionResult> DeleteAll(string confirm)
+    //{
+    //  if (confirm != "Slet alt")
+    //    throw new ValidationException("Der står ikke 'Slet alt'");
+
+    //  await CommandExecutor.ExecuteAsync(new DeleteAllBookingsCommand());
+    //  return View("Done", new AdminResultViewModel { Message = "alle reservationer er slettet." });
+    //}
   }
 }

@@ -4,7 +4,6 @@ using Bogevang.Booking.Domain.Bookings.Queries;
 using Bogevang.Booking.Domain.TenantCategories;
 using Bogevang.Booking.Domain.TenantCategories.CustomEntities;
 using Bogevang.Common.Utility;
-using Cofoundry.Core;
 using Cofoundry.Domain;
 using System;
 using System.Collections.Generic;
@@ -139,7 +138,20 @@ namespace Bogevang.Booking.Domain.Bookings
     }
 
 
+    public async Task<IList<KeyValuePair<int, BookingDataModel>>> FindBookingDataInInterval(SearchBookingSummariesQuery query)
+    {
+      return (await FindBookingsInInterval_Internal(query))
+        .Select(b => new KeyValuePair<int,BookingDataModel>(b.Entity.CustomEntityId, b.DataModel)).ToList();
+    }
+
+
     public async Task<IList<BookingSummary>> FindBookingsInInterval(SearchBookingSummariesQuery query)
+    {
+      return (await FindBookingsInInterval_Internal(query)).Select(b => b.Summary).ToList();
+    }
+
+
+    protected async Task<IEnumerable<CacheEntry>> FindBookingsInInterval_Internal(SearchBookingSummariesQuery query)
     {
       await EnsureCacheLoaded();
 
@@ -150,7 +162,7 @@ namespace Bogevang.Booking.Domain.Bookings
           var booking = Cache.FirstOrDefault(b => b.DataModel.BookingNumber == bookingNumber);
           if (booking == null)
             return null;
-          return new List<BookingSummary> { booking.Summary };
+          return new CacheEntry[] { booking };
         }
         else
           return null;
@@ -191,9 +203,7 @@ namespace Bogevang.Booking.Domain.Bookings
           filtered = filtered.OrderByDescending(b => b.Entity.CreateDate);
       }
 
-      return filtered.Select(b => b.Summary).ToList();
+      return filtered;
     }
-
-
   }
 }

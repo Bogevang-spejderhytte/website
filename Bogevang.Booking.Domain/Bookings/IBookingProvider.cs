@@ -11,5 +11,6 @@ namespace Bogevang.Booking.Domain.Bookings
     Task<BookingDataModel> GetBookingById(int bookingId);
     Task<BookingSummary> GetBookingSummaryById(int bookingId);
     Task<IList<BookingSummary>> FindBookingsInInterval(SearchBookingSummariesQuery query);
+    Task<IList<KeyValuePair<int,BookingDataModel>>> FindBookingDataInInterval(SearchBookingSummariesQuery query);
   }
 }
