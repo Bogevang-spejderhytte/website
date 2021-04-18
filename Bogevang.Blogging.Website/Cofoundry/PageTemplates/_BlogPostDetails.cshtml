@@ -1,0 +1,26 @@
+﻿@using Bogevang.Common.PageBlockTypes.ContentSection
+@using Cofoundry.Web
+@using Bogevang.Blogging.Domain.Data
+
+@model ICustomEntityPageViewModel<BlogPostPageDisplayModel>
+@inject ICofoundryTemplateHelper<ICustomEntityPageViewModel<BlogPostPageDisplayModel>> Cofoundry
+
+
+@{
+  Cofoundry.Template.UseDescription("Skabelon for visning af enkelt nyhed.");
+  var post = Model.CustomEntity.Model;
+}
+
+<div class="row content-block">
+  <div class="col">
+    <h1>@Model.PageTitle</h1>
+
+    @Model.CustomEntity.Model.ShortDescription
+
+    @(await Cofoundry.Template.CustomEntityRegion("Body")
+            .AllowMultipleBlocks()
+            .AllowBlockType<ContentSectionDataModel>()
+            .EmptyContentMinHeight(500)
+            .InvokeAsync())
+  </div>
+</div>

@@ -15,7 +15,7 @@ namespace Bogevang.Common.PageBlockTypes.ContentSection
 
         [Required]
         [Display(Name = "Text", Description = "Rich text displayed at full width")]
-        [Html(HtmlToolbarPreset.BasicFormatting, HtmlToolbarPreset.Headings, HtmlToolbarPreset.Media)]
+        [Html(HtmlToolbarPreset.AdvancedFormatting, HtmlToolbarPreset.Headings, HtmlToolbarPreset.Media, HtmlToolbarPreset.Source)]
         public string HtmlText { get; set; }
     }
 }

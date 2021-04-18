@@ -1,16 +1,19 @@
 ﻿using Cofoundry.Domain;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace Bogevang.Booking.Domain.Bookings.CustomEntities
+namespace Bogevang.Blogging.Domain.Data
 {
-  public class BookingCustomEntityDefinition : 
-    ICustomEntityDefinition<BookingDataModel>, 
+  public class BlogPostCustomEntityDefinition : 
+    ICustomEntityDefinition<BlogPostDataModel>,
     ISortedCustomEntityDefinition
   {
     /// <summary>
     /// This constant is a convention that allows us to reference this definition code 
     /// in other parts of the application (e.g. querying)
     /// </summary>
-    public const string DefinitionCode = "BOOKNG";
+    public const string DefinitionCode = "BLGPST";
 
     /// <summary>
     /// Unique 6 letter code representing the module (the convention is to use uppercase)
@@ -20,18 +23,18 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
     /// <summary>
     /// Singlar name of the entity
     /// </summary>
-    public string Name => "Reservation";
+    public string Name => "Nyhed";
 
     /// <summary>
     /// Plural name of the entity
     /// </summary>
-    public string NamePlural => "Reservationer";
+    public string NamePlural => "Nyheder";
 
     /// <summary>
     /// A short description that shows up as a tooltip for the admin 
     /// panel.
     /// </summary>
-    public string Description => "Reservationer.";
+    public string Description => "Nyheder.";
 
     /// <summary>
     /// Indicates whether the UrlSlug property should be treated
@@ -51,16 +54,19 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
     /// saved, provided the user has permissions to do so. Useful if this isn't
     /// the sort of entity that needs a draft state workflow
     /// </summary>
-    public bool AutoPublish => true;
+    public bool AutoPublish => false;
 
     /// <summary>
     /// Indicates whether the entities are partitioned by locale
     /// </summary>
     public bool HasLocale => false;
 
-
     public CustomEntityQuerySortType DefaultSortType => CustomEntityQuerySortType.PublishDate;
 
-    public SortDirection DefaultSortDirection => SortDirection.Reversed;
+    /// <summary>
+    /// The default sort direction to use when ordering with the
+    /// default sort type.
+    /// </summary>
+    public SortDirection DefaultSortDirection => SortDirection.Default;
   }
 }

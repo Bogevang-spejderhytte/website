@@ -1,0 +1,17 @@
+﻿@using Bogevang.Blogging.Website.ViewComponents
+@model BlogPostListViewModel
+
+  <div class="blog-post-list">
+    <h3>Nyheder</h3>
+
+    @foreach (var post in Model.BlogPosts.Items)
+    {
+      <div class="blog-post">
+        <p>
+          [@post.PostDate?.ToString("dd-MM-yyyy")]
+          <a href="@post.FullPath" class="text-decoration-none">@post.ShortDescription</a>
+        </p>
+      </div>
+    }
+
+  </div>

@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Cofoundry\PageTemplates\_BlogPostDetails.cshtml" />
+    <None Remove="PageBlockTypes\BlogPostList\BlogPostList.cshtml" />
+    <None Remove="Views\CofoundryPages\Components\BlogPostList\Default.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Cofoundry\PageTemplates\_BlogPostDetails.cshtml" />
+    <EmbeddedResource Include="PageBlockTypes\BlogPostList\BlogPostList.cshtml" />
+    <EmbeddedResource Include="Views\CofoundryPages\Components\BlogPostList\Default.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Cofoundry.Web" Version="0.9.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Bogevang.Blogging.Domain\Bogevang.Blogging.Domain.csproj" />
+    <ProjectReference Include="..\Bogevang.Common\Bogevang.Common.csproj" />
+  </ItemGroup>
+
+</Project>

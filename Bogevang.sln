@@ -20,6 +20,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bogevang.Templates.Domain",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bogevang.SequenceGenerator.Domain", "Bogevang.SequenceGenerator.Domain\Bogevang.SequenceGenerator.Domain.csproj", "{1EC86503-08D7-4AE4-B0F3-66C12551DEEB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bogevang.Blogging.Domain", "Bogevang.Blogging.Domain\Bogevang.Blogging.Domain.csproj", "{428C4D54-B81F-49C2-824F-D544DD98B489}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bogevang.Blogging.Website", "Bogevang.Blogging.Website\Bogevang.Blogging.Website.csproj", "{C8B13678-A2D2-4A10-B2C8-FDDE05A96CA4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,6 +54,14 @@ Global
 		{1EC86503-08D7-4AE4-B0F3-66C12551DEEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1EC86503-08D7-4AE4-B0F3-66C12551DEEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1EC86503-08D7-4AE4-B0F3-66C12551DEEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{428C4D54-B81F-49C2-824F-D544DD98B489}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{428C4D54-B81F-49C2-824F-D544DD98B489}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{428C4D54-B81F-49C2-824F-D544DD98B489}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{428C4D54-B81F-49C2-824F-D544DD98B489}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8B13678-A2D2-4A10-B2C8-FDDE05A96CA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8B13678-A2D2-4A10-B2C8-FDDE05A96CA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8B13678-A2D2-4A10-B2C8-FDDE05A96CA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8B13678-A2D2-4A10-B2C8-FDDE05A96CA4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

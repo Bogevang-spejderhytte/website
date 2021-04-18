@@ -1,0 +1,30 @@
+﻿@model IPageViewModel
+@inject ICofoundryTemplateHelper<IPageViewModel> Cofoundry
+
+@Cofoundry.Template.UseDescription("Denne sideskabelon skal kun bruges til forsiden.")
+
+<h1>@Model.PageTitle</h1>
+
+<div class="row">
+  <div class="col-md-5">
+    @(await Cofoundry.Template.Region("Frontpage-Left")
+                .AllowMultipleBlocks()
+                .EmptyContentMinHeight(500)
+                .InvokeAsync())
+
+  </div>
+  <div class="col-md-5">
+    @(await Cofoundry.Template.Region("Frontpage-Center")
+                .AllowMultipleBlocks()
+                .EmptyContentMinHeight(500)
+                .InvokeAsync())
+
+  </div>
+  <div class="col-md-2">
+    @(await Cofoundry.Template.Region("Frontpage-Right")
+                .AllowMultipleBlocks()
+                .EmptyContentMinHeight(500)
+                .InvokeAsync())
+
+  </div>
+</div>
