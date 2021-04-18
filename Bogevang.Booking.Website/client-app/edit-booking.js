@@ -44,11 +44,11 @@
       },
 
       kwhUsedDisplay() {
-        return this.kwhUsed.toFixed(2);
+        return (this.kwhUsed ?? 0).toFixed(2);
       },
 
       electricityPriceTotal() {
-        return this.kwhUsed * this.electricityPriceUnit;
+        return (this.kwhUsed ?? 0) * this.electricityPriceUnit;
       },
 
       electricityPriceTotalDisplay() {

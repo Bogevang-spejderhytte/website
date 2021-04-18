@@ -85,7 +85,7 @@ namespace Bogevang.Booking.Domain.Bookings
         CheckoutUrl = checkoutUrl,
         ElectricityReadingStart = model.ElectricityReadingStart,
         ElectricityReadingEnd = model.ElectricityReadingEnd,
-        ElectricityPriceUnit = model.ElectricityPriceUnit,
+        ElectricityPriceUnit = model.ElectricityPriceUnit ?? BookingSettings.ElectricityPrice,
         ElectricityPrice = model.ElectricityPrice,
         TotalPrice = model.TotalPrice,
         Documents = model.Documents,
