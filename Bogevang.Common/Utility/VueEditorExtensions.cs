@@ -19,11 +19,16 @@ namespace Bogevang.Common.Utility
       this IHtmlHelper<TModel> helper,
       Expression<Func<TModel, TResult>> expression,
       bool alwaysReadonly = false,
-      string cssClass = null)
+      string cssClass = null,
+      bool showInactiveItems = false)
     {
       string html = $@"<div class=""row mb-3"">";
 
-      string innerHtml = await helper.VueEditorColFor_string(expression, alwaysReadonly: alwaysReadonly, cssClass: cssClass);
+      string innerHtml = await helper.VueEditorColFor_string(
+        expression, 
+        alwaysReadonly: alwaysReadonly, 
+        cssClass: cssClass,
+        showInactiveItems: showInactiveItems);
 
       html += innerHtml + @"
 </div>";
@@ -36,9 +41,14 @@ namespace Bogevang.Common.Utility
       this IHtmlHelper<TModel> helper,
       Expression<Func<TModel, TResult>> expression,
       bool alwaysReadonly = false,
-      string cssClass = null)
+      string cssClass = null,
+      bool showInactiveItems = false)
     {
-      string html = await helper.VueEditorColFor_string(expression, alwaysReadonly: alwaysReadonly, cssClass: cssClass);
+      string html = await helper.VueEditorColFor_string(
+        expression, 
+        alwaysReadonly: alwaysReadonly, 
+        cssClass: cssClass,
+        showInactiveItems: showInactiveItems);
       return new HtmlString(html);
     }
 
@@ -47,7 +57,8 @@ namespace Bogevang.Common.Utility
       this IHtmlHelper<TModel> helper,
       Expression<Func<TModel, TResult>> expression,
       bool alwaysReadonly = false,
-      string cssClass = null)
+      string cssClass = null,
+      bool showInactiveItems = false)
     {
       IModelExpressionProvider expressionProvider = helper.ViewContext.HttpContext.RequestServices.GetRequiredService<IModelExpressionProvider>();
       ModelExpression expr = expressionProvider.CreateModelExpression(helper.ViewData, expression);
@@ -74,7 +85,8 @@ namespace Bogevang.Common.Utility
         addLabel: true, 
         alwaysReadonly: alwaysReadonly,
         describedBy: describedBy,
-        cssClass: cssClass);
+        cssClass: cssClass,
+        showInactiveItems: showInactiveItems);
 
       html += editor;
       html += descriptionHtml;
@@ -91,9 +103,15 @@ namespace Bogevang.Common.Utility
       this IHtmlHelper<TModel> helper,
       Expression<Func<TModel, TResult>> expression,
       bool alwaysReadonly = false,
-      string cssClass = null)
+      string cssClass = null,
+      bool showInactiveItems = false)
     {
-      string html = await helper.VueEditorFor_string(expression, addLabel: false, alwaysReadonly: alwaysReadonly, cssClass: cssClass);
+      string html = await helper.VueEditorFor_string(
+        expression, 
+        addLabel: false, 
+        alwaysReadonly: alwaysReadonly, 
+        cssClass: cssClass,
+        showInactiveItems: showInactiveItems);
       return new HtmlString(html);
     }
 
@@ -104,7 +122,8 @@ namespace Bogevang.Common.Utility
       bool addLabel,
       bool alwaysReadonly = false,
       string describedBy = null,
-      string cssClass = null)
+      string cssClass = null,
+      bool showInactiveItems = false)
     {
       IModelExpressionProvider expressionProvider = helper.ViewContext.HttpContext.RequestServices.GetRequiredService<IModelExpressionProvider>();
       ModelExpression expr = expressionProvider.CreateModelExpression(helper.ViewData, expression);
@@ -149,6 +168,7 @@ namespace Bogevang.Common.Utility
             .GetByDefinitionCode(att.CustomEntityDefinitionCode)
             .AsRenderSummary()
             .ExecuteAsync())
+            .Where(e => showInactiveItems || (e.Model is IActiveState a && a.IsActive))
             .OrderBy(e => e.Ordering)
             .ToList();
         }
@@ -250,8 +270,12 @@ namespace Bogevang.Common.Utility
 
           foreach (var item in customEntities)
           {
+            string activeStr = ((item.Model is IActiveState a) && !a.IsActive)
+              ? " disabled"
+              : "";
+
             html += $@"
-<option value=""{item.CustomEntityId}"">{WebUtility.HtmlEncode(item.Title)}</option>";
+<option value=""{item.CustomEntityId}""{activeStr}>{WebUtility.HtmlEncode(item.Title)}</option>";
           }
 
           html += @"
