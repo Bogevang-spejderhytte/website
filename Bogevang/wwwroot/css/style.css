@@ -77,6 +77,38 @@ a.fc-daygrid-day-number {
   text-decoration: none;
 }
 
+.blog-post-list .blog-post
+{
+  font-size: 85%;
+}
+
+.blog-post-list .blog-post a
+{
+  text-decoration: none;
+  color: #000000;
+}
+
+.blog-post-list .blog-post a:hover
+{
+  text-decoration: underline;
+}
+
+.blog-post-list .blog-post .blog-date {
+  color: gray;
+}
+
+.blog-post-list .blog-post img
+{
+  width: 100%;
+}
+
+.blog-post-summary
+{
+  margin-bottom: 1rem;
+  padding-left: 0.5rem;
+  border-left: 2px solid gray;
+}
+
 /* SPINNER */
 .loader {
   position: relative;

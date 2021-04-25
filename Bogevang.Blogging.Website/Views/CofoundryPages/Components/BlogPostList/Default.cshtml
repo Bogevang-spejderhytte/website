@@ -1,17 +1,24 @@
-﻿@using Bogevang.Blogging.Website.ViewComponents
+﻿@using Cofoundry.Web
+@using Bogevang.Blogging.Website.ViewComponents
 @model BlogPostListViewModel
 
-  <div class="blog-post-list">
-    <h3>Nyheder</h3>
+@inject ICofoundryHelper<BlogPostListViewModel> Cofoundry
 
-    @foreach (var post in Model.BlogPosts.Items)
-    {
-      <div class="blog-post">
-        <p>
-          [@post.PostDate?.ToString("dd-MM-yyyy")]
-          <a href="@post.FullPath" class="text-decoration-none">@post.ShortDescription</a>
-        </p>
-      </div>
-    }
+<div class="blog-post-list">
+  <h3>Nyheder</h3>
 
-  </div>
+  @foreach (var post in Model.BlogPosts.Items)
+  {
+    <div class="blog-post">
+      <p>
+        <span class="blog-date">[@post.PostDate?.ToString("dd-MM-yyyy")]</span>
+        <a href="@post.FullPath">@post.ShortDescription</a>
+        @if (post.ThumbnailImageAsset != null)
+        {
+          <img src="@Cofoundry.Routing.ImageAsset(post.ThumbnailImageAsset, 150, 150)" />
+        }
+      </p>
+    </div>
+  }
+
+</div>
