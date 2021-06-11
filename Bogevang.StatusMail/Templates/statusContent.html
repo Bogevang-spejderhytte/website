@@ -1,0 +1,40 @@
+﻿<style>
+  table.status tr.saturday td.date
+  {
+    background-color: #D3D3D3;
+  }
+
+  table.status tr.sunday
+  {
+    background-color: #D3D3D3;
+  }
+
+  table.status tr.today {
+    background-color: #90EE90;
+  }
+</style>
+<table style="border-collapse: collapse">
+  <thead>
+    <tr>
+      <th>Dato</th>
+      <th>Nr.</th>
+      <th>Beskrivelse</th>
+      <th>El-forbrug</th>
+    </tr>
+  </thead>
+  <tbody>
+    $dates:{d |
+    <tr style="background-color: $d.rowColor$">
+      <td style="text-align: right; border: 1px solid #808080; padding: 4px 8px 4px 8px; background-color: $d.dateColor$">$d.date; format="ddd dd. MMM"$</td>
+      <td style="text-align: right; border: 1px solid #808080; padding: 4px 8px 4px 8px">$d.bookingNumber$</td>
+      <td style="border: 1px solid #808080; padding: 4px 8px 4px 8px">
+        $if(d.bookingPurpose)$
+          $d.bookingPurpose; format="html"$<br />
+          v/$d.bookingContactName; format="html"$
+        $endif$
+      </td>
+      <td style="text-align: right; border: 1px solid #808080; padding: 4px 8px 4px 8px">$d.electricityUsage$</td>
+    </tr>
+    }$
+  </tbody>
+</table>

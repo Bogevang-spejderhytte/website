@@ -3,6 +3,8 @@ using Bogevang.Templates.Domain.CustomEntities;
 using Cofoundry.Core;
 using Cofoundry.Domain;
 using System;
+using System.Collections;
+using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -35,18 +37,41 @@ namespace Bogevang.Templates.Domain
       return template;
     }
 
-    
+
+    public string GetEmbeddedTemplateByName(Assembly assembly, string name)
+    {
+      string resourceName = $"{assembly.GetName().Name}.Templates.{name}";
+      using (Stream s = assembly.GetManifestResourceStream(resourceName))
+      {
+        using (var reader = new StreamReader(s))
+        {
+          return reader.ReadToEnd();
+        }
+      }
+    }
+
+
+
     public string MergeText(string text, object mergeData)
     {
       Template template = new Template(text, '$', '$');
       template.Group.RegisterRenderer(typeof(DateTime), new DateRenderer());
-      template.Group.RegisterRenderer(typeof(Decimal), new DecimalRenderer());
+      template.Group.RegisterRenderer(typeof(decimal), new DecimalRenderer());
+      template.Group.RegisterRenderer(typeof(string), new StringRenderer());
 
-      foreach (var property in mergeData.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
+      if (mergeData is IDictionary mergeDict)
       {
-        string name = property.Name;
-        object value = property.GetValue(mergeData);
-        template.Add(name, value);
+        foreach (var item in mergeDict.Keys)
+          template.Add(item.ToString(), mergeDict[item]);
+      }
+      else
+      {
+        foreach (var property in mergeData.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
+        {
+          string name = property.Name;
+          object value = property.GetValue(mergeData);
+          template.Add(name, value);
+        }
       }
 
       return template.Render();

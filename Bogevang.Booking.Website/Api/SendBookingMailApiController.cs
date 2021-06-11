@@ -1,12 +1,7 @@
-﻿using Bogevang.Booking.Domain.Bookings;
+﻿using System.Threading.Tasks;
 using Bogevang.Booking.Domain.Bookings.Commands;
-using Bogevang.Booking.Domain.Bookings.CustomEntities;
-using Bogevang.Booking.Domain.Bookings.Models;
-using Bogevang.Templates.Domain;
-using Bogevang.Templates.Domain.CustomEntities;
 using Cofoundry.Web;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace Bogevang.Booking.Website.Api
 {
