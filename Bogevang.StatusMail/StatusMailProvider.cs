@@ -28,9 +28,9 @@ namespace Bogevang.StatusMail.Domain
     }
 
 
-    public async Task<string> BuildStatusMessage()
+    public async Task<string> BuildStatusCalendar(DateTime startDate, DateTime endDate)
     {
-      IDictionary<string, object> content = await BuildStatusContent();
+      IDictionary<string, object> content = await BuildStatusCalendarContent(startDate, endDate);
 
       string template = TemplateProvider.GetEmbeddedTemplateByName(this.GetType().Assembly, "statusContent.html");
 
@@ -40,12 +40,12 @@ namespace Bogevang.StatusMail.Domain
     }
 
 
-    public async Task<IDictionary<string, object>> BuildStatusContent()
+    public async Task<IDictionary<string, object>> BuildStatusCalendarContent(DateTime startDate, DateTime endDate)
     {
       SearchBookingSummariesQuery query = new SearchBookingSummariesQuery
       {
-        Start = DateTime.Now.AddYears(-2),
-        End = DateTime.Now.AddDays(14),
+        Start = startDate,
+        End = endDate,
         BookingState = new BookingDataModel.BookingStateType[] { BookingDataModel.BookingStateType.Requested, BookingDataModel.BookingStateType.Approved }
       };
 
@@ -55,9 +55,6 @@ namespace Bogevang.StatusMail.Domain
         b => b.Booking);
 
       List<Dictionary<string, object>> dates = new List<Dictionary<string, object>>();
-
-      var startDate = DateTime.Now.Date.AddDays(-30);
-      var endDate = DateTime.Now.Date.AddDays(14);
 
       var today = DateTime.Now.ToString("yyyy-MM-dd");
 

@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Bogevang.StatusMail.Domain
 {
   public interface IStatusMailProvider
   {
-    Task<string> BuildStatusMessage();
-    Task<IDictionary<string, object>> BuildStatusContent();
+    Task<string> BuildStatusCalendar(DateTime startDate, DateTime endDate);
+    Task<IDictionary<string, object>> BuildStatusCalendarContent(DateTime startDate, DateTime endDate);
   }
 }

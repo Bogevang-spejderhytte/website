@@ -1,0 +1,23 @@
+﻿@using Cofoundry.Domain
+@using Bogevang.Booking.Domain.Bookings.CustomEntities
+@using Microsoft.AspNetCore.Html 
+
+@model HtmlString
+ 
+@inject IUserContextService UserContextService
+@inject IPermissionValidationService PermissionValidationService
+
+@{
+  var user = await UserContextService.GetCurrentContextAsync();
+  var hasBookingEditingPermission = PermissionValidationService.HasCustomEntityPermission<CustomEntityUpdatePermission>
+    (BookingCustomEntityDefinition.DefinitionCode, user);
+}
+
+@if (hasBookingEditingPermission)
+{
+@Model
+}
+else
+{
+<p>Du har ikke adgang til denne funktionalitet.</p>
+}
