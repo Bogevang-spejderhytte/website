@@ -1,24 +1,23 @@
-﻿using Cofoundry.Domain;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
+using Cofoundry.Domain;
 
-namespace Bogevang.Snippets.CustomEntities
+namespace Bogevang.Common.AdminSettings
 {
-  public class SnippetCustomEntityDefinition :
-    ICustomEntityDefinition<SnippetDataModel>,
+  public class AdminSettingCustomEntityDefinition :
+    ICustomEntityDefinition<AdminSettingDataModel>,
     ICustomizedTermCustomEntityDefinition
   {
-    public const string DefinitionCode = "SNIPET";
+    public const string DefinitionCode = "ADMSET";
 
     public string CustomEntityDefinitionCode => DefinitionCode;
 
-    public string Name => "Tekst";
+    public string Name => "Indstilling";
 
-    public string NamePlural => "Tekster";
+    public string NamePlural => "Indstillinger";
 
-    public string Description => "En stump tekst som kan indsættes på hjemmesiden";
+    public string Description => "En navngiven indstillingsværdi.";
 
     public bool ForceUrlSlugUniqueness => true;
 
@@ -26,10 +25,10 @@ namespace Bogevang.Snippets.CustomEntities
 
     public bool AutoGenerateUrlSlug => true;
 
-    public bool AutoPublish => false;
+    public bool AutoPublish => true;
 
     /// <summary>
-    /// Here we customize the title of the snippet to be displayed
+    /// Here we customize the title of the setting to be displayed
     /// as 'Navn', which better describes its purpose.
     /// </summary>
     public Dictionary<string, string> CustomTerms => new Dictionary<string, string>()

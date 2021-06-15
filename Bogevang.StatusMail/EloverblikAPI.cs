@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Bogevang.Common.AdminSettings;
 using Newtonsoft.Json;
 using Ramone;
 
@@ -7,12 +8,16 @@ namespace Bogevang.StatusMail.Domain
 {
   public class EloverblikAPI : IEloverblikAPI
   {
-    private EloverblikApiSettings Settings { get; set; }
+    private readonly EloverblikApiSettings Settings;
+    private readonly IAdminSettingsProvider AdminSettingsProvider;
 
 
-    public EloverblikAPI(EloverblikApiSettings settings)
+    public EloverblikAPI(
+      EloverblikApiSettings settings,
+      IAdminSettingsProvider adminSettingsProvider)
     {
       Settings = settings;
+      AdminSettingsProvider = adminSettingsProvider;
     }
 
 
@@ -62,9 +67,11 @@ namespace Bogevang.StatusMail.Domain
         IService elService = RamoneConfiguration.NewService(new Uri(Settings.BaseUrl));
         ISession elSession = elService.NewSession();
 
+        string refreshToken = await AdminSettingsProvider.GetSetting("ElOverblik-AccessToken");
+
         var tokenRequest = elSession
           .Bind("api/token")
-          .Header("Authorization", "BEARER " + Settings.AccessToken);
+          .Header("Authorization", "BEARER " + refreshToken);
 
         using (var tokenResponse = await tokenRequest.Async().Get())
         {

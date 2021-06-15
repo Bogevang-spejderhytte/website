@@ -1,4 +1,5 @@
-﻿using Bogevang.Common.Utility;
+﻿using Bogevang.Common.AdminSettings;
+using Bogevang.Common.Utility;
 using Cofoundry.Core.DependencyInjection;
 
 namespace Bogevang.Common
@@ -8,6 +9,7 @@ namespace Bogevang.Common
     public void Register(IContainerRegister container)
     {
       container.Register<ICurrentUserProvider, CurrentUserProvider>();
+      container.Register<IAdminSettingsProvider, AdminSettingsProvider>();
     }
   }
 }
