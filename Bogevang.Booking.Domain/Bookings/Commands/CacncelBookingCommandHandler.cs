@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Bogevang.Booking.Domain.Bookings.Commands
 {
-  public class RejectBookingCommandHandler :
-    ICommandHandler<RejectBookingCommand>,
+  public class CacncelBookingCommandHandler :
+    ICommandHandler<CancelBookingCommand>,
     IIgnorePermissionCheckHandler // Permission enforced in code
   {
     private readonly IAdvancedContentRepository DomainRepository;
@@ -17,7 +17,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
     private readonly ICurrentUserProvider CurrentUserProvider;
 
 
-    public RejectBookingCommandHandler(
+    public CacncelBookingCommandHandler(
       IAdvancedContentRepository domainRepository,
       IBookingProvider bookingProvider,
       IPermissionValidationService permissionValidationService,
@@ -30,7 +30,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
     }
 
 
-    public async Task ExecuteAsync(RejectBookingCommand command, IExecutionContext executionContext)
+    public async Task ExecuteAsync(CancelBookingCommand command, IExecutionContext executionContext)
     {
       PermissionValidationService.EnforceCustomEntityPermission<CustomEntityUpdatePermission>(BookingCustomEntityDefinition.DefinitionCode, executionContext.UserContext);
 
@@ -40,12 +40,12 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
 
         booking.BookingState = BookingDataModel.BookingStateType.Closed;
         booking.IsApproved = false;
-        booking.IsRejected = true;
+        booking.IsCancelled = true;
 
         var user = await CurrentUserProvider.GetAsync();
         booking.AddLogEntry(new BookingLogEntry
         {
-          Text = "Reservationen blev afvist.",
+          Text = "Reservationen blev aflyst.",
           Username = user.User.GetFullName(),
           UserId = user.User.UserId,
           Timestamp = DateTime.Now

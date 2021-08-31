@@ -77,7 +77,7 @@ namespace Bogevang.Booking.Domain.Bookings
         BookingState = model.BookingState.Value,
         BookingStateText = model.BookingState.GetDescription(),
         IsApproved = model.IsApproved,
-        IsRejected = model.IsRejected,
+        IsCancelled = model.IsCancelled,
         WelcomeLetterIsSent = model.WelcomeLetterIsSent,
         IsCheckedOut = model.IsCheckedOut,
         IsArchived = model.IsArchived,

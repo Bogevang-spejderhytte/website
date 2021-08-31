@@ -5,15 +5,15 @@ using System.Threading.Tasks;
 
 namespace Bogevang.Booking.Website.Api
 {
-  [Route("api/reject-booking")]
+  [Route("api/cancel-booking")]
   [AutoValidateAntiforgeryToken]
   [ApiController]
-  public class RejectBookingApiController : ControllerBase
+  public class CancelBookingApiController : ControllerBase
   {
     private readonly IApiResponseHelper ApiResponseHelper;
 
 
-    public RejectBookingApiController(
+    public CancelBookingApiController(
         IApiResponseHelper apiResponseHelper)
     {
       ApiResponseHelper = apiResponseHelper;
@@ -23,8 +23,8 @@ namespace Bogevang.Booking.Website.Api
     [HttpPost]
     public async Task<JsonResult> Post([FromQuery] int id)
     {
-      var rejectCommand = new RejectBookingCommand { Id = id };
-      return await ApiResponseHelper.RunCommandAsync(rejectCommand);
+      var cancelCommand = new CancelBookingCommand { Id = id };
+      return await ApiResponseHelper.RunCommandAsync(cancelCommand);
     }
   }
 }

@@ -55,7 +55,7 @@ namespace Bogevang.Booking.Domain.Bookings.Models
     public BookingDataModel.BookingStateType BookingState { get; set; }
     public string BookingStateText { get; set; }
     public bool IsApproved { get; set; }
-    public bool IsRejected { get; set; }
+    public bool IsCancelled { get; set; }
     public bool WelcomeLetterIsSent { get; set; }
     public bool IsCheckedOut { get; set; }
     public bool IsArchived { get; set; }
@@ -153,8 +153,8 @@ namespace Bogevang.Booking.Domain.Bookings.Models
 
     public string GetSingleWordStateDescription()
     {
-      if (IsRejected)
-        return "afvist";
+      if (IsCancelled)
+        return "aflyst";
       else if (IsApproved)
         return "godkendt";
       else if (BookingState == BookingDataModel.BookingStateType.Requested)

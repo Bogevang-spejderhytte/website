@@ -53,7 +53,7 @@ namespace Bogevang.StatusMail.Domain.Commands
         //BookingState = new BookingDataModel.BookingStateType[] { BookingDataModel.BookingStateType.Requested, BookingDataModel.BookingStateType.Approved }
       };
 
-      var bookings = (await BookingProvider.FindBookingsInInterval(query)).Where(b => !b.IsRejected).ToList();
+      var bookings = (await BookingProvider.FindBookingsInInterval(query)).Where(b => !b.IsCancelled).ToList();
 
       int bookingCount = bookings.Count;
       decimal bookingTotalIncome = bookings.Sum(b => b.RentalPrice ?? 0.0M);

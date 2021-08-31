@@ -23,7 +23,7 @@
       rentalPrice: null,
       bookingState: null,
       isApproved: false,
-      isRejected: false,
+      isCancelled: false,
       isCheckedOut: false,
       isArchived: false,
       welcomeLetterIsSent: false,
@@ -94,13 +94,13 @@
       },
 
 
-      reject: async function () {
-        if (!confirm('Afvis denne reservation?'))
+      cancelBooking: async function () {
+        if (!confirm('Aflys denne reservation?'))
           return;
 
-        var result = await this.doReject();
+        var result = await this.doCancelBooking();
         if (result) {
-          window.location = '/reservationer/send-mail?id=' + this.bookingId + '&template=afvisningsbrev';
+          window.location = '/reservationer/send-mail?id=' + this.bookingId + '&template=aflysningsbrev';
         }
       },
 
@@ -182,7 +182,7 @@
           this.rentalPrice = data.rentalPrice;
           this.bookingState = data.bookingState;
           this.isApproved = data.isApproved;
-          this.isRejected = data.isRejected;
+          this.isCancelled = data.isCancelled;
           this.isCheckedOut = data.isCheckedOut;
           this.isArchived = data.isArchived;
           this.welcomeLetterIsSent = data.welcomeLetterIsSent;
@@ -217,7 +217,7 @@
           rentalPrice: this.rentalPrice,
           bookingState: this.bookingState,
           isApproved: this.isApproved,
-          isRejected: this.isRejected,
+          isCancelled: this.isCancelled,
           isCheckedOut: this.isCheckedOut,
           isArchived: this.isArchived,
           welcomeLetterIsSent: this.welcomeLetterIsSent,
@@ -245,12 +245,12 @@
       },
 
 
-      doReject: async function () {
-        var rejectArgs = {}
+      doCancelBooking: async function () {
+        var cancelArgs = {}
 
         return await this.postWithErrorHandling(
-          "/api/reject-booking?id=" + this.bookingId,
-          rejectArgs
+          "/api/cancel-booking?id=" + this.bookingId,
+          cancelArgs
         );
       },
 
@@ -298,7 +298,7 @@
         $('#cancelButton').prop('disabled', false);
         $('#deleteButton').prop('disabled', true);
         $('#approveButton').prop('disabled', true);
-        $('#rejectButton').prop('disabled', true);
+        $('#cancelBookingButton').prop('disabled', true);
         $('#sendWelcomeLetterButton').prop('disabled', true);
         $('#sendMailButton').prop('disabled', true);
         $('#closeButton').prop('disabled', true);
@@ -314,7 +314,7 @@
         $('#cancelButton').prop('disabled', true);
         $('#deleteButton').prop('disabled', false);
         $('#approveButton').prop('disabled', false);
-        $('#rejectButton').prop('disabled', false);
+        $('#cancelBookingButton').prop('disabled', false);
         $('#sendWelcomeLetterButton').prop('disabled', false);
         $('#sendMailButton').prop('disabled', false);
         $('#closeButton').prop('disabled', false);

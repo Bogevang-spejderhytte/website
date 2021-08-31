@@ -130,8 +130,12 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
     public bool IsApproved { get; set; }
 
 
-    [Display(Name = "Reservation afvist")]
-    public bool IsRejected { get; set; }
+    [Display(Name = "Reservation aflyst")]
+    public bool IsCancelled { get; set; }
+
+
+    // Keep "IsRejected" for backwards compatibility with old database entries
+    public bool IsRejected { get => IsCancelled; set { IsCancelled = value; } }
 
 
     [Display(Name = "Velkomstbrev er sendt")]

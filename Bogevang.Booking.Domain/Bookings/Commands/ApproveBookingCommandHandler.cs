@@ -40,7 +40,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
 
         booking.BookingState = BookingDataModel.BookingStateType.Approved;
         booking.IsApproved = true;
-        booking.IsRejected = false;
+        booking.IsCancelled = false;
 
         await booking.AddLogEntry(CurrentUserProvider, "Reservationen blev godkendt.");
 
