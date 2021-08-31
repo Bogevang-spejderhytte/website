@@ -10,6 +10,7 @@
 
     return {
       datePickerConfig: { timeAdjust: "00:00:00" },
+      dateMasks: { input: 'WWW DD.MM.YYYY' },
       isWorking: true,
       isEditing: false,
       errors: [],

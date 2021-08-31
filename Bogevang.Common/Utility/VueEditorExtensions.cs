@@ -243,7 +243,7 @@ namespace Bogevang.Common.Utility
         else if (isDate)
         {
           html += $@"
-<v-date-picker v-model=""{propName}"" v-on:change=""clearValidation"" mode=""date"" timezone=""UTC"" :model-config=""datePickerConfig"">
+<v-date-picker v-model=""{propName}"" v-on:change=""clearValidation"" mode=""date"" timezone=""UTC"" :model-config=""datePickerConfig"" :masks=""dateMasks"">
   <template v-slot=""{{ inputValue, inputEvents }}"">
     <input id=""{propName}"" class=""form-control"" autocomplete=""off"" :value=""inputValue"" v-on=""inputEvents"" :disabled=""!isEditing""/>
   </template>

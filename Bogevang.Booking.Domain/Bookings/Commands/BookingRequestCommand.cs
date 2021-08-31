@@ -22,7 +22,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
     [Required(ErrorMessage = "Feltet '{0}' skal udfyldes.")]
     public DateTime? DepartureDate { get; set; }
 
-    [Display(Name = "Kun udvalgte dage")]
+    [Display(Name = "Jeg ønsker kun udvalgte dage (fx alle tirsdage i perioden)")]
     public bool OnlySelectedWeekdays { get; set; }
 
     [Display(Name = "Valgte ugedage")]
