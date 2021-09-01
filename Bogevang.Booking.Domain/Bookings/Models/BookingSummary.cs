@@ -51,6 +51,7 @@ namespace Bogevang.Booking.Domain.Bookings.Models
     public string Comments { get; set; }
     public decimal? RentalPrice { get; set; }
     public decimal? Deposit { get; set; }
+    public bool HasDeposit => Deposit != null && Deposit > 0;
     public bool DepositReceived { get; set; }
     public BookingDataModel.BookingStateType BookingState { get; set; }
     public string BookingStateText { get; set; }

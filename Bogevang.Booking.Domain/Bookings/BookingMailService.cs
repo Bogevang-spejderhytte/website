@@ -31,8 +31,8 @@ namespace Bogevang.Booking.Domain.Bookings
 
       TemplateDataModel template = await TemplateProvider.GetTemplateByName(templateName);
 
-      booking.ArrivalDate = booking.ArrivalDate;
-      booking.DepartureDate = booking.DepartureDate;
+      //booking.ArrivalDate = booking.ArrivalDate;
+      //booking.DepartureDate = booking.DepartureDate;
       string message = TemplateProvider.MergeText(template.Text, booking);
 
       return new BookingMail
