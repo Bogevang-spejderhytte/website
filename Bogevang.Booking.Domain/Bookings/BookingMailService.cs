@@ -25,14 +25,12 @@ namespace Bogevang.Booking.Domain.Bookings
 
     public async Task<BookingMail> CreateBookingMail(int bookingId, string templateName)
     {
-      var booking = await BookingProvider.GetBookingSummaryById(bookingId);
+      BookingSummary booking = await BookingProvider.GetBookingSummaryById(bookingId);
       if (booking == null)
         return null;
 
       TemplateDataModel template = await TemplateProvider.GetTemplateByName(templateName);
 
-      //booking.ArrivalDate = booking.ArrivalDate;
-      //booking.DepartureDate = booking.DepartureDate;
       string message = TemplateProvider.MergeText(template.Text, booking);
 
       return new BookingMail

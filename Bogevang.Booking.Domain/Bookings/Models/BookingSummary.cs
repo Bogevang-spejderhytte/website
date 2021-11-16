@@ -50,6 +50,7 @@ namespace Bogevang.Booking.Domain.Bookings.Models
     public string ContactEMail { get; set; }
     public string Comments { get; set; }
     public decimal? RentalPrice { get; set; }
+    public bool HasRentalPrice => RentalPrice != null && RentalPrice > 0;
     public decimal? Deposit { get; set; }
     public bool HasDeposit => Deposit != null && Deposit > 0;
     public bool DepositReceived { get; set; }
