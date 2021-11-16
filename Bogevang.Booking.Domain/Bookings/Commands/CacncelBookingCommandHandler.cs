@@ -39,7 +39,6 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
         var booking = await BookingProvider.GetBookingById(command.Id);
 
         booking.BookingState = BookingDataModel.BookingStateType.Closed;
-        booking.IsApproved = false;
         booking.IsCancelled = true;
 
         var user = await CurrentUserProvider.GetAsync();
