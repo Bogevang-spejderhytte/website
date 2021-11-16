@@ -1,4 +1,5 @@
 ﻿using Bogevang.Booking.Domain.Bookings;
+using Bogevang.Booking.Domain.Bookings.CustomEntities;
 using Bogevang.Booking.Domain.Bookings.Queries;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -29,7 +30,12 @@ namespace Bogevang.Booking.Website.Api
     [HttpGet]
     public async Task<JsonResult> Get([FromQuery] DateTime start, [FromQuery] DateTime end)
     {
-      var bookings = await BookingService.FindBookingsInInterval(new SearchBookingSummariesQuery { Start = start, End = end });
+      var bookings = await BookingService.FindBookingsInInterval(new SearchBookingSummariesQuery 
+      { 
+          Start = start, 
+          End = end,
+          IsCancelled = false
+      });
 
       var expandedBookingDays = bookings.SelectMany(b => b.ExpandDays());
 

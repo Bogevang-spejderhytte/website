@@ -36,5 +36,6 @@ namespace Bogevang.Booking.Domain.Bookings.Queries
     public OrderByType OrderBy { get; set; }
     public SortDirectionType SortDirection { get; set; }
     public ICollection<BookingDataModel.BookingStateType> BookingState { get; set; }
+    public bool? IsCancelled { get; set; }
   }
 }

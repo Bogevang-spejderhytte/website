@@ -188,6 +188,10 @@ namespace Bogevang.Booking.Domain.Bookings
         filtered = filtered
           .Where(b => query.BookingState.Contains(b.DataModel.BookingState.Value));
 
+      if (query?.IsCancelled != null)
+        filtered = filtered
+          .Where(b => b.DataModel.IsCancelled == query.IsCancelled.Value);
+
       if (query?.OrderBy == SearchBookingSummariesQuery.OrderByType.ArrivalDate)
       {
         if (query?.SortDirection == SearchBookingSummariesQuery.SortDirectionType.Asc)
