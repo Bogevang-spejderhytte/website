@@ -135,7 +135,8 @@ namespace Bogevang.Booking.Domain.Bookings.Models
         var overlappingBookings = await bookingProvider.FindBookingsInInterval(new Queries.SearchBookingSummariesQuery
         {
           Start = ArrivalDate,
-          End = DepartureDate
+          End = DepartureDate,
+          IsCancelled = false
         });
 
         foreach (var booking in overlappingBookings)
