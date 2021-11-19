@@ -117,6 +117,13 @@
           return 'fas fa-money-bill-alt color-warning';
         else
           return null;
+      },
+
+      rowClass: function (isCancelled) {
+        if (isCancelled)
+          return 'grid-row row-cancelled';
+        else
+          return 'grid-row';
       }
     }
   });

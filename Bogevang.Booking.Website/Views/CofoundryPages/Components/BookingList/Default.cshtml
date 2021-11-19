@@ -49,7 +49,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr class="grid-row" v-for="booking in bookings" v-bind:model="booking" v-bind:key="booking.id">
+      <tr :class="rowClass(booking.isCancelled)" v-for="booking in bookings" v-bind:model="booking" v-bind:key="booking.id">
         <td><i :class="alertClass(booking.alert)" :title="booking.alertMessage"></i></td>
         <td><a :href="'/reservationer/edit#' + booking.id" title="Vis reservation">{{booking.bookingNumber}}</a></td>
         <td class="date">{{booking.arrivalDate}}</td>

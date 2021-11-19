@@ -61,6 +61,11 @@ td.date {
   color: darkorange;
 }
 
+.row-cancelled {
+  font-style: italic;
+  color: darkgray;
+}
+
 .clickable {
   text-decoration: underline;
   cursor: pointer;

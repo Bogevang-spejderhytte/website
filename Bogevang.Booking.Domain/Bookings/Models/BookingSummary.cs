@@ -15,7 +15,8 @@ namespace Bogevang.Booking.Domain.Bookings.Models
       New,
       Key,
       AwaitingCheckout,
-      Finalize
+      Finalize,
+      Cancelled
     }
 
     public enum NotificationLevelType
@@ -90,7 +91,13 @@ namespace Bogevang.Booking.Domain.Bookings.Models
     {
       Alert = null;
 
-      if (BookingState == BookingDataModel.BookingStateType.Requested)
+      if (IsCancelled)
+      {
+        Alert = AlertType.Cancelled;
+        AlertMessage = "Aflyst.";
+        BookingStateText = "Aflyst";
+      }
+      else if (BookingState == BookingDataModel.BookingStateType.Requested)
       {
         Alert = AlertType.New;
         AlertMessage = "Ny reservation.";
@@ -158,8 +165,6 @@ namespace Bogevang.Booking.Domain.Bookings.Models
     {
       if (IsCancelled)
         return "aflyst";
-      else if (IsApproved)
-        return "godkendt";
       else if (BookingState == BookingDataModel.BookingStateType.Requested)
         return "forespørgsel";
       else if (BookingState == BookingDataModel.BookingStateType.Approved)
