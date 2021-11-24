@@ -134,7 +134,7 @@
 
 
       deleteBooking: async function (url) {
-        if (!confirm('Slet denne reservation (uden at informere lejer)?'))
+        if (!confirm('Slet denne reservation (uden at informere lejer)? Sletningen kan ikke fortrydes!'))
           return;
 
         result = await this.doDelete();

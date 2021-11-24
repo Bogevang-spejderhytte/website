@@ -82,6 +82,10 @@ a.fc-daygrid-day-number {
   text-decoration: none;
 }
 
+.fc-event-title.clickable {
+  cursor: pointer;
+}
+
 .blog-post-list .blog-post
 {
   font-size: 85%;

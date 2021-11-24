@@ -8,7 +8,19 @@
       height: "auto",
       locale: 'da',
       firstDay: 1,
-      events: '/api/calendar'
+      events: '/api/calendar',
+      eventDidMount: function (info) {
+        if (info.event.extendedProps.description != null) {
+          info.el.title = info.event.extendedProps.description;
+          info.el.classList.add("clickable");
+        }
+      },
+      eventClick: function (info) {
+        if (info.event.extendedProps.booking_id != null) {
+          const url = '/reservationer/edit#' + info.event.extendedProps.booking_id;
+          window.location = url;
+        }
+      }
     });
     calendar.render();
   });
