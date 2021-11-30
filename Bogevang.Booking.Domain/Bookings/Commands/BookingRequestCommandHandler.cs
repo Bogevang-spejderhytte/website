@@ -56,7 +56,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
         var tenantCategory = await TenantCategoryProvider.GetTenantCategoryById(command.TenantCategoryId.Value);
 
         DateTime lastAllowedArrivalDate = DateTime.Now.AddMonths(tenantCategory.AllowedBookingFutureMonths);
-        if (command.ArrivalDate.Value >= lastAllowedArrivalDate)
+        if (command.ArrivalDate.Value >= lastAllowedArrivalDate || command.DepartureDate.Value >= lastAllowedArrivalDate)
           throw new ValidationErrorException(new ValidationError($"Den valgte lejertype kan ikke reservere mere end {tenantCategory.AllowedBookingFutureMonths} måneder ud i fremtiden. Dvs. senest {lastAllowedArrivalDate.ToShortDateString()}.", nameof(command.ArrivalDate)));
 
         int bookingNumber = await SequenceNumberGenerator.NextNumber("BookingNumber");

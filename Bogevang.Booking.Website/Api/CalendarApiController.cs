@@ -57,7 +57,7 @@ namespace Bogevang.Booking.Website.Api
       {
         start = b.Date,
         title = "Optaget",
-        description = hasEditAccess ? b.Booking.Purpose : null,
+        description = hasEditAccess ? $"#{b.Booking.BookingNumber} - {b.Booking.Purpose}" : null,
         booking_id = hasEditAccess ? b.Booking.Id : (int?)null
       });
 
