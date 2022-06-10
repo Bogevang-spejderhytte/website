@@ -30,13 +30,20 @@ namespace Bogevang.StatusMail.Domain
 
     public async Task<string> BuildStatusCalendar(DateTime startDate, DateTime endDate)
     {
-      IDictionary<string, object> content = await BuildStatusCalendarContent(startDate, endDate);
+      try
+      {
+        IDictionary<string, object> content = await BuildStatusCalendarContent(startDate, endDate);
 
-      string template = TemplateProvider.GetEmbeddedTemplateByName(this.GetType().Assembly, "statusContent.html");
+        string template = TemplateProvider.GetEmbeddedTemplateByName(this.GetType().Assembly, "statusContent.html");
 
-      string text = TemplateProvider.MergeText(template, content);
+        string text = TemplateProvider.MergeText(template, content);
 
-      return text;
+        return text;
+      }
+      catch (Exception ex)
+      {
+        return $"Failed to create status calendar: {ex.Message}";
+      }
     }
 
 

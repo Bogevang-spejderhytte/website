@@ -29,6 +29,7 @@ namespace Bogevang.StatusMail.Web.Api
 
     // TEST like this:
     // curl -d "accessToken=TODO" -X POST https://localhost:44313/api/send-status-mail
+    // (access token is from appsettings.json)
 
     [HttpPost]
     [Consumes("application/x-www-form-urlencoded")]
