@@ -12,7 +12,14 @@
   table.status tr.today {
     background-color: #90EE90;
   }
+
+  .warning {
+    font-weight: bold;
+    color: red;
+  }
 </style>
+$if(message)$<p class="warning">$message$</p>$endif$
+
 <table style="border-collapse: collapse">
   <thead>
     <tr>
@@ -27,12 +34,7 @@
     <tr style="background-color: $d.rowColor$">
       <td style="text-align: right; border: 1px solid #808080; padding: 4px 8px 4px 8px; background-color: $d.dateColor$">$d.date; format="ddd dd. MMM"$</td>
       <td style="text-align: right; border: 1px solid #808080; padding: 4px 8px 4px 8px">$d.bookingNumber$</td>
-      <td style="border: 1px solid #808080; padding: 4px 8px 4px 8px">
-        $if(d.bookingPurpose)$
-          $d.bookingPurpose; format="html"$<br />
-          v/$d.bookingContactName; format="html"$
-        $endif$
-      </td>
+      <td style="border: 1px solid #808080; padding: 4px 8px 4px 8px">$d.bookingDetails$</td>
       <td style="text-align: right; border: 1px solid #808080; padding: 4px 8px 4px 8px">$d.electricityUsage$</td>
     </tr>
     }$

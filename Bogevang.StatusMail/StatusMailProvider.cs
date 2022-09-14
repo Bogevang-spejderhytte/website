@@ -52,14 +52,17 @@ namespace Bogevang.StatusMail.Domain
       SearchBookingSummariesQuery query = new SearchBookingSummariesQuery
       {
         Start = startDate,
-        End = endDate,
-        BookingState = new BookingDataModel.BookingStateType[] { BookingDataModel.BookingStateType.Requested, BookingDataModel.BookingStateType.Approved }
+        End = endDate
       };
 
       var bookings = await BookingProvider.FindBookingsInInterval(query);
-      var expandedBookingDays = bookings.SelectMany(b => b.ExpandDays()).ToDictionary(
-        b => b.Date.ToString("yyyy-MM-dd"),
-        b => b.Booking);
+
+      var expandedBookingDays = bookings
+        .SelectMany(b => b.ExpandDays())
+        .GroupBy(b => b.Date.ToString("yyyy-MM-dd"))
+        .ToDictionary(
+          b => b.Key,
+          days => days.OrderBy(d => d.Booking.ArrivalDate).Select(d => d.Booking).ToList());
 
       List<Dictionary<string, object>> dates = new List<Dictionary<string, object>>();
 
@@ -92,20 +95,28 @@ namespace Bogevang.StatusMail.Domain
         dayData["rowColor"] = rowColor;
         dayData["dateColor"] = dateColor;
 
-        if (expandedBookingDays.TryGetValue(dayString, out BookingSummary booking))
+        if (expandedBookingDays.TryGetValue(dayString, out List<BookingSummary> bday))
         {
-          dayData["bookingNumber"] = booking.BookingNumber;
-          dayData["bookingAlert"] = booking.AlertMessage;
-          dayData["bookingPurpose"] = booking.Purpose;
-          dayData["bookingContactName"] = booking.ContactName;
+          dayData["bookingNumber"] = string.Join("<br/>", bday.Select(b => b.BookingNumber));
+          dayData["bookingAlert"] = bday.First().AlertMessage;
+          dayData["bookingDetails"] = string.Join("<br/>", bday.Select(b => b.Purpose + "<br/>v/" + b.ContactName));
+          dayData["bookingPurpose"] = bday.First().Purpose;
+          dayData["bookingContactName"] = bday.First().ContactName;
         }
 
         dates.Add(dayData);
       }
 
-      await LoadElectricityTimeSeries(startDate, endDate, dates);
-
       Dictionary<string, object> result = new Dictionary<string, object>();
+
+      try
+      {
+        await LoadElectricityTimeSeries(startDate, endDate, dates);
+      }
+      catch (Exception ex)
+      {
+        result["message"] = ex.Message;
+      }
 
       result["dates"] = dates;
 
