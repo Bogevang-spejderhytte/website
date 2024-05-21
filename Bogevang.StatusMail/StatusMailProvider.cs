@@ -52,7 +52,8 @@ namespace Bogevang.StatusMail.Domain
       SearchBookingSummariesQuery query = new SearchBookingSummariesQuery
       {
         Start = startDate,
-        End = endDate
+        End = endDate,
+        IsCancelled = false
       };
 
       var bookings = await BookingProvider.FindBookingsInInterval(query);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Bogevang.Booking.Domain.Bookings;
+using Bogevang.Booking.Domain.Bookings.CustomEntities;
 using Bogevang.Booking.Domain.Bookings.Queries;
 using Bogevang.Templates.Domain;
 using Bogevang.Templates.Domain.CustomEntities;
@@ -50,7 +51,7 @@ namespace Bogevang.StatusMail.Domain.Commands
       {
         Start = new DateTime(DateTime.Now.Year, 1, 1),
         End = new DateTime(DateTime.Now.Year, 12, 31),
-        //BookingState = new BookingDataModel.BookingStateType[] { BookingDataModel.BookingStateType.Requested, BookingDataModel.BookingStateType.Approved }
+        IsCancelled = false
       };
 
       var bookings = (await BookingProvider.FindBookingsInInterval(query)).Where(b => !b.IsCancelled).ToList();
