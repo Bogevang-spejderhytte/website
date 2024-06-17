@@ -68,6 +68,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
           DepartureDate = command.DepartureDate.Value,
           OnlySelectedWeekdays = command.OnlySelectedWeekdays,
           SelectedWeekdays = command.SelectedWeekdays,
+          Location = command.Location,
           TenantCategoryId = command.TenantCategoryId.Value,
           TenantName = command.TenantName,
           Purpose = command.Purpose,

@@ -11,6 +11,7 @@
       departureDate: null,
       onlySelectedWeekdays: false,
       selectedWeekdays: [],
+      location: 0,
       tenantCategoryId: null,
       tenantName: null,
       purpose: null,
@@ -163,6 +164,7 @@
 
       loadData: async function () {
         result = await this.getWithErrorHandling("/api/booking?id=" + this.bookingId);
+        console.log(result);
         if (result) {
           const data = result.data;
           this.bookingNumber = data.bookingNumber;
@@ -170,6 +172,7 @@
           this.departureDate = new Date(data.departureDate);
           this.onlySelectedWeekdays = data.onlySelectedWeekdays;
           this.selectedWeekdays = data.selectedWeekdays;
+          this.location = data.location,
           this.tenantCategoryId = data.tenantCategoryId;
           this.tenantName = data.tenantName;
           this.purpose = data.purpose;
@@ -205,6 +208,7 @@
           departureDate: this.departureDate,
           onlySelectedWeekdays: this.onlySelectedWeekdays,
           selectedWeekdays: this.selectedWeekdays,
+          location: this.location,
           tenantCategoryId: this.tenantCategoryId,
           tenantName: this.tenantName,
           purpose: this.purpose,

@@ -12,6 +12,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
   // But I could not make it work.
   // For a starter see https://docs.microsoft.com/en-us/aspnet/core/fundamentals/localization?view=aspnetcore-2.1#dataannotations-localization
 
+
   public class BookingRequestCommand : ICommand, IValidatableObject, IIgnorePermissionCheckHandler
   {
     [Display(Name = "Ankomstdato")]
@@ -34,6 +35,11 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
     [CustomEntity(TenantCategoryCustomEntityDefinition.DefinitionCode)]
     [Required(ErrorMessage = "Feltet '{0}' skal udfyldes.")]
     public int? TenantCategoryId { get; set; }
+
+
+    [Display(Name = "Hvilken del af Bøgevang ønskes?")]
+    [RadioList(typeof(BookingLocationType))]
+    public BookingLocationType Location { get; set; }
 
 
     [Display(Name = "Lejers navn (organisation)", Description = "Angiv navn på den organisation som ønsker at leje Bøgevang. Det behøver ikke at være en formel organisation, men kan også bare være \"Privat\".")]

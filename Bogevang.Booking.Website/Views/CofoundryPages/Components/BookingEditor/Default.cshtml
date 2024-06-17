@@ -65,6 +65,7 @@
         </div>
       </div>
 
+      @await Html.VueEditorRowFor(m => m.Location)
       @await Html.VueEditorRowFor(m => m.TenantCategoryId, showInactiveItems: true)
       @await Html.VueEditorRowFor(m => m.TenantName)
       @await Html.VueEditorRowFor(m => m.Purpose)

@@ -41,6 +41,7 @@ namespace Bogevang.Booking.Domain.Bookings.Models
     public bool OnlySelectedWeekdays { get; set; }
     [CheckboxList(typeof(WeekdayType))]
     public ICollection<WeekdayType> SelectedWeekdays { get; set; }
+    public BookingLocationType Location { get; set; }
     public int TenantCategoryId { get; set; }
     public string TenantName { get; set; }
     public string Purpose { get; set; }

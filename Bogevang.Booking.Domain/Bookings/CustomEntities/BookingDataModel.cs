@@ -1,15 +1,24 @@
-﻿using Bogevang.Booking.Domain.Bookings.Models;
-using Bogevang.Booking.Domain.TenantCategories.CustomEntities;
-using Bogevang.Common.Utility;
-using Cofoundry.Domain;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using Bogevang.Booking.Domain.TenantCategories.CustomEntities;
+using Bogevang.Common.Utility;
+using Cofoundry.Domain;
 
 namespace Bogevang.Booking.Domain.Bookings.CustomEntities
 {
+  public enum BookingLocationType
+  {
+    [Description("Hele stedet")]
+    Everything = 0,
+
+    [Description("Kun shelter og toiletfaciliteter")]
+    Shelter = 1
+  }
+
+
   public enum WeekdayType
   {
     [Description("Mandag")]
@@ -37,7 +46,8 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
 
   public class BookingDataModel : ICustomEntityDataModel
   {
-    public enum BookingStateType {
+    public enum BookingStateType
+    {
       [Description("Forespørgsel")]
       Requested,
 
@@ -70,6 +80,9 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
     [CheckboxList(typeof(WeekdayType))]
     public ICollection<WeekdayType> SelectedWeekdays { get; set; }
 
+    [Display(Name = "Ønsket del af Bøgevang")]
+    [RadioList(typeof(BookingLocationType))]
+    public BookingLocationType Location { get; set; }
 
     [Display(Name = "Lejerkategori")]
     [CustomEntity(TenantCategoryCustomEntityDefinition.DefinitionCode)]
@@ -173,7 +186,7 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
     [Display(Name = "Aflæsning af el-måler ved ankomst (kWh)")]
     public decimal? ElectricityReadingStart { get; set; }
 
-    
+
     [Display(Name = "Aflæsning af el-måler ved afrejse (kWh)")]
     public decimal? ElectricityReadingEnd { get; set; }
 
@@ -231,10 +244,10 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
 
     public void AddDocument(string title, int documentId)
     {
-      Documents.Add(new BookingDocumentEntry 
-      { 
+      Documents.Add(new BookingDocumentEntry
+      {
         CreatedDate = DateTime.Now,
-        Title = title, 
+        Title = title,
         DocumentId = documentId
       });
     }

@@ -150,11 +150,13 @@ namespace Bogevang.Common.Utility
 
       MultiLineTextAttribute matt = null;
 
-      
+      Type enumType = null;
       List<CustomEntityRenderSummary> customEntities = null;
       SelectListItem[] enumCollectionItems = null;
 
       MemberInfo[] memberInfo = expr.Metadata.ContainerType.GetMember(expr.Metadata.PropertyName);
+
+      RadioListAttribute radioListAtt = (RadioListAttribute)memberInfo[0].GetCustomAttributes(typeof(RadioListAttribute), false).FirstOrDefault();
 
       bool implementICollection = modelType.IsGenericType && modelType.GetGenericTypeDefinition() == typeof(ICollection<>);
 
@@ -180,12 +182,20 @@ namespace Bogevang.Common.Utility
         {
           if (att.OptionSource.IsEnum)
           {
-            Type enumType = Nullable.GetUnderlyingType(att.OptionSource) ?? att.OptionSource;
-            enumCollectionItems = Enum.GetValues(enumType).Cast<Enum>()
-              .Select(e => new SelectListItem(e.GetDescription(), e.ToString()))
-              .ToArray();
+            enumType = Nullable.GetUnderlyingType(att.OptionSource) ?? att.OptionSource;
           }
         }
+      }
+      else if (isEnum)
+      {
+        enumType = Nullable.GetUnderlyingType(expr.Metadata.ModelType) ?? expr.Metadata.ModelType;
+      }
+      
+      if (enumType != null)
+      {
+        enumCollectionItems = Enum.GetValues(enumType).Cast<Enum>()
+          .Select(e => new SelectListItem(e.GetDescription(), e.ToString()))
+          .ToArray();
       }
 
       if (modelType == typeof(string))
@@ -212,6 +222,19 @@ namespace Bogevang.Common.Utility
         if (addLabel)
           html += $@" <label for=""{propName}"" class=""form-label"">{displayName}</label>";
       }
+      else if (isEnum && radioListAtt != null)
+      {
+        html += $@"<div>{displayName}</div>";
+        foreach (var item in Enum.GetValues(enumType))
+        {
+          html += $@"
+<div>
+  <input type=""radio"" id=""{propName}{(int)item}"" name=""{propName}"" v-model=""{propName}"" class=""form-check-input{editableClass}{cssClass}"" v-on:change=""clearValidation"" value=""{item}"" disabled>
+    <label for=""{propName}{(int)item}"" class=""form-label"">{WebUtility.HtmlEncode(item.GetDescription())}</label>
+  </input>  
+</div>";
+        }
+      }
       else
       {
         if (addLabel)
@@ -220,11 +243,6 @@ namespace Bogevang.Common.Utility
 
         if (isEnum)
         {
-          Type enumType = Nullable.GetUnderlyingType(expr.Metadata.ModelType) ?? expr.Metadata.ModelType;
-          SelectListItem[] items = Enum.GetValues(enumType).Cast<Enum>()
-            .Select(e => new SelectListItem(e.GetDescription(), e.ToString()))
-            .ToArray();
-
           html += $@"
 <select id=""{propName}"" v-model=""{propName}"" class=""form-select{editableClass}{cssClass}"" v-on:change=""clearValidation"" disabled{describedBy}>";
 

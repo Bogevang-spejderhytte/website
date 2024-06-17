@@ -63,6 +63,7 @@ namespace Bogevang.Booking.Domain.Bookings
         SelectedWeekdays = model.SelectedWeekdays ?? new List<WeekdayType>(),
         DepartureDate = model.DepartureDate.Value,
         Purpose = model.Purpose,
+        Location = model.Location,
         TenantCategoryId = model.TenantCategoryId.Value,
         TenantName = model.TenantName,
         ContactName = model.ContactName,
