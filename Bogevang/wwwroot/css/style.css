@@ -48,6 +48,10 @@ td.date {
   text-align: right;
 }
 
+legend {
+  font-size: 1rem;
+}
+
 .color-new
 {
   color: yellow;

@@ -224,7 +224,9 @@ namespace Bogevang.Common.Utility
       }
       else if (isEnum && radioListAtt != null)
       {
-        html += $@"<div>{displayName}</div>";
+        html += $@"<fieldset>
+<legend>{displayName}</legend>";
+
         foreach (var item in Enum.GetValues(enumType))
         {
           html += $@"
@@ -234,6 +236,9 @@ namespace Bogevang.Common.Utility
   </input>  
 </div>";
         }
+
+        html += @"
+</fieldset>";
       }
       else
       {

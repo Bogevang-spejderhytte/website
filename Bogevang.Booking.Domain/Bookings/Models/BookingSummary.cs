@@ -135,7 +135,11 @@ namespace Bogevang.Booking.Domain.Bookings.Models
           $"Datoen er beregnet på baggrund af lejerkategorien.");
 
       if (RentalPrice == null)
+      {
         AddNotification(NotificationLevelType.Warning, "Bemærk at der endnu ikke er aftalt nogen pris.");
+        if (Location == BookingLocationType.Shelter)
+          AddNotification(NotificationLevelType.Information, "Det er kun shelteren, der er reserveret. Husk at justere pris. Shelteren alene kan ikke lejes lang tid i forvejen.");
+      }
 
       // Look up overlap for active bookings (no need to add warning for historic bookings)
       if (BookingState != BookingDataModel.BookingStateType.Closed)
