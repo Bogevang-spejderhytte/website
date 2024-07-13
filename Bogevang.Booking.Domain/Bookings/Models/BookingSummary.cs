@@ -88,7 +88,8 @@ namespace Bogevang.Booking.Domain.Bookings.Models
     public async Task UpdateCalculatedValues(
       IBookingProvider bookingProvider,
       ITenantCategoryProvider tenantCategoryProvider, 
-      BookingSettings settings)
+      BookingSettings settings,
+      decimal electricityPriceUnit)
     {
       Alert = null;
 
@@ -163,6 +164,8 @@ namespace Bogevang.Booking.Domain.Bookings.Models
 
       if (BookingState == BookingDataModel.BookingStateType.Closed)
         AddNotification(NotificationLevelType.Information, $"Denne reservation er afsluttet ({GetSingleWordStateDescription()}).");
+
+      ElectricityPriceUnit = electricityPriceUnit;
     }
 
 

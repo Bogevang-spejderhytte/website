@@ -64,7 +64,16 @@ namespace Bogevang.Common.Utility
       // Post processing may involved a callback to EnsureCacheLoad, which will block on the semaphore,
       // so wait until semaphore is released.
       if (doPostProcess)
-        await PostProcessCache();
+      {
+        try
+        {
+          await PostProcessCache();
+        }
+        catch
+        {
+          Cache = null;
+        }
+      }
     }
 
 

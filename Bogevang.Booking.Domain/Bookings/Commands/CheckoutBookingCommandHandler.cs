@@ -1,6 +1,7 @@
 ﻿using Bogevang.Booking.Domain.Bookings.CustomEntities;
 using Bogevang.Booking.Domain.Bookings.Models;
 using Bogevang.Booking.Domain.Documents.Commands;
+using Bogevang.Common.AdminSettings;
 using Bogevang.Common.Utility;
 using Bogevang.Templates.Domain;
 using Bogevang.Templates.Domain.CustomEntities;
@@ -25,6 +26,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
     private readonly ICommandExecutor CommandExecutor;
     private readonly BookingSettings BookingSettings;
     private readonly ICurrentUserProvider CurrentUserProvider;
+    private readonly IAdminSettingsProvider AdminSettingsProvider;
 
 
     public CheckoutBookingCommandHandler(
@@ -34,7 +36,8 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
       IMailDispatchService mailDispatchService,
       ICommandExecutor commandExecutor,
       BookingSettings bookingSettings,
-      ICurrentUserProvider currentUserProvider)
+      ICurrentUserProvider currentUserProvider,
+      IAdminSettingsProvider adminSettingsProvider)
     {
       DomainRepository = domainRepository;
       BookingProvider = bookingProvider;
@@ -43,6 +46,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
       CommandExecutor = commandExecutor;
       BookingSettings = bookingSettings;
       CurrentUserProvider = currentUserProvider;
+      AdminSettingsProvider = adminSettingsProvider;
     }
 
 
@@ -63,7 +67,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
         booking.IsCheckedOut = true;
         booking.ElectricityReadingStart = command.StartReading;
         booking.ElectricityReadingEnd = command.EndReading;
-        booking.ElectricityPriceUnit = BookingSettings.ElectricityPrice;
+        booking.ElectricityPriceUnit = await AdminSettingsProvider.GetDecimalSetting("Elpris"); ;
 
         if (!string.IsNullOrEmpty(command.Comments))
           booking.Comments += $"\n\n=== Kommentarer til slutregnskab [{DateTime.Now}] ===\n{command.Comments}";

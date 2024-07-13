@@ -3,6 +3,7 @@ using Bogevang.Booking.Domain.Bookings.Models;
 using Bogevang.Booking.Domain.Bookings.Queries;
 using Bogevang.Booking.Domain.TenantCategories;
 using Bogevang.Booking.Domain.TenantCategories.CustomEntities;
+using Bogevang.Common.AdminSettings;
 using Bogevang.Common.Utility;
 using Cofoundry.Domain;
 using System;
@@ -20,6 +21,7 @@ namespace Bogevang.Booking.Domain.Bookings
     private readonly ITenantCategoryProvider TenantCategoryProvider;
     private readonly IContentRouteLibrary ContentRouteLibrary;
     private readonly BookingSettings BookingSettings;
+    private readonly IAdminSettingsProvider AdminSettingsProvider;
 
 
     public BookingProvider(
@@ -27,13 +29,15 @@ namespace Bogevang.Booking.Domain.Bookings
       IPermissionValidationService permissionValidationService,
       ITenantCategoryProvider tenantCategoryProvider,
       IContentRouteLibrary contentRouteLibrary,
-      BookingSettings bookingSettings)
+      BookingSettings bookingSettings,
+      IAdminSettingsProvider adminSettingsProvider)
       : base(contentRepository)
     {
       PermissionValidationService = permissionValidationService;
       TenantCategoryProvider = tenantCategoryProvider;
       ContentRouteLibrary = contentRouteLibrary;
       BookingSettings = bookingSettings;
+      AdminSettingsProvider = adminSettingsProvider;
     }
 
 
@@ -86,7 +90,7 @@ namespace Bogevang.Booking.Domain.Bookings
         CheckoutUrl = checkoutUrl,
         ElectricityReadingStart = model.ElectricityReadingStart,
         ElectricityReadingEnd = model.ElectricityReadingEnd,
-        ElectricityPriceUnit = model.ElectricityPriceUnit ?? BookingSettings.ElectricityPrice,
+        ElectricityPriceUnit = model.ElectricityPriceUnit ?? 0,
         ElectricityPrice = model.ElectricityPrice,
         TotalPrice = model.TotalPrice,
         Documents = model.Documents,
@@ -104,8 +108,10 @@ namespace Bogevang.Booking.Domain.Bookings
 
     protected override async Task PostProcessCache()
     {
+      var electricityPriceUnit = await AdminSettingsProvider.GetDecimalSetting("Elpris");
+
       foreach (var entry in Cache)
-        await entry.Summary.UpdateCalculatedValues(this, TenantCategoryProvider, BookingSettings);
+        await entry.Summary.UpdateCalculatedValues(this, TenantCategoryProvider, BookingSettings, electricityPriceUnit);
       Cache.Sort(CompareBookingByArrivalDate);
     }
 
