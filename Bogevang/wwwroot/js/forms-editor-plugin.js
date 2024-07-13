@@ -127,7 +127,10 @@
         const contentType = response.headers.get('Content-Type').toLowerCase();
         console.log('Response (' + response.status + '): ' + contentType);
 
-        if (contentType.includes('application/json') || contentType.includes('application/problem+json')) {
+        if (response.status == 404) {
+          window.alert("Not found");
+        }
+        else if (contentType.includes('application/json') || contentType.includes('application/problem+json')) {
           const result = await response.json();
 
           if (response.ok) {
