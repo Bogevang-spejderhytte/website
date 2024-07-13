@@ -160,6 +160,7 @@
     // Returned by ASP.NET API validation
     problemJsonErrorHandler: function (result) {
       console.log(result.title);
+      window.alert(result.title + (result.detail ? ": " + result.detail : ""));
       for (var key in result.errors) {
         if (result.errors.hasOwnProperty(key)) {
           for (var i in result.errors[key])

@@ -36,7 +36,7 @@ namespace Bogevang.Booking.Website.Api
 
 
     [HttpGet]
-    public async Task<JsonResult> Get([FromQuery] int id)
+    public async Task<object> Get([FromQuery] int id)
     {
       IExecutionContext executionContext = await ExecutionContextFactory.CreateAsync();
       PermissionValidationService.EnforceCustomEntityPermission<CustomEntityReadPermission>(BookingCustomEntityDefinition.DefinitionCode, executionContext.UserContext);

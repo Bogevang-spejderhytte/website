@@ -72,6 +72,7 @@ namespace Bogevang.Common.Utility
         catch
         {
           Cache = null;
+          throw;
         }
       }
     }
