@@ -46,8 +46,9 @@ namespace Bogevang.Booking.Domain.Bookings
 
     protected override bool IsRelevantEntityCode(string entityCode)
     {
-      return entityCode == BookingCustomEntityDefinition.DefinitionCode 
-        || entityCode == TenantCategoryCustomEntityDefinition.DefinitionCode;
+      return entityCode == BookingCustomEntityDefinition.DefinitionCode
+        || entityCode == TenantCategoryCustomEntityDefinition.DefinitionCode
+        || entityCode == AdminSettingCustomEntityDefinition.DefinitionCode;
     }
 
 
