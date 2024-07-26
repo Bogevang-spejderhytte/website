@@ -67,7 +67,7 @@ namespace Bogevang.Booking.Domain.Bookings.Models
     public string CheckoutUrl { get; set; }
     public decimal? ElectricityReadingStart { get; set; }
     public decimal? ElectricityReadingEnd { get; set; }
-    public decimal? ElectricityPriceUnit { get; set; }
+    public decimal ElectricityPriceUnit { get; set; }
     public decimal ElectricityPrice { get; set; }
     public decimal TotalPrice { get; set; }
 

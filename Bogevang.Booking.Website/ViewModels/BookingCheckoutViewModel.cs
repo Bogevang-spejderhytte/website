@@ -27,5 +27,7 @@ namespace Bogevang.Booking.Website.ViewModels
     [MultiLineText(Rows = 6)]
     [MaxLength(2000)]
     public string Comments { get; set; }
+
+    public decimal ElectricityPriceUnit { get; set; }
   }
 }

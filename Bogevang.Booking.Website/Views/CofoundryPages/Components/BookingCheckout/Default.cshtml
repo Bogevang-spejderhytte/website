@@ -9,7 +9,7 @@
 {
   <script>
     bookingDeposit = @Model.Deposit.ToString(System.Globalization.CultureInfo.InvariantCulture);
-    electricityPriceUnit = @bookingSettings.ElectricityPrice.ToString(System.Globalization.CultureInfo.InvariantCulture);
+    electricityPriceUnit = @Model.ElectricityPriceUnit.ToString(System.Globalization.CultureInfo.InvariantCulture);
   </script>
 
   <form id="checkoutApp">
@@ -52,7 +52,7 @@
       </div>
       <div class="col">
         <label for="electricityPrice" class="form-label">Pris pr. kWh (kr)</label>
-        <input type="text" class="form-control number" id="electricityPrice" value="@bookingSettings.ElectricityPrice.ToString("0.00")" readonly>
+        <input type="text" class="form-control number" id="electricityPrice" value="@Model.ElectricityPriceUnit.ToString("0.00")" readonly>
       </div>
     </div>
 
