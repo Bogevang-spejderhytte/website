@@ -35,7 +35,7 @@ namespace Bogevang.Booking.Website.ViewComponents
           ArrivalDate = booking.ArrivalDate,
           DepartureDate = booking.DepartureDate,
           ContactName = booking.ContactName,
-          Deposit = booking.Deposit ?? 0,
+          Deposit = booking.DepositReceived ? (booking.Deposit ?? 0) : 0,
           ElectricityPriceUnit = booking.ElectricityPriceUnit
         });
       }
