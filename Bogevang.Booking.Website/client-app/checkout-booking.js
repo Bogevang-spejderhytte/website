@@ -14,12 +14,15 @@
 
     computed: {
       kwhUsed() {
-        const kwh = this.endReading - this.startReading;
+        const kwh = (this.endReading ?? 0) - (this.startReading ?? 0);
         return kwh < 0 ? null : kwh;
       },
 
       kwhUsedDisplay() {
-        return this.kwhUsed.toFixed(2);
+        return (this.kwhUsed ?? 0).toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })
       },
 
       electricityPriceTotal() {
@@ -27,7 +30,19 @@
       },
 
       electricityPriceTotalDisplay() {
-        return this.electricityPriceTotal.toFixed(2);
+        return this.electricityPriceTotal.toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })
+      },
+
+      depositDisplay() {
+        if (this.deposit == null)
+          return '';
+        return this.deposit.toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        });
       },
 
       totalPrice() {
@@ -35,7 +50,10 @@
       },
 
       totalPriceDisplay() {
-        return this.totalPrice.toFixed(2);
+        return this.totalPrice.toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        });
       }
     },
 
@@ -43,7 +61,7 @@
       const urlParams = new URLSearchParams(window.location.search);
       this.bookingId = urlParams.get('id');
       this.bookingToken = urlParams.get('token');
-      this.deposit = bookingDeposit.toFixed(2); // Global variable in html code
+      this.deposit = bookingDeposit; // Global variable in html code
       this.startEditing();
     },
 
