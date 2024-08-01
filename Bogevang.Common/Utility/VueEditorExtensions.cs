@@ -145,6 +145,7 @@ namespace Bogevang.Common.Utility
       bool isDate = modelType.IsAssignableFrom(typeof(DateTime));
       bool isMultiLine = false;
       bool isHtml = false;
+      bool isNumber = modelType == typeof(int) || modelType == typeof(decimal) || modelType == typeof(double);
 
       string editableClass = alwaysReadonly ? "" : " editable";
 
@@ -314,6 +315,11 @@ namespace Bogevang.Common.Utility
         {
           html += $@"
 <html-editor id=""{propName}"" height=""500""></html-editor>";
+        }
+        else if (isNumber)
+        {
+          html += $@"
+<input type=""number"" id=""{propName}"" v-model.number=""{propName}"" class=""form-control{editableClass}{cssClass}"" v-on:change=""clearValidation"" readonly{describedBy}>";
         }
         else
         {
