@@ -77,7 +77,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
         // Do not use BookingSummary for mails as it will be the old version of the booking, from before readings were updated.
         // Also make sure mails are sent before updating the entity, as sent mail will be refered by the model.
         await SendCheckoutConfirmationMail(booking);
-        await SendAdminNotificationMail(booking);
+        await SendAdminNotificationMail(booking, !string.IsNullOrWhiteSpace(command.Comments));
 
         UpdateCustomEntityDraftVersionCommand updateCmd = new UpdateCustomEntityDraftVersionCommand
         {
@@ -124,11 +124,11 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
     }
 
 
-    private async Task SendAdminNotificationMail(BookingDataModel booking)
+    private async Task SendAdminNotificationMail(BookingDataModel booking, bool hasComment)
     {
       TemplateDataModel template = await TemplateProvider.GetTemplateByName("slutafregningsnotifikation");
 
-      string mailText = TemplateProvider.MergeText(template.Text, booking);
+      string mailText = TemplateProvider.MergeText(template.Text, booking, new { HasComment = hasComment });
 
       MailAddress to = new MailAddress(BookingSettings.AdminEmail);
       MailMessage message = new MailMessage

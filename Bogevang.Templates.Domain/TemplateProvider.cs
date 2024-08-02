@@ -52,25 +52,29 @@ namespace Bogevang.Templates.Domain
 
 
 
-    public string MergeText(string text, object mergeData)
+    public string MergeText(string text, params object[] mergeDataSet)
     {
       Template template = new Template(text, '$', '$');
       template.Group.RegisterRenderer(typeof(DateTime), new DateRenderer());
       template.Group.RegisterRenderer(typeof(decimal), new DecimalRenderer());
       template.Group.RegisterRenderer(typeof(string), new StringRenderer());
 
-      if (mergeData is IDictionary mergeDict)
+      // Merge all data into the template, no checks for duplicates.
+      foreach (var mergeData in mergeDataSet)
       {
-        foreach (var item in mergeDict.Keys)
-          template.Add(item.ToString(), mergeDict[item]);
-      }
-      else
-      {
-        foreach (var property in mergeData.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
+        if (mergeData is IDictionary mergeDict)
         {
-          string name = property.Name;
-          object value = property.GetValue(mergeData);
-          template.Add(name, value);
+          foreach (var item in mergeDict.Keys)
+            template.Add(item.ToString(), mergeDict[item]);
+        }
+        else
+        {
+          foreach (var property in mergeData.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
+          {
+            string name = property.Name;
+            object value = property.GetValue(mergeData);
+            template.Add(name, value);
+          }
         }
       }
 

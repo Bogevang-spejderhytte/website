@@ -8,6 +8,6 @@ namespace Bogevang.Templates.Domain
   {
     Task<TemplateDataModel> GetTemplateByName(string name);
     string GetEmbeddedTemplateByName(Assembly assembly, string name);
-    string MergeText(string text, object mergeData);
+    string MergeText(string text, params object[] mergeData);
   }
 }
