@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30011.22
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34714.143
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bogevang", "Bogevang\Bogevang.csproj", "{6E4DA2AE-981C-4F0F-885A-68B4F1EA27B9}"
 EndProject
@@ -14,6 +14,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Other", "Other", "{0B16B268-1FA7-40E1-81E6-4DF3FCD6CFBA}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		LICENSE = LICENSE
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bogevang.Templates.Domain", "Bogevang.Templates.Domain\Bogevang.Templates.Domain.csproj", "{0FFDC3CB-5044-4E63-B7B5-0B584A7E13D6}"
@@ -26,7 +28,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bogevang.Blogging.Website",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bogevang.StatusMail.Domain", "Bogevang.StatusMail\Bogevang.StatusMail.Domain.csproj", "{4BB5FF22-4764-4BA4-86ED-6F4BAD1D7F3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bogevang.StatusMail.Web", "Bogevang.StatusMail.Web\Bogevang.StatusMail.Web.csproj", "{343177A8-8ADC-4B6D-9C58-C6FF66140370}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bogevang.StatusMail.Web", "Bogevang.StatusMail.Web\Bogevang.StatusMail.Web.csproj", "{343177A8-8ADC-4B6D-9C58-C6FF66140370}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
