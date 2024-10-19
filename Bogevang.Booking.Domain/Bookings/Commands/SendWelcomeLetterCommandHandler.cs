@@ -46,7 +46,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
         booking.AddLogEntry(new BookingLogEntry
         {
           Text = "Velkomstbrev er udsendt.",
-          Username = user.User.GetFullName(),
+          Username = user.User.DisplayName,
           UserId = user.User.UserId,
           Timestamp = DateTime.Now
         });

@@ -45,7 +45,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
         booking.AddLogEntry(new BookingLogEntry
         {
           Text = "Reservationen blev aflyst.",
-          Username = user.User.GetFullName(),
+          Username = user.User.DisplayName,
           UserId = user.User.UserId,
           Timestamp = DateTime.Now
         });

@@ -169,7 +169,7 @@ namespace Bogevang.Common.Utility
           customEntities = (await helper.ViewContext.HttpContext.RequestServices.GetRequiredService<IAdvancedContentRepository>()
             .CustomEntities()
             .GetByDefinitionCode(att.CustomEntityDefinitionCode)
-            .AsRenderSummary()
+            .AsRenderSummaries()
             .ExecuteAsync())
             .Where(e => showInactiveItems || (e.Model is IActiveState a && a.IsActive))
             .OrderBy(e => e.Ordering)

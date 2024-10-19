@@ -26,7 +26,7 @@ namespace Bogevang.Booking.Website.ViewComponents
 
         Request.Query.TryGetValue("token", out var token);
         if (token != booking.TenantSelfServiceToken)
-          throw new AuthenticationFailedException("Ugyldig eller manglende adgangsnøgle");
+          throw new NotPermittedException("Ugyldig eller manglende adgangsnøgle");
         
         return View(new BookingCheckoutViewModel
         {

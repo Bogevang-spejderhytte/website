@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net8</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,8 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cofoundry.Core" Version="0.9.1" />
-    <PackageReference Include="Ramone" Version="4.1.2" />
+    <PackageReference Include="Cofoundry.Core" Version="0.12.1" />
+    <PackageReference Include="Ramone" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>

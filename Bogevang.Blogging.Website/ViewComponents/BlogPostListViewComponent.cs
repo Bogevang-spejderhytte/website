@@ -82,7 +82,8 @@ namespace Bogevang.Blogging.Website.ViewComponents
         var blogPost = new BlogPostSummary();
         blogPost.Title = customEntity.Title;
         blogPost.ShortDescription = model.ShortDescription;
-        blogPost.ThumbnailImageAsset = imageLookup.GetOrDefault(model.ThumbnailImageAssetId);
+        if (model.ThumbnailImageAssetId != null)
+          blogPost.ThumbnailImageAsset = imageLookup.GetValueOrDefault(model.ThumbnailImageAssetId.Value);
         blogPost.FullPath = customEntity.PageUrls.FirstOrDefault();
         blogPost.PostDate = customEntity.PublishDate;
 
