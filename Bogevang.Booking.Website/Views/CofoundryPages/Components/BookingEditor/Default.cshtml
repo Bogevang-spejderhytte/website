@@ -86,6 +86,10 @@
           @await Html.VueEditorRowFor(m => m.IsCancelled)
         </div>
       </div>
+
+      <div class="row">
+        @await Html.VueEditorColFor(m => m.IsPrivate)
+      </div>
     </div>
 
     <div class="tab-pane fade" id="financeTabArea" role="tabpanel" aria-labelledby="finance-tab">

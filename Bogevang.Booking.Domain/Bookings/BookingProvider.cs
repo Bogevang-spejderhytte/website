@@ -84,6 +84,7 @@ namespace Bogevang.Booking.Domain.Bookings
         BookingStateText = model.BookingState.GetDescription(),
         IsApproved = model.IsApproved,
         IsCancelled = model.IsCancelled,
+        IsPrivate = model.IsPrivate,
         WelcomeLetterIsSent = model.WelcomeLetterIsSent,
         IsCheckedOut = model.IsCheckedOut,
         IsArchived = model.IsArchived,
@@ -199,6 +200,10 @@ namespace Bogevang.Booking.Domain.Bookings
       if (query?.IsCancelled != null)
         filtered = filtered
           .Where(b => b.DataModel.IsCancelled == query.IsCancelled.Value);
+
+      if (query?.ExcludePrivateBookings ?? true)
+        filtered = filtered
+          .Where(b => !b.DataModel.IsPrivate);
 
       if (query?.OrderBy == SearchBookingSummariesQuery.OrderByType.ArrivalDate)
       {

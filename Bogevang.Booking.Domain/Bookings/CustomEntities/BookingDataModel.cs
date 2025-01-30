@@ -147,6 +147,10 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
     public bool IsCancelled { get; set; }
 
 
+    [Display(Name = "Privat reservation")]
+    public bool IsPrivate { get; set; }
+
+
     // Keep "IsRejected" for backwards compatibility with old database entries
     public bool IsRejected { get => IsCancelled; set { IsCancelled = value; } }
 

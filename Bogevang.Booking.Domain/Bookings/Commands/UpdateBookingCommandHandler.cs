@@ -62,6 +62,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
         booking.IsArchived = command.IsArchived;
         booking.WelcomeLetterIsSent = command.WelcomeLetterIsSent;
         booking.Deposit = command.Deposit;
+        booking.IsPrivate = command.IsPrivate;
         booking.DepositReceived = command.DepositReceived;
         booking.ElectricityReadingStart = command.ElectricityReadingStart;
         booking.ElectricityReadingEnd = command.ElectricityReadingEnd;

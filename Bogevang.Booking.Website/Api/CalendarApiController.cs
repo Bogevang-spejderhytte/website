@@ -45,7 +45,8 @@ namespace Bogevang.Booking.Website.Api
       { 
           Start = start, 
           End = end,
-          IsCancelled = false
+          IsCancelled = false,
+          ExcludePrivateBookings = true
       });
 
       var expandedBookingDays = bookings.SelectMany(b => b.ExpandDays());

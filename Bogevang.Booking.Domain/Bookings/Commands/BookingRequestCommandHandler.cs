@@ -80,6 +80,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
           Comments = command.Comments,
           RentalPrice = null, // To be set later
           Deposit = BookingSettings.StandardDeposit,
+          IsPrivate = false, // Cannot request private bookings, it can only be set by admin.
           BookingState = BookingDataModel.BookingStateType.Requested
         };
 

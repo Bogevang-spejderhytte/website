@@ -60,6 +60,7 @@ namespace Bogevang.Booking.Domain.Bookings.Models
     public string BookingStateText { get; set; }
     public bool IsApproved { get; set; }
     public bool IsCancelled { get; set; }
+    public bool IsPrivate { get; set; }
     public bool WelcomeLetterIsSent { get; set; }
     public bool IsCheckedOut { get; set; }
     public bool IsArchived { get; set; }
