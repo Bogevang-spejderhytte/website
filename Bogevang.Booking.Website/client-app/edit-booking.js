@@ -27,6 +27,7 @@
       isCancelled: false,
       isCheckedOut: false,
       isArchived: false,
+      isPrivate: false,
       welcomeLetterIsSent: false,
       tenantSelfServiceToken: null,
       deposit: null,
@@ -187,6 +188,7 @@
           this.isCancelled = data.isCancelled;
           this.isCheckedOut = data.isCheckedOut;
           this.isArchived = data.isArchived;
+          this.isPrivate= data.isPrivate;
           this.welcomeLetterIsSent = data.welcomeLetterIsSent;
           this.notifications = data.notifications;
           this.tenantSelfServiceToken = data.tenantSelfServiceToken;
@@ -223,6 +225,7 @@
           isCancelled: this.isCancelled,
           isCheckedOut: this.isCheckedOut,
           isArchived: this.isArchived,
+          isPrivate: this.isPrivate,
           welcomeLetterIsSent: this.welcomeLetterIsSent,
           deposit: this.deposit,
           depositReceived: this.depositReceived,

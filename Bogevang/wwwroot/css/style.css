@@ -65,6 +65,10 @@ legend {
   color: darkorange;
 }
 
+.color-neutral {
+  color: darkgrey;
+}
+
 .row-cancelled {
   font-style: italic;
   color: darkgray;

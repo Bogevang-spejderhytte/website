@@ -106,6 +106,13 @@
         return dir == 'Asc' ? 'Desc' : 'Asc';
       },
 
+      privateClass: function (p) {
+        if (p)
+          return 'fas fa-eye-slash color-neutral';
+        else
+          return null;
+      },
+
       alertClass: function (a) {
         if (a == 'New')
           return 'fas fa-star color-new';

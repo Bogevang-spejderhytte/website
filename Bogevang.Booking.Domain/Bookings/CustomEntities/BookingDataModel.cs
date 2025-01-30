@@ -147,7 +147,7 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
     public bool IsCancelled { get; set; }
 
 
-    [Display(Name = "Privat reservation")]
+    [Display(Name = "Skjul reservation fra kalender")]
     public bool IsPrivate { get; set; }
 
 

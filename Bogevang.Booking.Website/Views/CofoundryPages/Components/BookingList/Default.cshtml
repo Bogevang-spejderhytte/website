@@ -37,6 +37,7 @@
     <thead>
       <tr>
         <th scope="col"></th>
+        <th scope="col"></th>
         <th scope="col">Nr.</th>
         <th scope="col" class="clickable" v-on:click="orderByArrival()">Ankomst <two-state-icon one="fas fa-sort-down" two="fas fa-sort-up" v-bind:state="arrivalIconState()"></two-state-icon></th>
         <th scope="col">Afrejse</th>
@@ -50,6 +51,7 @@
     </thead>
     <tbody>
       <tr :class="rowClass(booking.isCancelled)" v-for="booking in bookings" v-bind:model="booking" v-bind:key="booking.id">
+        <td><i :class="privateClass(booking.isPrivate)" title="Skjult"></i></td>
         <td><i :class="alertClass(booking.alert)" :title="booking.alertMessage"></i></td>
         <td><a :href="'/reservationer/edit#' + booking.id" title="Vis reservation">{{booking.bookingNumber}}</a></td>
         <td class="date">{{booking.arrivalDate}}</td>
