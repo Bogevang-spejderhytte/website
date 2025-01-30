@@ -62,7 +62,6 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
           booking.ContactEMail = "ukendt@ukendte-mailmodtagere";
           booking.ContactPhone = "---";
           booking.ContactAddress = "---";
-          booking.ContactCity = "---";
           booking.Comments = "---";
 
           foreach (var document in booking.Documents)

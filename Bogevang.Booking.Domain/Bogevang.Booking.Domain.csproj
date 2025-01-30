@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net8</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -17,8 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cofoundry.Domain" Version="0.9.1" />
-    <PackageReference Include="Cofoundry.Plugins.Mail.MailKit" Version="0.9.1" />
+    <PackageReference Include="Cofoundry.Domain" Version="0.12.1" />
+    <PackageReference Include="Cofoundry.Plugins.Mail.MailKit" Version="0.12.0" />
   </ItemGroup>
 
   <ItemGroup>

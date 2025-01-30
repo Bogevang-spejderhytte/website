@@ -57,7 +57,7 @@ namespace Bogevang.Booking.Domain.Bookings.Commands
         BookingDataModel booking = await BookingProvider.GetBookingById(command.Id);
 
         if (command.Token != booking.TenantSelfServiceToken)
-          throw new AuthenticationFailedException("Ugyldigt eller manglende adgangsnøgle");
+          throw new NotPermittedException("Ugyldigt eller manglende adgangsnøgle");
 
         if (booking.BookingState == BookingDataModel.BookingStateType.Requested)
           throw new ValidationErrorException("Det er ikke muligt at indberette slutafregning, da reservationen endnu ikke er godkendt.");

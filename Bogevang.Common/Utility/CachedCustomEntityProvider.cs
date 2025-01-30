@@ -49,7 +49,7 @@ namespace Bogevang.Common.Utility
             .WithElevatedPermissions()
             .CustomEntities()
             .GetByDefinitionCode(CustomEntityDefinitionCode)
-            .AsRenderSummary()
+            .AsRenderSummaries()
             .ExecuteAsync();
 
           Cache = allEntities.Select(e => MapEntity(e)).ToList();

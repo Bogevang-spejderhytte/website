@@ -58,12 +58,12 @@ namespace Bogevang.Menus.ViewComponents
       return View(viewModel);
     }
 
-    private NestedMenuItemViewModel MapNestedItemViewModel(NestedMenuItemDataModel dataModel, IDictionary<int, PageRoute> allPages)
+    private NestedMenuItemViewModel MapNestedItemViewModel(NestedMenuItemDataModel dataModel, IReadOnlyDictionary<int, PageRoute> allPages)
     {
       var viewModelItem = new NestedMenuItemViewModel()
       {
         Title = dataModel.Title,
-        PageRoute = allPages.GetOrDefault(dataModel.PageId)
+        PageRoute = allPages.GetValueOrDefault(dataModel.PageId)
       };
 
       viewModelItem.ChildItems = EnumerableHelper
@@ -75,12 +75,12 @@ namespace Bogevang.Menus.ViewComponents
       return viewModelItem;
     }
 
-    private NestedMenuChildItemViewModel MapNestedChildItemViewModel(NestedMenuChildItemDataModel dataModel, IDictionary<int, PageRoute> allPages)
+    private NestedMenuChildItemViewModel MapNestedChildItemViewModel(NestedMenuChildItemDataModel dataModel, IReadOnlyDictionary<int, PageRoute> allPages)
     {
       var viewModelItem = new NestedMenuChildItemViewModel()
       {
         Title = dataModel.Title,
-        PageRoute = allPages.GetOrDefault(dataModel.PageId)
+        PageRoute = allPages.GetValueOrDefault(dataModel.PageId)
       };
 
       return viewModelItem;

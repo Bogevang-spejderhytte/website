@@ -231,7 +231,7 @@ namespace Bogevang.Booking.Domain.Bookings.CustomEntities
       AddLogEntry(new BookingLogEntry
       {
         Text = text,
-        Username = user.User.GetFullName(),
+        Username = user.User.DisplayName,
         UserId = user.User.UserId,
         Timestamp = DateTime.Now
       });

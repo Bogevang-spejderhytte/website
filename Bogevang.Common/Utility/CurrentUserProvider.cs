@@ -40,14 +40,15 @@ namespace Bogevang.Common.Utility
 
       if (userContext.UserId.HasValue)
       {
-        var query = new GetUserMicroSummaryByIdQuery(userContext.UserId.Value);
+        var query = new GetUserSummaryByIdQuery(userContext.UserId.Value);
         details.User = await QueryExecutor.ExecuteAsync(query);
         details.IsLoggedIn = true;
       }
       else
       {
-        details.User = new UserMicroSummary
+        details.User = new UserSummary
         {
+          DisplayName = "Anonym",
           Username = "Anonym",
           FirstName = "Anonym",
           LastName = "",
