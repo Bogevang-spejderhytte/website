@@ -41,19 +41,19 @@ namespace Bogevang.Booking.Website.Api
     [HttpGet]
     public async Task<JsonResult> Get([FromQuery] DateTime start, [FromQuery] DateTime end)
     {
+      IExecutionContext executionContext = await ExecutionContextFactory.CreateAsync();
+      bool hasEditAccess = PermissionValidationService.HasCustomEntityPermission<CustomEntityUpdatePermission>(BookingCustomEntityDefinition.DefinitionCode, executionContext.UserContext);
+
       var bookings = await BookingService.FindBookingsInInterval(new SearchBookingSummariesQuery 
       { 
           Start = start, 
           End = end,
           IsCancelled = false,
-          ExcludePrivateBookings = true
+          ExcludePrivateBookings = !hasEditAccess
       });
 
       var expandedBookingDays = bookings.SelectMany(b => b.ExpandDays());
 
-      IExecutionContext executionContext = await ExecutionContextFactory.CreateAsync();
-      bool hasEditAccess = PermissionValidationService.HasCustomEntityPermission<CustomEntityUpdatePermission>(BookingCustomEntityDefinition.DefinitionCode, executionContext.UserContext);
-      
       var events = expandedBookingDays.Select(b => new CalendarEvent
       {
         start = b.Date,
